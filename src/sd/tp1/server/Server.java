@@ -29,7 +29,7 @@ public class Server {
 
             System.out.println("Listening on "+MULTICASTIP+":"+PORT);
 
-            while (true){
+          //  while (true){
 
                 byte[] buffer = new byte[MAXBYTESBUFFER];
 
@@ -37,8 +37,15 @@ public class Server {
 
                 socket.receive(datagramPacket);
 
-                System.out.println("Someone Connected");
-            }
+
+
+            String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
+                    datagramPacket.getLength());
+
+            System.out.println("Someone Connected\n"+mensage);
+            System.out.println("Sending my info");
+
+            //}
 
 
 
