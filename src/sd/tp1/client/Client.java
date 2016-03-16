@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
  */
 public class Client {
 
+    //TESTING GIT
 
     public static final String MULTICASTIP = "224.0.0.1";
     public static final int PORT = 5555;
