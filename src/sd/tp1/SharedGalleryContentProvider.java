@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
+import utils.SharedAlbum;
+import utils.SharedPicture;
 
 /*
  * This class provides the album/picture content to the gui/main application.
@@ -114,35 +116,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	}
 
 	
-	/**
-	 * Represents a shared album.
-	 */
-	static class SharedAlbum implements GalleryContentProvider.Album {
-		final String name;
 
-		SharedAlbum(String name) {
-			this.name = name;
-		}
 
-		@Override
-		public String getName() {
-			return name;
-		}
-	}
-
-	/**
-	 * Represents a shared picture.
-	 */
-	static class SharedPicture implements GalleryContentProvider.Picture {
-		final String name;
-
-		SharedPicture(String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String getName() {
-			return name;
-		}
-	}
 }
