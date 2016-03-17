@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
-import utils.SharedAlbum;
-import utils.SharedPicture;
+import sd.tp1.utils.SharedAlbum;
+import sd.tp1.utils.SharedPicture;
 
 /*
  * This class provides the album/picture content to the gui/main application.
