@@ -24,7 +24,6 @@ public class Client {
     public static void main(String args[]) {
         if (args.length == 1 ) {
 
-       // String serverHost = args[0];
         String path = args[0];
 
 
@@ -41,7 +40,7 @@ public class Client {
 
                 socket.send(datagramPacket);
 
-                System.out.println("Sent");
+                System.out.println("Sent Multicast");
 
                 byte[] buffer = new byte[MAXBYTESBUFFER];
 
@@ -54,29 +53,10 @@ public class Client {
                 String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
                         datagramPacket.getLength());
 
-                System.out.println("recebi " + mensage);
+
+                GetFileInfoo.getInfoFile(path,mensage);
 
 
-
-
-
-
-
-
-            URL wsURL = new URL(String.format("http://%s/FileServer", mensage));
-
-            System.out.println(wsURL.toString());
-
-            ServerService service = new ServerService(wsURL);
-            // FileServerImplWSService service = new FileServerImplWSService();
-            // A invocação sem parâmetros aponta para a instância usada na
-            // criação dos stubs através
-            // da ferrament wsimport
-
-            Server server = service.getServerPort();
-            FileInfo info = server.getFileInfo(path);
-            System.out.println("Name : " + info.getName() + "\nLength: " + info.getLength() + "\nDate modified: "
-                    + info.getModified() + "\nisFile : " + info.isIsFile());
         } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());
         }
