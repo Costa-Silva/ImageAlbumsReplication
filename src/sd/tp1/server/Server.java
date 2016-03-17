@@ -99,8 +99,8 @@ public class Server {
 
             if (mensage.equals(MYIDENTIFIER)){
 
-                System.out.println(InetAddress.getLocalHost().getHostAddress()+":8080");
-                buffer = new String().getBytes();
+                String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080" ;
+                buffer = myinfo.getBytes();
 
                 datagramPacket = new DatagramPacket(buffer,buffer.length);
 
