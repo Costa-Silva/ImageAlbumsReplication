@@ -54,7 +54,7 @@ public class Client {
                 String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
                         datagramPacket.getLength());
 
-                System.out.println("received " + mensage);
+                System.out.println("recebi " + mensage);
 
 
 
@@ -64,6 +64,8 @@ public class Client {
 
 
             URL wsURL = new URL(String.format("http://%s/FileServer", mensage));
+
+            System.out.println(wsURL.toString());
 
             ServerService service = new ServerService(wsURL);
             // FileServerImplWSService service = new FileServerImplWSService();
