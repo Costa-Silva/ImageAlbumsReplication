@@ -61,7 +61,7 @@ public class Server {
 
 
 
-        //startListeningServer();
+        startListeningServer();
     }
 
 

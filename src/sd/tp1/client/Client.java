@@ -22,15 +22,48 @@ public class Client {
 
 
     public static void main(String args[]) {
-        if (args.length != 2) {
-            System.out.println("Use: java GetFileInfo server_endpoint path");
-            System.exit(0);
-        }
-        String serverHost = args[0];
-        String path = args[1];
+        if (args.length == 1 ) {
 
-        try {
-            URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
+       // String serverHost = args[0];
+        String path = args[0];
+
+
+            try {
+                InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
+                MulticastSocket socket = new MulticastSocket(); //IOexception
+
+                byte[] input = new String(SVIDENTIFIER).getBytes();
+
+                DatagramPacket datagramPacket = new DatagramPacket(input,input.length);
+
+                datagramPacket.setAddress(address);
+                datagramPacket.setPort(PORT);
+
+                socket.send(datagramPacket);
+
+                System.out.println("Sent");
+
+                byte[] buffer = new byte[MAXBYTESBUFFER];
+
+                datagramPacket = new DatagramPacket(buffer,buffer.length);
+
+                socket.receive(datagramPacket);
+
+
+
+                String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
+                        datagramPacket.getLength());
+
+                System.out.println("received " + mensage);
+
+
+
+
+
+
+
+
+            URL wsURL = new URL(String.format("http://%s/FileServer", mensage));
 
             ServerService service = new ServerService(wsURL);
             // FileServerImplWSService service = new FileServerImplWSService();
@@ -47,47 +80,19 @@ public class Client {
         }
 
 
+        }else {
 
-        //search4Servers();
-    }
-
-
-    public static void search4Servers(){
-
-        try {
-            InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
-            MulticastSocket socket = new MulticastSocket(); //IOexception
-
-            byte[] input = new String(SVIDENTIFIER).getBytes();
-
-            DatagramPacket datagramPacket = new DatagramPacket(input,input.length);
-
-            datagramPacket.setAddress(address);
-            datagramPacket.setPort(PORT);
-
-            socket.send(datagramPacket);
-
-            System.out.println("Sent");
-
-            byte[] buffer = new byte[MAXBYTESBUFFER];
-
-            datagramPacket = new DatagramPacket(buffer,buffer.length);
-
-            socket.receive(datagramPacket);
-
-
-            String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
-                    datagramPacket.getLength());
-
-            System.out.println(mensage);
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Use: java GetFileInfo path");
+            System.exit(0);
         }
-
-
     }
+
+
+
+
+
+
+
+
 
 }
