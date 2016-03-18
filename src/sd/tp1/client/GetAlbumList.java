@@ -27,10 +27,6 @@ public class GetAlbumList {
 
             Server server = service.getServerPort();
 
-
-
-
-
             return server.getAlbumList();
 
         } catch (Exception e) {

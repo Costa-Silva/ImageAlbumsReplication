@@ -56,17 +56,17 @@ public class Server {
 
             List<String> albumList = new ArrayList<>();
 
-           File[] files = mainDirectory.listFiles();
+            File[] files = mainDirectory.listFiles();
 
             for (File file: files) {
 
                 if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
                     albumList.add(file.getName());
 
-                 }
+                }
 
 
-           }
+            }
 
             return  albumList;
         }
@@ -117,27 +117,27 @@ public class Server {
 
                 socket.receive(datagramPacket);
 
-            HostInfo hostInfo = new HostInfo(datagramPacket.getAddress(),datagramPacket.getPort());
+                HostInfo hostInfo = new HostInfo(datagramPacket.getAddress(),datagramPacket.getPort());
 
 
-            String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
-                    datagramPacket.getLength());
+                String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
+                        datagramPacket.getLength());
 
 
-            System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
+                System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
 
-            if (mensage.equals(MYIDENTIFIER)){
+                if (mensage.equals(MYIDENTIFIER)){
 
-                String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080" ;
-                buffer = myinfo.getBytes();
+                    String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080" ;
+                    buffer = myinfo.getBytes();
 
-                datagramPacket = new DatagramPacket(buffer,buffer.length);
+                    datagramPacket = new DatagramPacket(buffer,buffer.length);
 
-                datagramPacket.setAddress(hostInfo.getAddress());
-                datagramPacket.setPort(hostInfo.getPort());
-                socket.send(datagramPacket);
+                    datagramPacket.setAddress(hostInfo.getAddress());
+                    datagramPacket.setPort(hostInfo.getPort());
+                    socket.send(datagramPacket);
 
-            }
+                }
 
 
 

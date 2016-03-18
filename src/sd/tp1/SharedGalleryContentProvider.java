@@ -29,7 +29,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		this.serverHost = ClientDiscovery.searchServer();
 	}
 
-	
+
 	/**
 	 *  Downcall from the GUI to register itself, so that it can be updated via upcalls.
 	 */
@@ -100,7 +100,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public void deleteAlbum(Album album) {
 		// TODO: contact servers to delete album 
 	}
-	
+
 	/**
 	 * Add a new picture to an album.
 	 * On error this method should return null.
