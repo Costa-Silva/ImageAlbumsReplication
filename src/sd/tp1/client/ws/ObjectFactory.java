@@ -27,10 +27,13 @@ public class ObjectFactory {
     private final static QName _GetAlbumListResponse_QNAME = new QName("http://server.tp1.sd/", "getAlbumListResponse");
     private final static QName _GetFileInfoResponse_QNAME = new QName("http://server.tp1.sd/", "getFileInfoResponse");
     private final static QName _InfoNotFoundException_QNAME = new QName("http://server.tp1.sd/", "InfoNotFoundException");
+    private final static QName _GetPictureData_QNAME = new QName("http://server.tp1.sd/", "getPictureData");
+    private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
     private final static QName _GetFileInfo_QNAME = new QName("http://server.tp1.sd/", "getFileInfo");
     private final static QName _GetPicturesListResponse_QNAME = new QName("http://server.tp1.sd/", "getPicturesListResponse");
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
     private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
+    private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: sd.tp1.client.ws
@@ -53,6 +56,22 @@ public class ObjectFactory {
      */
     public GetFileInfoResponse createGetFileInfoResponse() {
         return new GetFileInfoResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetPictureData }
+     * 
+     */
+    public GetPictureData createGetPictureData() {
+        return new GetPictureData();
+    }
+
+    /**
+     * Create an instance of {@link GetPictureDataResponse }
+     * 
+     */
+    public GetPictureDataResponse createGetPictureDataResponse() {
+        return new GetPictureDataResponse();
     }
 
     /**
@@ -131,6 +150,24 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPictureData }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPictureData")
+    public JAXBElement<GetPictureData> createGetPictureData(GetPictureData value) {
+        return new JAXBElement<GetPictureData>(_GetPictureData_QNAME, GetPictureData.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPictureDataResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPictureDataResponse")
+    public JAXBElement<GetPictureDataResponse> createGetPictureDataResponse(GetPictureDataResponse value) {
+        return new JAXBElement<GetPictureDataResponse>(_GetPictureDataResponse_QNAME, GetPictureDataResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetFileInfo }{@code >}}
      * 
      */
@@ -164,6 +201,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
     public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
         return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "return", scope = GetPictureDataResponse.class)
+    public JAXBElement<byte[]> createGetPictureDataResponseReturn(byte[] value) {
+        return new JAXBElement<byte[]>(_GetPictureDataResponseReturn_QNAME, byte[].class, GetPictureDataResponse.class, ((byte[]) value));
     }
 
 }

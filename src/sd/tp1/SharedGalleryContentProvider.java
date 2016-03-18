@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import sd.tp1.client.ClientDiscovery;
 import sd.tp1.client.GetAlbumList;
+import sd.tp1.client.GetPictureData;
 import sd.tp1.client.GetPicturesListClient;
 import sd.tp1.client.ws.GetPicturesList;
 import sd.tp1.gui.GalleryContentProvider;
@@ -48,7 +49,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Album> getListOfAlbums() {
-		// TODO: obtain remote information 
+		// TODO: obtain remote information
 		List<Album> lst = new ArrayList<Album>();
 		List<String> listReceived = GetAlbumList.getAlbums(serverHost);
 
@@ -86,8 +87,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public byte[] getPictureData(Album album, Picture picture) {
-		// TODO: obtain remote information 
-		return null;
+		// TODO: obtain remote information
+		return GetPictureData.getPictureData(serverHost,album.getName(),picture.getName());
 	}
 
 	/**

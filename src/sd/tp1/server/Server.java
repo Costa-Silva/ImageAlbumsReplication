@@ -9,13 +9,16 @@ import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.RandomAccess;
 
 /**
  * Created by AntónioSilva on 16/03/2016.
@@ -75,6 +78,7 @@ public class Server {
 
     }
 
+    @WebMethod
     public List<String> getPicturesList(String albumName){
 
 
@@ -108,7 +112,42 @@ public class Server {
         return null;
     }
 
+    @WebMethod
+    public byte[] getPictureData(String albumName,String picture) {
+        byte[] array;
+        if (mainDirectory.isDirectory()) {
 
+            File album = new File(albumName);
+
+            if (album.exists()) {
+
+                File albumDir = new File(album.getAbsolutePath());
+
+                File[] files = albumDir.listFiles();
+
+                for (File file : files) {
+
+                    if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.getName().equals(picture)) {
+
+                        System.out.println("Sending PICTURE DATA de " + file + " em " + albumDir + "\n");
+
+                        try {
+                            RandomAccessFile f = new RandomAccessFile(file, "r");
+                            array = new byte[(int) f.length()];
+
+                            f.readFully(array);
+                            return array;
+
+                        } catch (Exception e) {
+                            System.out.println("DEU ERRO");
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 
     public static void main(String args[]){
 
