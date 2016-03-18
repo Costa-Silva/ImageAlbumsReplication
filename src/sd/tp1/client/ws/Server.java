@@ -48,6 +48,21 @@ public interface Server {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPicturesList", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPicturesList")
+    @ResponseWrapper(localName = "getPicturesListResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPicturesListResponse")
+    @Action(input = "http://server.tp1.sd/Server/getPicturesListRequest", output = "http://server.tp1.sd/Server/getPicturesListResponse")
+    public List<String> getPicturesList(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
      * @return
      *     returns java.util.List<java.lang.String>
      */

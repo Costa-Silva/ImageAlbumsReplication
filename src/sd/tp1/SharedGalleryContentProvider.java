@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 import sd.tp1.client.ClientDiscovery;
 import sd.tp1.client.GetAlbumList;
+import sd.tp1.client.GetPicturesListClient;
+import sd.tp1.client.ws.GetPicturesList;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
@@ -67,9 +69,14 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public List<Picture> getListOfPictures(Album album) {
 		// TODO: obtain remote information 
 		List<Picture> lst = new ArrayList<Picture>();
-		lst.add( new SharedPicture("aula 1"));
-		lst.add( new SharedPicture("aula 2"));
-		lst.add( new SharedPicture("aula 3"));
+
+		List<String> listReceived = GetPicturesListClient.getPictures(serverHost,album.getName());
+
+
+		for (String picture:listReceived) {
+			lst.add( new SharedPicture(picture));
+		}
+
 		return lst;
 	}
 

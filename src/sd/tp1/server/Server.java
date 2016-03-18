@@ -71,11 +71,42 @@ public class Server {
             return  albumList;
         }
 
-
         return null;
 
     }
 
+    public List<String> getPicturesList(String albumName){
+
+
+
+        if (mainDirectory.isDirectory()) {
+
+            List<String> list = new ArrayList<>();
+
+            File album = new File(albumName);
+
+            if (album.exists()){
+
+                File albumDir = new File(album.getAbsolutePath());
+
+                File[] files = albumDir.listFiles();
+
+                for (File file: files) {
+
+                    if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
+                        list.add(file.getName());
+
+                    }
+
+
+                }
+
+            }
+
+            return list;
+        }
+        return null;
+    }
 
 
 
