@@ -1,5 +1,7 @@
 package sd.tp1.server;
 
+import sd.tp1.SharedGalleryContentProvider;
+import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.utils.HostInfo;
 
 import javax.jws.WebMethod;
@@ -11,7 +13,9 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by AntónioSilva on 16/03/2016.
@@ -24,7 +28,7 @@ public class Server {
     public static final int MAXBYTESBUFFER = 65536;
     public static final String MYIDENTIFIER = "OPENBAR";
 
-    private File basePath;
+    private File mainDirectory;
 
     public Server(){
         this(".");
@@ -32,20 +36,45 @@ public class Server {
 
     protected Server(String pathname){
         super();
-        this.basePath= new File(pathname);
+        this.mainDirectory= new File(pathname);
     }
 
 
     @WebMethod
     public FileInfo getFileInfo(String path) throws InfoNotFoundException {
-        File f = new File(basePath, path);
+        File f = new File(mainDirectory, path);
         if (f.exists())
             return new FileInfo(f.getName(), f.length(), new Date(f.lastModified()), f.isFile());
         else
             throw new InfoNotFoundException("File not found :" + path);
     }
 
+    @WebMethod
+    public List<String> getAlbumList(){
 
+        if (mainDirectory.isDirectory()) {
+
+            List<String> albumList = new ArrayList<>();
+
+           File[] files = mainDirectory.listFiles();
+
+            for (File file: files) {
+
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
+                    albumList.add(file.getName());
+
+                 }
+
+
+           }
+
+            return  albumList;
+        }
+
+
+        return null;
+
+    }
 
 
 
@@ -61,7 +90,7 @@ public class Server {
 
 
 
-        startListeningServer();
+        startListening();
     }
 
 
@@ -70,7 +99,7 @@ public class Server {
 
 
 
-    private static void startListeningServer(){
+    private static void startListening(){
 
         try {
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
@@ -124,5 +153,23 @@ public class Server {
 
 
     }
+
+
+    /**
+     * Represents a shared album.
+     */
+    static class SharedAlbum implements GalleryContentProvider.Album {
+        final String name;
+
+        SharedAlbum(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+    }
+
 
 }

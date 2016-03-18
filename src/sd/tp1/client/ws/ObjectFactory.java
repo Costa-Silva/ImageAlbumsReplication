@@ -24,15 +24,25 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _GetAlbumListResponse_QNAME = new QName("http://server.tp1.sd/", "getAlbumListResponse");
     private final static QName _GetFileInfoResponse_QNAME = new QName("http://server.tp1.sd/", "getFileInfoResponse");
     private final static QName _InfoNotFoundException_QNAME = new QName("http://server.tp1.sd/", "InfoNotFoundException");
     private final static QName _GetFileInfo_QNAME = new QName("http://server.tp1.sd/", "getFileInfo");
+    private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: sd.tp1.client.ws
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link GetAlbumListResponse }
+     * 
+     */
+    public GetAlbumListResponse createGetAlbumListResponse() {
+        return new GetAlbumListResponse();
     }
 
     /**
@@ -60,11 +70,28 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetAlbumList }
+     * 
+     */
+    public GetAlbumList createGetAlbumList() {
+        return new GetAlbumList();
+    }
+
+    /**
      * Create an instance of {@link FileInfo }
      * 
      */
     public FileInfo createFileInfo() {
         return new FileInfo();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetAlbumListResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getAlbumListResponse")
+    public JAXBElement<GetAlbumListResponse> createGetAlbumListResponse(GetAlbumListResponse value) {
+        return new JAXBElement<GetAlbumListResponse>(_GetAlbumListResponse_QNAME, GetAlbumListResponse.class, null, value);
     }
 
     /**
@@ -92,6 +119,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getFileInfo")
     public JAXBElement<GetFileInfo> createGetFileInfo(GetFileInfo value) {
         return new JAXBElement<GetFileInfo>(_GetFileInfo_QNAME, GetFileInfo.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetAlbumList }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getAlbumList")
+    public JAXBElement<GetAlbumList> createGetAlbumList(GetAlbumList value) {
+        return new JAXBElement<GetAlbumList>(_GetAlbumList_QNAME, GetAlbumList.class, null, value);
     }
 
 }

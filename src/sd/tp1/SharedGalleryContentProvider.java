@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import sd.tp1.client.ClientDiscovery;
+import sd.tp1.client.GetAlbumList;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
-import sd.tp1.utils.SharedAlbum;
-import sd.tp1.utils.SharedPicture;
 
 /*
  * This class provides the album/picture content to the gui/main application.
@@ -21,10 +21,12 @@ import sd.tp1.utils.SharedPicture;
  */
 public class SharedGalleryContentProvider implements GalleryContentProvider{
 
-	Gui gui;	
+	Gui gui;
+	private String serverHost;
 
 	SharedGalleryContentProvider() {
 		// TODO: code to do when shared gallery starts
+		this.serverHost = ClientDiscovery.searchServer();
 	}
 
 	
@@ -44,11 +46,16 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Album> getListOfAlbums() {
-		// TODO: obtain remote information
-
+		// TODO: obtain remote information 
 		List<Album> lst = new ArrayList<Album>();
-		lst.add( new SharedAlbum("SD"));
-		lst.add( new SharedAlbum("RC"));
+		List<String> listReceived = GetAlbumList.getAlbums(serverHost);
+
+
+		for (String album:listReceived) {
+			lst.add( new SharedAlbum(album));
+
+		}
+
 		return lst;
 	}
 
@@ -82,8 +89,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public Album createAlbum(String name) {
-		// TODO: contact servers to create album
-
+		// TODO: contact servers to create album 
 		return new SharedAlbum(name);
 	}
 
@@ -115,7 +121,36 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		return true;
 	}
 
-	
+	/**
+	 * Represents a shared album.
+	 */
+	static class SharedAlbum implements GalleryContentProvider.Album {
+		final String name;
+
+		SharedAlbum(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+	}
 
 
+	/**
+	 * Represents a shared picture.
+	 */
+	static class SharedPicture implements GalleryContentProvider.Picture {
+		final String name;
+
+		SharedPicture(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+	}
 }

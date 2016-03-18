@@ -50,11 +50,11 @@ public class Client {
 
 
 
-                String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
+                String serverHost = new String(datagramPacket.getData(),datagramPacket.getOffset(),
                         datagramPacket.getLength());
 
 
-                GetFileInfoo.getInfoFile(path,mensage);
+                GetFileInfoo.getInfoFile(path,serverHost);
 
 
         } catch (Exception e) {
@@ -68,13 +68,6 @@ public class Client {
             System.exit(0);
         }
     }
-
-
-
-
-
-
-
 
 
 }

@@ -13,9 +13,9 @@ import java.net.URL;
 public class GetFileInfoo {
 
 
-    public static void getInfoFile(String path, String mensage){
+    public static void getInfoFile(String path, String serverHost){
         try{
-            URL wsURL = new URL(String.format("http://%s/FileServer", mensage));
+            URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
 
             System.out.println(wsURL.toString());
 
