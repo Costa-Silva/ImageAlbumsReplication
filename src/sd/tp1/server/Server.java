@@ -44,15 +44,6 @@ public class Server {
 
 
     @WebMethod
-    public FileInfo getFileInfo(String path) throws InfoNotFoundException {
-        File f = new File(mainDirectory, path);
-        if (f.exists())
-            return new FileInfo(f.getName(), f.length(), new Date(f.lastModified()), f.isFile());
-        else
-            throw new InfoNotFoundException("File not found :" + path);
-    }
-
-    @WebMethod
     public List<String> getAlbumList(){
 
         if (mainDirectory.isDirectory()) {
@@ -127,8 +118,6 @@ public class Server {
                 for (File file : files) {
                     if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.getName().equals(picture)) {
 
-                        System.out.println("Sending PICTURE DATA de " + file + " em " + albumDir + "\n");
-
                         try {
                             RandomAccessFile f = new RandomAccessFile(file, "r");
                             array = new byte[(int) f.length()];
@@ -137,7 +126,7 @@ public class Server {
                             return array;
 
                         } catch (Exception e) {
-                            System.out.println("DEU ERRO");
+                            //System.out.println("DEU ERRO");
                         }
                     }
                 }

@@ -10,19 +10,8 @@ import java.net.URL;
  */
 public class GetPictureData {
 
-    public static byte[] getPictureData(String serverHost,String albumName,String pictureName){
+    public static byte[] getPictureData(Server server,String serverHost,String albumName,String pictureName){
         try{
-            URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
-
-            System.out.println("GET PICTURE DATA de " + pictureName + " em " + albumName);
-
-            ServerService service = new ServerService(wsURL);
-            // FileServerImplWSService service = new FileServerImplWSService();
-            // A invocação sem parâmetros aponta para a instância usada na
-            // criação dos stubs através
-            // da ferrament wsimport
-
-            Server server = service.getServerPort();
 
             return server.getPictureData(albumName,pictureName);
         } catch (Exception e) {

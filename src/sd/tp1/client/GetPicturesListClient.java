@@ -12,15 +12,8 @@ import java.util.List;
 public class GetPicturesListClient {
 
 
-    public static List<String> getPictures(String serverHost,String albumName){
+    public static List<String> getPictures(Server server,String serverHost,String albumName){
         try{
-
-            URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
-
-
-            ServerService service = new ServerService(wsURL);
-
-            Server server = service.getServerPort();
 
             return server.getPicturesList(albumName);
 

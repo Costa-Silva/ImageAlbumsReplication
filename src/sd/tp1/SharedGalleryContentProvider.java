@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import sd.tp1.client.*;
 import sd.tp1.client.ws.GetPicturesList;
+import sd.tp1.client.ws.Server;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
@@ -23,10 +24,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
 	private String serverHost;
-
+	private Server serverConnection;
 	SharedGalleryContentProvider() {
 		// TODO: code to do when shared gallery starts
 		this.serverHost = ClientDiscovery.searchServer();
+		serverConnection = ClientDiscovery.getServer(serverHost);
 	}
 
 
@@ -58,7 +60,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public List<Album> getListOfAlbums() {
 		// TODO: obtain remote information
 		List<Album> lst = new ArrayList<Album>();
-		List<String> listReceived = GetAlbumList.getAlbums(serverHost);
+		List<String> listReceived = GetAlbumList.getAlbums(serverConnection,serverHost);
 
 
 		for (String album:listReceived) {
@@ -77,7 +79,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: obtain remote information 
 		List<Picture> lst = new ArrayList<Picture>();
 
-		List<String> listReceived = GetPicturesListClient.getPictures(serverHost,album.getName());
+		List<String> listReceived = GetPicturesListClient.getPictures(serverConnection,serverHost,album.getName());
 
 
 		for (String picture:listReceived) {
@@ -94,7 +96,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public byte[] getPictureData(Album album, Picture picture) {
 		// TODO: obtain remote information
-		return GetPictureData.getPictureData(serverHost,album.getName(),picture.getName());
+		return GetPictureData.getPictureData(serverConnection,serverHost,album.getName(),picture.getName());
 	}
 
 	/**
@@ -105,8 +107,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public Album createAlbum(String name) {
 		// TODO: contact servers to create album
 
-		if (CreateAlbum.createAlbum(serverHost,name)!=null){
-			return new SharedAlbum(CreateAlbum.createAlbum(serverHost,name));
+		if (CreateAlbum.createAlbum(serverConnection,serverHost,name)!=null){
+			return new SharedAlbum(CreateAlbum.createAlbum(serverConnection,serverHost,name));
 		}else return null;
 	}
 
@@ -116,7 +118,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public void deleteAlbum(Album album) {
 		// TODO: contact servers to delete album
-		DeleteAlbum.deleteAlbum(serverHost,album.getName());
+		DeleteAlbum.deleteAlbum(serverConnection,serverHost,album.getName());
 	}
 
 	/**

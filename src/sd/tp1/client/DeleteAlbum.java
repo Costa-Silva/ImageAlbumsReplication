@@ -10,16 +10,8 @@ import java.net.URL;
  */
 public class DeleteAlbum {
 
-    public static void deleteAlbum(String serverHost,String album){
+    public static void deleteAlbum(Server server,String serverHost,String album){
         try{
-
-            URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
-
-            ServerService service = new ServerService(wsURL);
-
-            Server server = service.getServerPort();
-
-            System.out.println("Cliente a pedir a eliminacao do album " + album);
 
             server.deleteAlbum(album);
 

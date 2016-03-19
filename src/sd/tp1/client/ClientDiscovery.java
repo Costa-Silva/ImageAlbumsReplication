@@ -1,10 +1,10 @@
 package sd.tp1.client;
 
+import sd.tp1.client.ws.Server;
+import sd.tp1.client.ws.ServerService;
+
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.UnknownHostException;
+import java.net.*;
 
 /**
  * Created by AntónioSilva on 17/03/2016.
@@ -56,4 +56,29 @@ public class ClientDiscovery {
 
         return "";
     }
+
+    public static Server getServer(String serverHost){
+
+
+        try {
+
+            URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
+            ServerService service = new ServerService(wsURL);
+
+            return service.getServerPort();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+
+
+
+
+    }
+
+
+
 }

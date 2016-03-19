@@ -13,14 +13,8 @@ import java.util.List;
 public class CreateAlbum {
 
 
-        public static String createAlbum(String serverHost, String album){
+        public static String createAlbum(Server server,String serverHost, String album){
             try{
-
-                URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
-
-                ServerService service = new ServerService(wsURL);
-
-                Server server = service.getServerPort();
 
                 System.out.println("Cliente a pedir a criacao do album " + album);
                 return server.createAlbum(album);

@@ -25,18 +25,15 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _GetAlbumListResponse_QNAME = new QName("http://server.tp1.sd/", "getAlbumListResponse");
-    private final static QName _GetFileInfoResponse_QNAME = new QName("http://server.tp1.sd/", "getFileInfoResponse");
-    private final static QName _InfoNotFoundException_QNAME = new QName("http://server.tp1.sd/", "InfoNotFoundException");
     private final static QName _GetPictureData_QNAME = new QName("http://server.tp1.sd/", "getPictureData");
     private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
+    private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
     private final static QName _DeleteAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "deleteAlbumResponse");
     private final static QName _CreateAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "createAlbumResponse");
-    private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
-    private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
-    private final static QName _GetFileInfo_QNAME = new QName("http://server.tp1.sd/", "getFileInfo");
     private final static QName _GetPicturesListResponse_QNAME = new QName("http://server.tp1.sd/", "getPicturesListResponse");
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
     private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
+    private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
     private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
 
     /**
@@ -55,19 +52,19 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeleteAlbum }
+     * 
+     */
+    public DeleteAlbum createDeleteAlbum() {
+        return new DeleteAlbum();
+    }
+
+    /**
      * Create an instance of {@link GetAlbumListResponse }
      * 
      */
     public GetAlbumListResponse createGetAlbumListResponse() {
         return new GetAlbumListResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetFileInfoResponse }
-     * 
-     */
-    public GetFileInfoResponse createGetFileInfoResponse() {
-        return new GetFileInfoResponse();
     }
 
     /**
@@ -87,11 +84,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link InfoNotFoundException }
+     * Create an instance of {@link CreateAlbum }
      * 
      */
-    public InfoNotFoundException createInfoNotFoundException() {
-        return new InfoNotFoundException();
+    public CreateAlbum createCreateAlbum() {
+        return new CreateAlbum();
     }
 
     /**
@@ -103,30 +100,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateAlbumResponse }
-     * 
-     */
-    public CreateAlbumResponse createCreateAlbumResponse() {
-        return new CreateAlbumResponse();
-    }
-
-    /**
-     * Create an instance of {@link DeleteAlbum }
-     * 
-     */
-    public DeleteAlbum createDeleteAlbum() {
-        return new DeleteAlbum();
-    }
-
-    /**
-     * Create an instance of {@link CreateAlbum }
-     * 
-     */
-    public CreateAlbum createCreateAlbum() {
-        return new CreateAlbum();
-    }
-
-    /**
      * Create an instance of {@link GetPicturesListResponse }
      * 
      */
@@ -135,11 +108,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetFileInfo }
+     * Create an instance of {@link CreateAlbumResponse }
      * 
      */
-    public GetFileInfo createGetFileInfo() {
-        return new GetFileInfo();
+    public CreateAlbumResponse createCreateAlbumResponse() {
+        return new CreateAlbumResponse();
     }
 
     /**
@@ -151,38 +124,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link FileInfo }
-     * 
-     */
-    public FileInfo createFileInfo() {
-        return new FileInfo();
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetAlbumListResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getAlbumListResponse")
     public JAXBElement<GetAlbumListResponse> createGetAlbumListResponse(GetAlbumListResponse value) {
         return new JAXBElement<GetAlbumListResponse>(_GetAlbumListResponse_QNAME, GetAlbumListResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetFileInfoResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getFileInfoResponse")
-    public JAXBElement<GetFileInfoResponse> createGetFileInfoResponse(GetFileInfoResponse value) {
-        return new JAXBElement<GetFileInfoResponse>(_GetFileInfoResponse_QNAME, GetFileInfoResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link InfoNotFoundException }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "InfoNotFoundException")
-    public JAXBElement<InfoNotFoundException> createInfoNotFoundException(InfoNotFoundException value) {
-        return new JAXBElement<InfoNotFoundException>(_InfoNotFoundException_QNAME, InfoNotFoundException.class, null, value);
     }
 
     /**
@@ -204,6 +151,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbum }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "deleteAlbum")
+    public JAXBElement<DeleteAlbum> createDeleteAlbum(DeleteAlbum value) {
+        return new JAXBElement<DeleteAlbum>(_DeleteAlbum_QNAME, DeleteAlbum.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbumResponse }{@code >}}
      * 
      */
@@ -219,33 +175,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "createAlbumResponse")
     public JAXBElement<CreateAlbumResponse> createCreateAlbumResponse(CreateAlbumResponse value) {
         return new JAXBElement<CreateAlbumResponse>(_CreateAlbumResponse_QNAME, CreateAlbumResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesList }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
-    public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
-        return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbum }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "deleteAlbum")
-    public JAXBElement<DeleteAlbum> createDeleteAlbum(DeleteAlbum value) {
-        return new JAXBElement<DeleteAlbum>(_DeleteAlbum_QNAME, DeleteAlbum.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetFileInfo }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getFileInfo")
-    public JAXBElement<GetFileInfo> createGetFileInfo(GetFileInfo value) {
-        return new JAXBElement<GetFileInfo>(_GetFileInfo_QNAME, GetFileInfo.class, null, value);
     }
 
     /**
@@ -273,6 +202,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "createAlbum")
     public JAXBElement<CreateAlbum> createCreateAlbum(CreateAlbum value) {
         return new JAXBElement<CreateAlbum>(_CreateAlbum_QNAME, CreateAlbum.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesList }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
+    public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
+        return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
     }
 
     /**

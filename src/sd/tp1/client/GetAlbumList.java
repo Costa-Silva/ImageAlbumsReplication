@@ -17,15 +17,8 @@ public class GetAlbumList {
 
 
 
-    public static List<String> getAlbums(String serverHost){
+    public static List<String> getAlbums(Server server ,String serverHost){
         try{
-
-            URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
-
-
-            ServerService service = new ServerService(wsURL);
-
-            Server server = service.getServerPort();
 
             return server.getAlbumList();
 

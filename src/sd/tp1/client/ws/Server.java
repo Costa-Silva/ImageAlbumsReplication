@@ -8,7 +8,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Action;
-import javax.xml.ws.FaultAction;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
@@ -25,26 +24,6 @@ import javax.xml.ws.ResponseWrapper;
 })
 public interface Server {
 
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns sd.tp1.client.ws.FileInfo
-     * @throws InfoNotFoundException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getFileInfo", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetFileInfo")
-    @ResponseWrapper(localName = "getFileInfoResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetFileInfoResponse")
-    @Action(input = "http://server.tp1.sd/Server/getFileInfoRequest", output = "http://server.tp1.sd/Server/getFileInfoResponse", fault = {
-        @FaultAction(className = InfoNotFoundException_Exception.class, value = "http://server.tp1.sd/Server/getFileInfo/Fault/InfoNotFoundException")
-    })
-    public FileInfo getFileInfo(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0)
-        throws InfoNotFoundException_Exception
-    ;
 
     /**
      * 
@@ -75,15 +54,21 @@ public interface Server {
 
     /**
      * 
+     * @param arg1
      * @param arg0
+     * @return
+     *     returns byte[]
      */
     @WebMethod
-    @RequestWrapper(localName = "deleteAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbum")
-    @ResponseWrapper(localName = "deleteAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbumResponse")
-    @Action(input = "http://server.tp1.sd/Server/deleteAlbumRequest", output = "http://server.tp1.sd/Server/deleteAlbumResponse")
-    public void deleteAlbum(
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPictureData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureData")
+    @ResponseWrapper(localName = "getPictureDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureDataResponse")
+    @Action(input = "http://server.tp1.sd/Server/getPictureDataRequest", output = "http://server.tp1.sd/Server/getPictureDataResponse")
+    public byte[] getPictureData(
         @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
 
     /**
      * 
@@ -102,20 +87,14 @@ public interface Server {
 
     /**
      * 
-     * @param arg1
      * @param arg0
-     * @return
-     *     returns byte[]
      */
     @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getPictureData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureData")
-    @ResponseWrapper(localName = "getPictureDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureDataResponse")
-    @Action(input = "http://server.tp1.sd/Server/getPictureDataRequest", output = "http://server.tp1.sd/Server/getPictureDataResponse")
-    public byte[] getPictureData(
+    @RequestWrapper(localName = "deleteAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbum")
+    @ResponseWrapper(localName = "deleteAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbumResponse")
+    @Action(input = "http://server.tp1.sd/Server/deleteAlbumRequest", output = "http://server.tp1.sd/Server/deleteAlbumResponse")
+    public void deleteAlbum(
         @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1);
+        String arg0);
 
 }
