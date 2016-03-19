@@ -106,9 +106,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public Album createAlbum(String name) {
 		// TODO: contact servers to create album
-
-		if (CreateAlbum.createAlbum(serverConnection,serverHost,name)!=null){
-			return new SharedAlbum(CreateAlbum.createAlbum(serverConnection,serverHost,name));
+		String nome;
+		if ((nome = CreateAlbum.createAlbum(serverConnection,serverHost,name))!=null){
+			return new SharedAlbum(nome);
 		}else return null;
 	}
 
