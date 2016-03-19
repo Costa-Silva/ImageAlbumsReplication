@@ -28,6 +28,26 @@ public interface Server {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns sd.tp1.client.ws.FileInfo
+     * @throws InfoNotFoundException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getFileInfo", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetFileInfo")
+    @ResponseWrapper(localName = "getFileInfoResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetFileInfoResponse")
+    @Action(input = "http://server.tp1.sd/Server/getFileInfoRequest", output = "http://server.tp1.sd/Server/getFileInfoResponse", fault = {
+        @FaultAction(className = InfoNotFoundException_Exception.class, value = "http://server.tp1.sd/Server/getFileInfo/Fault/InfoNotFoundException")
+    })
+    public FileInfo getFileInfo(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0)
+        throws InfoNotFoundException_Exception
+    ;
+
+    /**
+     * 
      * @return
      *     returns java.util.List<java.lang.String>
      */
@@ -56,22 +76,29 @@ public interface Server {
     /**
      * 
      * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "deleteAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbum")
+    @ResponseWrapper(localName = "deleteAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbumResponse")
+    @Action(input = "http://server.tp1.sd/Server/deleteAlbumRequest", output = "http://server.tp1.sd/Server/deleteAlbumResponse")
+    public void deleteAlbum(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
      * @return
-     *     returns sd.tp1.client.ws.FileInfo
-     * @throws InfoNotFoundException_Exception
+     *     returns java.lang.String
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getFileInfo", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetFileInfo")
-    @ResponseWrapper(localName = "getFileInfoResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetFileInfoResponse")
-    @Action(input = "http://server.tp1.sd/Server/getFileInfoRequest", output = "http://server.tp1.sd/Server/getFileInfoResponse", fault = {
-        @FaultAction(className = InfoNotFoundException_Exception.class, value = "http://server.tp1.sd/Server/getFileInfo/Fault/InfoNotFoundException")
-    })
-    public FileInfo getFileInfo(
+    @RequestWrapper(localName = "createAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbum")
+    @ResponseWrapper(localName = "createAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbumResponse")
+    @Action(input = "http://server.tp1.sd/Server/createAlbumRequest", output = "http://server.tp1.sd/Server/createAlbumResponse")
+    public String createAlbum(
         @WebParam(name = "arg0", targetNamespace = "")
-        String arg0)
-        throws InfoNotFoundException_Exception
-    ;
+        String arg0);
 
     /**
      * 

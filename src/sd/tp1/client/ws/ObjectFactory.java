@@ -29,10 +29,14 @@ public class ObjectFactory {
     private final static QName _InfoNotFoundException_QNAME = new QName("http://server.tp1.sd/", "InfoNotFoundException");
     private final static QName _GetPictureData_QNAME = new QName("http://server.tp1.sd/", "getPictureData");
     private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
+    private final static QName _DeleteAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "deleteAlbumResponse");
+    private final static QName _CreateAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "createAlbumResponse");
+    private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
+    private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
     private final static QName _GetFileInfo_QNAME = new QName("http://server.tp1.sd/", "getFileInfo");
     private final static QName _GetPicturesListResponse_QNAME = new QName("http://server.tp1.sd/", "getPicturesListResponse");
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
-    private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
+    private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
     private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
 
     /**
@@ -40,6 +44,14 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link DeleteAlbumResponse }
+     * 
+     */
+    public DeleteAlbumResponse createDeleteAlbumResponse() {
+        return new DeleteAlbumResponse();
     }
 
     /**
@@ -88,6 +100,30 @@ public class ObjectFactory {
      */
     public GetPicturesList createGetPicturesList() {
         return new GetPicturesList();
+    }
+
+    /**
+     * Create an instance of {@link CreateAlbumResponse }
+     * 
+     */
+    public CreateAlbumResponse createCreateAlbumResponse() {
+        return new CreateAlbumResponse();
+    }
+
+    /**
+     * Create an instance of {@link DeleteAlbum }
+     * 
+     */
+    public DeleteAlbum createDeleteAlbum() {
+        return new DeleteAlbum();
+    }
+
+    /**
+     * Create an instance of {@link CreateAlbum }
+     * 
+     */
+    public CreateAlbum createCreateAlbum() {
+        return new CreateAlbum();
     }
 
     /**
@@ -168,6 +204,42 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbumResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "deleteAlbumResponse")
+    public JAXBElement<DeleteAlbumResponse> createDeleteAlbumResponse(DeleteAlbumResponse value) {
+        return new JAXBElement<DeleteAlbumResponse>(_DeleteAlbumResponse_QNAME, DeleteAlbumResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateAlbumResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "createAlbumResponse")
+    public JAXBElement<CreateAlbumResponse> createCreateAlbumResponse(CreateAlbumResponse value) {
+        return new JAXBElement<CreateAlbumResponse>(_CreateAlbumResponse_QNAME, CreateAlbumResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesList }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
+    public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
+        return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbum }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "deleteAlbum")
+    public JAXBElement<DeleteAlbum> createDeleteAlbum(DeleteAlbum value) {
+        return new JAXBElement<DeleteAlbum>(_DeleteAlbum_QNAME, DeleteAlbum.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetFileInfo }{@code >}}
      * 
      */
@@ -195,12 +267,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesList }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateAlbum }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
-    public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
-        return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "createAlbum")
+    public JAXBElement<CreateAlbum> createCreateAlbum(CreateAlbum value) {
+        return new JAXBElement<CreateAlbum>(_CreateAlbum_QNAME, CreateAlbum.class, null, value);
     }
 
     /**

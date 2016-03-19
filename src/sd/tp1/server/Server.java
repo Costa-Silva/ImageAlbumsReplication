@@ -57,12 +57,12 @@ public class Server {
 
         if (mainDirectory.isDirectory()) {
 
-            List<String> albumList = new ArrayList<>();
+           List<String> albumList = new ArrayList<>();
 
             File[] files = mainDirectory.listFiles();
 
             for (File file: files) {
-
+                System.out.println(file.getAbsolutePath());
                 if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
                     albumList.add(file.getName());
 
@@ -73,7 +73,6 @@ public class Server {
 
             return  albumList;
         }
-
         return null;
 
     }
@@ -126,7 +125,6 @@ public class Server {
                 File[] files = albumDir.listFiles();
 
                 for (File file : files) {
-
                     if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.getName().equals(picture)) {
 
                         System.out.println("Sending PICTURE DATA de " + file + " em " + albumDir + "\n");
@@ -148,6 +146,29 @@ public class Server {
 
         return null;
     }
+
+    @WebMethod
+    public String createAlbum(String name){
+        SharedAlbum sharedAlbum = new SharedAlbum(name);
+        File album = new File(sharedAlbum.getName());
+        if(!album.exists()){
+            album.mkdir();
+            System.out.println("Server a criar album " + album.getName() );
+            return album.getName();
+        }
+        return null;
+    }
+
+    @WebMethod
+    public void deleteAlbum(String name){
+
+        File album = new File(name);
+        if(album.isDirectory()){
+        File delAlbum = new File(album.getName().concat(".deleted"));
+        album.renameTo(delAlbum);
+        }
+    }
+
 
     public static void main(String args[]){
 

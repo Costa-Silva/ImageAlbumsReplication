@@ -9,10 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import sd.tp1.client.ClientDiscovery;
-import sd.tp1.client.GetAlbumList;
-import sd.tp1.client.GetPictureData;
-import sd.tp1.client.GetPicturesListClient;
+import sd.tp1.client.*;
 import sd.tp1.client.ws.GetPicturesList;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
@@ -40,6 +37,16 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public void register(Gui gui) {
 		if( this.gui == null ) {
 			this.gui = gui;
+			new Thread(()->{
+				for(;;) {
+					List<Album> l = getListOfAlbums();
+					if( ! l.isEmpty() )
+						gui.updateAlbum( l.iterator().next() );
+					try {
+						Thread.sleep(5000);
+					} catch (Exception e) {}
+				}
+			}).start();
 		}
 	}
 
@@ -56,7 +63,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		for (String album:listReceived) {
 			lst.add( new SharedAlbum(album));
-
 		}
 
 		return lst;
@@ -97,8 +103,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public Album createAlbum(String name) {
-		// TODO: contact servers to create album 
-		return new SharedAlbum(name);
+		// TODO: contact servers to create album
+
+		if (CreateAlbum.createAlbum(serverHost,name)!=null){
+			return new SharedAlbum(CreateAlbum.createAlbum(serverHost,name));
+		}else return null;
 	}
 
 	/**
@@ -106,7 +115,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public void deleteAlbum(Album album) {
-		// TODO: contact servers to delete album 
+		// TODO: contact servers to delete album
+		DeleteAlbum.deleteAlbum(serverHost,album.getName());
 	}
 
 	/**
