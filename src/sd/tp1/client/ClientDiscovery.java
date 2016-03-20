@@ -2,9 +2,11 @@ package sd.tp1.client;
 
 import sd.tp1.client.ws.Server;
 import sd.tp1.client.ws.ServerService;
+import sd.tp1.gui.GalleryContentProvider;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.*;
 
 /**
  * Created by AntónioSilva on 17/03/2016.
@@ -17,17 +19,27 @@ public class ClientDiscovery {
 
     public static final String SVIDENTIFIER = "OPENBAR";
 
-    public static String searchServer() {
+    private DatagramPacket datagramPacket;
+    private  MulticastSocket socket;
+    private Map<String,String> servers;
 
+    public ClientDiscovery(){
+
+        servers = new HashMap<>();
+
+    }
+
+    public void sendMulticast() {
         InetAddress address = null; //unknownHostException
+
         try {
             address = InetAddress.getByName(MULTICASTIP);
 
-            MulticastSocket socket = new MulticastSocket(); //IOexception
+            socket = new MulticastSocket(); //IOexception
 
-            byte[] input = new String(SVIDENTIFIER).getBytes();
+            byte[] input = SVIDENTIFIER.getBytes();
 
-            DatagramPacket datagramPacket = new DatagramPacket(input, input.length);
+            datagramPacket = new DatagramPacket(input, input.length);
 
             datagramPacket.setAddress(address);
             datagramPacket.setPort(PORT);
@@ -36,25 +48,58 @@ public class ClientDiscovery {
 
             System.out.println("Sent Multicast");
 
-            byte[] buffer = new byte[MAXBYTESBUFFER];
-
-            datagramPacket = new DatagramPacket(buffer, buffer.length);
-
-            socket.receive(datagramPacket);
+            receiveConnections();
 
 
-            String serverHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
-                    datagramPacket.getLength());
-
-
-            return serverHost;
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return "";
+    }
+        public void receiveConnections() {
+
+
+            new Thread(()->{
+
+                try {
+
+                    while (true) {
+
+                        byte[] buffer = new byte[MAXBYTESBUFFER];
+
+                        datagramPacket = new DatagramPacket(buffer, buffer.length);
+                        System.out.println("vou bloquear");
+                        socket.receive(datagramPacket);
+                        System.out.println("vou desbloquear");
+
+
+                        String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
+                                datagramPacket.getLength());
+
+                        System.out.println("vou adicionar");
+                        if (servers.get(newServerHost)==null){
+
+                            servers.put(newServerHost,newServerHost);
+                            System.out.println("adicionei");
+
+                        }
+
+                    }
+
+                } catch (Exception e) {}
+
+            }).start();
+
+
+    }
+
+
+
+    public Map<String,String> getServers(){
+
+        return servers;
     }
 
     public static Server getServer(String serverHost){

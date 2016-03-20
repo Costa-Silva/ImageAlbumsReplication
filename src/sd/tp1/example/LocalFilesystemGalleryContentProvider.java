@@ -45,6 +45,7 @@ public class LocalFilesystemGalleryContentProvider implements GalleryContentProv
 				for(;;) {
 					List<Album> l = getListOfAlbums();
 					if( ! l.isEmpty() )
+
 						gui.updateAlbum( l.iterator().next() );
 					try {
 						Thread.sleep(5000);

@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import sd.tp1.client.*;
@@ -25,11 +23,65 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	Gui gui;
 	private String serverHost;
 	private Server serverConnection;
+	private ClientDiscovery clientDiscovery;
+	private Map<String,Server> serverHashMap;
+	private Map<String,String> serverHosts;
+
+
 	SharedGalleryContentProvider() {
 		// TODO: code to do when shared gallery starts
-		this.serverHost = ClientDiscovery.searchServer();
-		serverConnection = ClientDiscovery.getServer(serverHost);
+		serverHashMap = new HashMap<>();
+		clientDiscovery = new ClientDiscovery();
+
+		clientDiscovery.sendMulticast();
+
+
+
+
+		search4Servers();
+
+
 	}
+
+
+
+	public void search4Servers(){
+
+
+
+		new Thread(()->{
+			for(;;) {
+
+				System.out.println("Entrei no loop do search4fserver");
+				while(clientDiscovery.getServers().size()==0){
+				}
+				System.out.println("sai no loop do search4fserver");
+
+
+
+				serverHosts = clientDiscovery.getServers();
+
+
+				for (Map.Entry<String,String> entry : serverHosts.entrySet()) {
+					String x = entry.getKey();
+
+					Server y = ClientDiscovery.getServer(entry.getKey());
+
+
+
+					serverHashMap.put(x,y);
+				}
+
+				try {
+					Thread.sleep(2000);
+				} catch (Exception e) {}
+			}
+		}).start();
+
+
+
+	}
+
 
 
 	/**
@@ -42,9 +94,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			new Thread(()->{
 				for(;;) {
 					List<Album> l = getListOfAlbums();
-					if( ! l.isEmpty() )
-						gui.updateAlbum( l.iterator().next() );
-					try {
+					if( ! l.isEmpty() ) {
+						System.out.println("tenho albums: " + l.size());
+						gui.updateAlbum(l.iterator().next());
+					}
+						try {
 						Thread.sleep(5000);
 					} catch (Exception e) {}
 				}
@@ -60,12 +114,20 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public List<Album> getListOfAlbums() {
 		// TODO: obtain remote information
 		List<Album> lst = new ArrayList<Album>();
-		List<String> listReceived = GetAlbumList.getAlbums(serverConnection,serverHost);
 
+		System.out.println(serverHashMap.size());
 
-		for (String album:listReceived) {
-			lst.add( new SharedAlbum(album));
+		for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+
+			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
+
+			for (String album:listReceived) {
+				lst.add( new SharedAlbum(album));
+			}
+
 		}
+
+
 
 		return lst;
 	}
@@ -78,6 +140,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public List<Picture> getListOfPictures(Album album) {
 		// TODO: obtain remote information 
 		List<Picture> lst = new ArrayList<Picture>();
+
 
 		List<String> listReceived = GetPicturesListClient.getPictures(serverConnection,serverHost,album.getName());
 

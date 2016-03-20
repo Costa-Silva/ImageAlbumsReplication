@@ -59,7 +59,6 @@ public class Server {
 
                 }
 
-
             }
 
             return  albumList;
