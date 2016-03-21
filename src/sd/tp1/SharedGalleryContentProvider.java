@@ -21,12 +21,8 @@ import sd.tp1.gui.Gui;
 public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
-	private String serverHost;
-	private Server serverConnection;
 	private ClientDiscovery clientDiscovery;
 	private Map<String,Server> serverHashMap;
-	private Map<String,String> serverHosts;
-
 
 	SharedGalleryContentProvider() {
 		// TODO: code to do when shared gallery starts
@@ -34,9 +30,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		clientDiscovery = new ClientDiscovery();
 
 		clientDiscovery.sendMulticast();
-
-
-
 
 		search4Servers();
 
@@ -47,38 +40,18 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	public void search4Servers(){
 
+			new Thread(() -> {
+				for (; ; ) {
+					for (Map.Entry<String, String> entry : clientDiscovery.getServers().entrySet()) {
+						serverHashMap.put(entry.getKey(), ClientDiscovery.getServer(entry.getKey()));
+					}
 
-
-		new Thread(()->{
-			for(;;) {
-
-				System.out.println("Entrei no loop do search4fserver");
-				while(clientDiscovery.getServers().size()==0){
+					try {
+						Thread.sleep(2000);
+					} catch (Exception e) {
+					}
 				}
-				System.out.println("sai no loop do search4fserver");
-
-
-
-				serverHosts = clientDiscovery.getServers();
-
-
-				for (Map.Entry<String,String> entry : serverHosts.entrySet()) {
-					String x = entry.getKey();
-
-					Server y = ClientDiscovery.getServer(entry.getKey());
-
-
-
-					serverHashMap.put(x,y);
-				}
-
-				try {
-					Thread.sleep(2000);
-				} catch (Exception e) {}
-			}
-		}).start();
-
-
+			}).start();
 
 	}
 
@@ -95,11 +68,19 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				for(;;) {
 					List<Album> l = getListOfAlbums();
 					if( ! l.isEmpty() ) {
+						Iterator<Album> it = l.iterator();
 						System.out.println("tenho albums: " + l.size());
-						gui.updateAlbum(l.iterator().next());
+						int i = 1;
+						while(it.hasNext()) {
+							System.out.println("entrei "+ i++);
+							gui.updateAlbum(it.next());
+						}
+						System.out.println("FAZENDO UPDATE ALBUMS");
+						gui.updateAlbums();
 					}
+					System.out.println("TESTE");
 						try {
-						Thread.sleep(5000);
+						Thread.sleep(2000);
 					} catch (Exception e) {}
 				}
 			}).start();
@@ -115,13 +96,14 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: obtain remote information
 		List<Album> lst = new ArrayList<Album>();
 
-		System.out.println(serverHashMap.size());
+		System.out.println(" EU TENHO ESTES SERVERS  "+serverHashMap.size());
 
 		for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
 
 			for (String album:listReceived) {
+				System.out.println("Recebi do server " + album);
 				lst.add( new SharedAlbum(album));
 			}
 
@@ -141,12 +123,12 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: obtain remote information 
 		List<Picture> lst = new ArrayList<Picture>();
 
+		for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+			List<String> listReceived = GetPicturesListClient.getPictures(entry.getValue(), entry.getKey(), album.getName());
 
-		List<String> listReceived = GetPicturesListClient.getPictures(serverConnection,serverHost,album.getName());
-
-
-		for (String picture:listReceived) {
-			lst.add( new SharedPicture(picture));
+			for (String picture:listReceived) {
+				lst.add( new SharedPicture(picture));
+			}
 		}
 
 		return lst;
@@ -159,7 +141,13 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public byte[] getPictureData(Album album, Picture picture) {
 		// TODO: obtain remote information
-		return GetPictureData.getPictureData(serverConnection,serverHost,album.getName(),picture.getName());
+		byte[] aux;
+			for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+			if((aux = GetPictureData.getPictureData(entry.getValue(), entry.getKey(), album.getName(), picture.getName()))!=null){
+				return aux;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -170,9 +158,12 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public Album createAlbum(String name) {
 		// TODO: contact servers to create album
 		String nome;
-		if ((nome = CreateAlbum.createAlbum(serverConnection,serverHost,name))!=null){
-			return new SharedAlbum(nome);
-		}else return null;
+
+		for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+			if ((nome = CreateAlbum.createAlbum(entry.getValue(), entry.getKey(), name)) != null) {
+				return new SharedAlbum(nome);
+			}
+		}return null;
 	}
 
 	/**
@@ -181,7 +172,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public void deleteAlbum(Album album) {
 		// TODO: contact servers to delete album
-		DeleteAlbum.deleteAlbum(serverConnection,serverHost,album.getName());
+		for(Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+			DeleteAlbum.deleteAlbum(entry.getValue(),entry.getKey(), album.getName());
+		}
 	}
 
 	/**
