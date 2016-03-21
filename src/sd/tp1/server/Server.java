@@ -53,7 +53,6 @@ public class Server {
             File[] files = mainDirectory.listFiles();
 
             for (File file: files) {
-                System.out.println(file.getAbsolutePath());
                 if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
                     albumList.add(file.getName());
 
