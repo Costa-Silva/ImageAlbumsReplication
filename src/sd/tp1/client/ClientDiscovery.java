@@ -70,19 +70,15 @@ public class ClientDiscovery {
                         byte[] buffer = new byte[MAXBYTESBUFFER];
 
                         datagramPacket = new DatagramPacket(buffer, buffer.length);
-                        System.out.println("vou bloquear");
                         socket.receive(datagramPacket);
-                        System.out.println("vou desbloquear");
 
 
                         String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
                                 datagramPacket.getLength());
 
-                        System.out.println("vou adicionar");
                         if (servers.get(newServerHost)==null){
 
                             servers.put(newServerHost,newServerHost);
-                            System.out.println("adicionei");
 
                         }
 

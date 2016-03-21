@@ -1,14 +1,7 @@
 package sd.tp1;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import sd.tp1.client.*;
-import sd.tp1.client.ws.GetPicturesList;
 import sd.tp1.client.ws.Server;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
@@ -69,16 +62,12 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					List<Album> l = getListOfAlbums();
 					if( ! l.isEmpty() ) {
 						Iterator<Album> it = l.iterator();
-						System.out.println("tenho albums: " + l.size());
 						int i = 1;
 						while(it.hasNext()) {
-							System.out.println("entrei "+ i++);
 							gui.updateAlbum(it.next());
 						}
-						System.out.println("FAZENDO UPDATE ALBUMS");
 						gui.updateAlbums();
 					}
-					System.out.println("TESTE");
 						try {
 						Thread.sleep(2000);
 					} catch (Exception e) {}
@@ -96,14 +85,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: obtain remote information
 		List<Album> lst = new ArrayList<Album>();
 
-		System.out.println(" EU TENHO ESTES SERVERS  "+serverHashMap.size());
-
 		for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
 
 			for (String album:listReceived) {
-				System.out.println("Recebi do server " + album);
 				lst.add( new SharedAlbum(album));
 			}
 

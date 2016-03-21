@@ -141,7 +141,6 @@ public class Server {
         File album = new File(sharedAlbum.getName());
         if(!album.exists()){
             album.mkdir();
-            System.out.println("Server a criar album " + album.getName() );
             return album.getName();
         }
         return null;

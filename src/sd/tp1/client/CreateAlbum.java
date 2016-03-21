@@ -16,7 +16,6 @@ public class CreateAlbum {
         public static String createAlbum(Server server,String serverHost, String album){
             try{
 
-                System.out.println("Cliente a pedir a criacao do album " + album);
                 return server.createAlbum(album);
 
             } catch (Exception e) {
