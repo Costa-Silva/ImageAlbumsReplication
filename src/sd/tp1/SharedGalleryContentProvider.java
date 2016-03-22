@@ -15,13 +15,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
 	private ClientDiscovery clientDiscovery;
-	private Map<String,Server> serverHashMap; // concur
 
 	SharedGalleryContentProvider() {
 		// TODO: code to do when shared gallery starts
 		clientDiscovery = new ClientDiscovery();
 		clientDiscovery.checkNewConnections();
-		serverHashMap = clientDiscovery.getServers();
 	}
 
 
@@ -103,7 +101,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public byte[] getPictureData(Album album, Picture picture) {
 		// TODO: obtain remote information
 		byte[] aux;
-			for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+			for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 			if((aux = GetPictureData.getPictureData(entry.getValue(), entry.getKey(), album.getName(), picture.getName()))!=null){
 				return aux;
 			}
@@ -120,7 +118,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: contact servers to create album
 		String nome;
 
-		for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 			if ((nome = CreateAlbum.createAlbum(entry.getValue(), entry.getKey(), name)) != null) {
 				return new SharedAlbum(nome);
 			}
@@ -133,7 +131,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public void deleteAlbum(Album album) {
 		// TODO: contact servers to delete album
-		for(Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 			DeleteAlbum.deleteAlbum(entry.getValue(),entry.getKey(), album.getName());
 		}
 	}
