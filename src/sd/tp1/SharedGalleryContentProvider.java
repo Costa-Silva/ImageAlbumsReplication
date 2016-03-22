@@ -15,36 +15,13 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
 	private ClientDiscovery clientDiscovery;
-	private Map<String,Server> serverHashMap;
+	private Map<String,Server> serverHashMap; // concur
 
 	SharedGalleryContentProvider() {
 		// TODO: code to do when shared gallery starts
-		serverHashMap = new HashMap<>();
 		clientDiscovery = new ClientDiscovery();
-
 		clientDiscovery.checkNewConnections();
-
-		search4Servers();
-
-	}
-
-
-
-	public void search4Servers(){
-
-			new Thread(() -> {
-				for (; ; ) {
-					for (Map.Entry<String, String> entry : clientDiscovery.getServers().entrySet()) {
-						serverHashMap.put(entry.getKey(), ClientDiscovery.getServer(entry.getKey()));
-					}
-
-					try {
-						Thread.sleep(2000);
-					} catch (Exception e) {
-					}
-				}
-			}).start();
-
+		serverHashMap = clientDiscovery.getServers();
 	}
 
 
@@ -83,7 +60,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: obtain remote information
 		List<Album> lst = new ArrayList<Album>();
 
-		for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
 
@@ -107,7 +84,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: obtain remote information 
 		List<Picture> lst = new ArrayList<Picture>();
 
-		for (Map.Entry<String,Server> entry : serverHashMap.entrySet()) {
+		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 			List<String> listReceived = GetPicturesListClient.getPictures(entry.getValue(), entry.getKey(), album.getName());
 
 			for (String picture:listReceived) {

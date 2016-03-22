@@ -7,6 +7,7 @@ import sd.tp1.gui.GalleryContentProvider;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by AntónioSilva on 17/03/2016.
@@ -21,19 +22,21 @@ public class ClientDiscovery {
 
     private DatagramPacket datagramPacket;
     private MulticastSocket socket;
-    private Map<String,String> servers;
     private InetAddress address;
+    private Map<String,Server> serverHashMap;
+
+
     public ClientDiscovery() {
         init();
     }
 
     public void init(){
 
-        servers = new HashMap<>();
+        serverHashMap = new ConcurrentHashMap<>();
         try {
             socket = new MulticastSocket();
         }catch (Exception e){
-            System.out.println("SOCKETA");
+            System.out.println("Error creating Socket");
         }
 
     }
@@ -45,7 +48,7 @@ public class ClientDiscovery {
         try {
             address = InetAddress.getByName(MULTICASTIP);
 
-             //IOexception
+            //IOexception
 
             byte[] input = SVIDENTIFIER.getBytes();
 
@@ -66,74 +69,44 @@ public class ClientDiscovery {
         }
 
     }
-        public void receiveConnections() {
 
-
-
-            new Thread(()->{
-
-                try {
-
-                    while (true) {
-
-                        byte[] buffer = new byte[MAXBYTESBUFFER];
-
-                        datagramPacket = new DatagramPacket(buffer, buffer.length);
-                        socket.receive(datagramPacket);
-
-
-                        String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
-                                datagramPacket.getLength());
-
-                        if (servers.get(newServerHost)==null){
-                            System.out.println("Got new response from server : " + newServerHost);
-                            servers.put(newServerHost,newServerHost);
-
-                        }
-
-                    }
-
-                } catch (Exception e) {}
-
-            }).start();
-
-
-
-    }
 
     public void checkNewConnections(){
 
         new Thread(()->{
 
             try {
-
+                boolean hasTime;
+                socket.setSoTimeout(7000);
                 while (true) {
 
                     sendMulticast();
-                    //receiveConnections();
-                   try {
 
-                       socket.setSoTimeout(7000);
-                       byte[] buffer = new byte[MAXBYTESBUFFER];
+                    hasTime = true;
 
-                       datagramPacket = new DatagramPacket(buffer, buffer.length);
-                       System.out.println("Bloq");
-                       socket.receive(datagramPacket);
-                        System.out.println("desbloq");
+                    while(hasTime){
 
-                       String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
-                               datagramPacket.getLength());
 
-                       if (servers.get(newServerHost) == null) {
-                           System.out.println("Got new response from server : " + newServerHost);
-                           servers.put(newServerHost, newServerHost);
+                        try {
+                            byte[] buffer = new byte[MAXBYTESBUFFER];
 
-                       }
-                   }catch (SocketTimeoutException e){
-                       System.out.println("No connections");
-                   }
+                            datagramPacket = new DatagramPacket(buffer, buffer.length);
+                            socket.receive(datagramPacket);
 
-                    //Thread.sleep(10000);
+                            String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
+                                    datagramPacket.getLength());
+
+                            if (serverHashMap.get(newServerHost) == null) {
+                                System.out.println("Got new response from server : " + newServerHost);
+                                serverHashMap.put(newServerHost, getServer(newServerHost));
+
+                            }
+                        }catch (SocketTimeoutException e){
+                            hasTime=false;
+                            System.out.println("No connections");
+                        }
+
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,9 +118,9 @@ public class ClientDiscovery {
 
 
 
-    public Map<String,String> getServers(){
+    public Map<String,Server> getServers(){
 
-        return servers;
+        return serverHashMap;
     }
 
     public static Server getServer(String serverHost){
