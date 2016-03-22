@@ -30,6 +30,11 @@ public class ClientDiscovery {
     public void init(){
 
         servers = new HashMap<>();
+        try {
+            socket = new MulticastSocket();
+        }catch (Exception e){
+            System.out.println("SOCKETA");
+        }
 
     }
 
@@ -38,7 +43,6 @@ public class ClientDiscovery {
 
 
         try {
-            socket = new MulticastSocket();
             address = InetAddress.getByName(MULTICASTIP);
 
              //IOexception
@@ -102,13 +106,36 @@ public class ClientDiscovery {
         new Thread(()->{
 
             try {
+
                 while (true) {
+
                     sendMulticast();
-                    receiveConnections();
-                    Thread.sleep(10000);
-                    socket.close();
+                    //receiveConnections();
+                   try {
+
+                       socket.setSoTimeout(7000);
+                       byte[] buffer = new byte[MAXBYTESBUFFER];
+
+                       datagramPacket = new DatagramPacket(buffer, buffer.length);
+                       System.out.println("Bloq");
+                       socket.receive(datagramPacket);
+                        System.out.println("desbloq");
+
+                       String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
+                               datagramPacket.getLength());
+
+                       if (servers.get(newServerHost) == null) {
+                           System.out.println("Got new response from server : " + newServerHost);
+                           servers.put(newServerHost, newServerHost);
+
+                       }
+                   }catch (SocketTimeoutException e){
+                       System.out.println("No connections");
+                   }
+
+                    //Thread.sleep(10000);
                 }
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
