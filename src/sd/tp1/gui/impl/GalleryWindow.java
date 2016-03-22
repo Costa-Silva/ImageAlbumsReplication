@@ -119,7 +119,6 @@ public class GalleryWindow implements Gui {
 		stage.setTitle("Albums");
 		stage.setScene(albums);
 		stage.show();
-
 		stage.setOnCloseRequest(event -> System.exit(0));
 	}
 

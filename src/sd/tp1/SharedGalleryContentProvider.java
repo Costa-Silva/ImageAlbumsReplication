@@ -33,18 +33,20 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			this.gui = gui;
 			new Thread(()->{
 				for(;;) {
-					List<Album> l = getListOfAlbums();
-					if( ! l.isEmpty() ) {
-						Iterator<Album> it = l.iterator();
-						while(it.hasNext()) {
-							gui.updateAlbum(it.next());
+						List<Album> l = getListOfAlbums();
+						if (!l.isEmpty()) {
+							Iterator<Album> it = l.iterator();
+							while (it.hasNext()) {
+								gui.updateAlbum(it.next());
+							}
+							gui.updateAlbums();
 						}
-						gui.updateAlbums();
-					}
 						try {
-						Thread.sleep(2000);
-					} catch (Exception e) {}
-				}
+							Thread.sleep(4000);
+						}catch (Exception e) {
+						}
+					}
+
 			}).start();
 		}
 	}
@@ -67,9 +69,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			}
 
 		}
-
-
-
 		return lst;
 	}
 
@@ -101,7 +100,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public byte[] getPictureData(Album album, Picture picture) {
 		// TODO: obtain remote information
 		byte[] aux;
-			for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 			if((aux = GetPictureData.getPictureData(entry.getValue(), entry.getKey(), album.getName(), picture.getName()))!=null){
 				return aux;
 			}
@@ -120,6 +119,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 			if ((nome = CreateAlbum.createAlbum(entry.getValue(), entry.getKey(), name)) != null) {
+
 				return new SharedAlbum(nome);
 			}
 		}return null;
