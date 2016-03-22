@@ -82,7 +82,7 @@ public class ClientDiscovery {
                                 datagramPacket.getLength());
 
                         if (servers.get(newServerHost)==null){
-                            System.out.println("Got new response from server : "+newServerHost);
+                            System.out.println("Got new response from server : " + newServerHost);
                             servers.put(newServerHost,newServerHost);
 
                         }
@@ -105,7 +105,7 @@ public class ClientDiscovery {
                 while (true) {
                     sendMulticast();
                     receiveConnections();
-                    Thread.sleep(6000);
+                    Thread.sleep(10000);
                     socket.close();
                 }
             } catch (InterruptedException e) {
