@@ -20,22 +20,28 @@ public class ClientDiscovery {
     public static final String SVIDENTIFIER = "OPENBAR";
 
     private DatagramPacket datagramPacket;
-    private  MulticastSocket socket;
+    private MulticastSocket socket;
     private Map<String,String> servers;
+    private InetAddress address;
+    public ClientDiscovery() {
+        init();
+    }
 
-    public ClientDiscovery(){
+    public void init(){
 
         servers = new HashMap<>();
 
     }
 
+
     public void sendMulticast() {
-        InetAddress address = null; //unknownHostException
+
 
         try {
+            socket = new MulticastSocket();
             address = InetAddress.getByName(MULTICASTIP);
 
-            socket = new MulticastSocket(); //IOexception
+             //IOexception
 
             byte[] input = SVIDENTIFIER.getBytes();
 
@@ -48,8 +54,6 @@ public class ClientDiscovery {
 
             System.out.println("Sent Multicast");
 
-            receiveConnections();
-
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -59,6 +63,7 @@ public class ClientDiscovery {
 
     }
         public void receiveConnections() {
+
 
 
             new Thread(()->{
@@ -77,7 +82,7 @@ public class ClientDiscovery {
                                 datagramPacket.getLength());
 
                         if (servers.get(newServerHost)==null){
-
+                            System.out.println("Got new response from server : "+newServerHost);
                             servers.put(newServerHost,newServerHost);
 
                         }
@@ -89,7 +94,27 @@ public class ClientDiscovery {
             }).start();
 
 
+
     }
+
+    public void checkNewConnections(){
+
+        new Thread(()->{
+
+            try {
+                while (true) {
+                    sendMulticast();
+                    receiveConnections();
+                    Thread.sleep(6000);
+                    socket.close();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+    }
+
 
 
 

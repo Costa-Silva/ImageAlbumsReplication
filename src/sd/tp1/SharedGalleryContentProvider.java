@@ -22,10 +22,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		serverHashMap = new HashMap<>();
 		clientDiscovery = new ClientDiscovery();
 
-		clientDiscovery.sendMulticast();
+		clientDiscovery.checkNewConnections();
 
 		search4Servers();
-
 
 	}
 
@@ -62,7 +61,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					List<Album> l = getListOfAlbums();
 					if( ! l.isEmpty() ) {
 						Iterator<Album> it = l.iterator();
-						int i = 1;
 						while(it.hasNext()) {
 							gui.updateAlbum(it.next());
 						}
