@@ -24,7 +24,7 @@ public class AlbumsResource {
     public Response getAlbumList() {
         List<String> albums = new ArrayList<>();
         System.out.println("Sending Albums");
-        File mainDirectory = new File(".");
+        File mainDirectory = new File("./src");
 
         if (mainDirectory.isDirectory()) {
 

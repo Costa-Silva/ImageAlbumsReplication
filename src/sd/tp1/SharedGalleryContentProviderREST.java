@@ -63,13 +63,13 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	public List<Album> getListOfAlbums() {
 		// TODO: obtain remote information
 
-		List<Album> lst = new ArrayList<Album>();
+		List<Album> list = new ArrayList<Album>();
 
 		for (String album: GetAlbumListREST.getAlbumList(target)) {
-			lst.add(new SharedAlbum(album));
+			list.add(new SharedAlbum(album));
 		}
 
-		return lst;
+		return list;
 	}
 
 	/**
