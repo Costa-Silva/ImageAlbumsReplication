@@ -1,6 +1,5 @@
 package sd.tp1.server;
 
-import sd.tp1.SharedGalleryContentProvider;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.utils.HostInfo;
 
@@ -14,11 +13,8 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.RandomAccess;
 
 /**
  * Created by AntónioSilva on 16/03/2016.
