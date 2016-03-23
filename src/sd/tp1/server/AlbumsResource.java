@@ -16,7 +16,7 @@ import java.util.List;
 @Path("/albums")
 public class AlbumsResource {
 
-
+    String mainSource= "./src";
 
 
     @GET
@@ -24,7 +24,7 @@ public class AlbumsResource {
     public Response getAlbumList() {
         List<String> albums = new ArrayList<>();
         System.out.println("Sending Albums");
-        File mainDirectory = new File("./src");
+        File mainDirectory = new File(mainSource);
 
         if (mainDirectory.isDirectory()) {
 
