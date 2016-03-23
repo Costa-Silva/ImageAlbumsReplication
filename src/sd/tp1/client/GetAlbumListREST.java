@@ -13,8 +13,7 @@ public class GetAlbumListREST {
 
     public static List<String> getAlbumList(WebTarget target){
 
-        List<String> list;
-        list = target.path("/albums")
+        List<String> list = target.path("/albums")
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .get(ArrayList.class);

@@ -6,6 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,22 +16,41 @@ import java.util.List;
 @Path("/albums")
 public class AlbumsResource {
 
-    List<String> albums = new ArrayList<>();
+
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList() {
-        albums.add("album1");
-        albums.add("album2"); //testes
+        List<String> albums = new ArrayList<>();
         System.out.println("Sending Albums");
-        if (albums == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        else
+        File mainDirectory = new File(".");
+
+        if (mainDirectory.isDirectory()) {
+
+
+            File[] files = mainDirectory.listFiles();
+
+            for (File file: files) {
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
+
+                    albums.add(file.getName());
+
+                }
+
+            }
+
             return Response.ok(albums).build();
+        }
+
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
 
 
-
 }
+
+
+
+
+
