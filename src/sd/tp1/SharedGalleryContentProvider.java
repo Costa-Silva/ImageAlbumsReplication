@@ -33,7 +33,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			this.gui = gui;
 			new Thread(()->{
 				for(;;) {
-						List<Album> l = getListOfAlbums();
+					List<Album> l = getListOfAlbums();
+					if (l != null){
 						if (!l.isEmpty()) {
 							Iterator<Album> it = l.iterator();
 							while (it.hasNext()) {
@@ -41,6 +42,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 							}
 							gui.updateAlbums();
 						}
+					}
 						try {
 							Thread.sleep(4000);
 						}catch (Exception e) {
@@ -63,11 +65,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
-
-			for (String album:listReceived) {
-				lst.add( new SharedAlbum(album));
-			}
-
+			if(listReceived!=null) {
+				for (String album : listReceived) {
+					lst.add(new SharedAlbum(album));
+				}
+			}else return null;
 		}
 		return lst;
 	}
@@ -83,10 +85,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 			List<String> listReceived = GetPicturesListClient.getPictures(entry.getValue(), entry.getKey(), album.getName());
-
-			for (String picture:listReceived) {
-				lst.add( new SharedPicture(picture));
-			}
+			if(listReceived!=null){
+				for (String picture:listReceived) {
+					lst.add(new SharedPicture(picture));
+				}
+			}else return null;
 		}
 
 		return lst;

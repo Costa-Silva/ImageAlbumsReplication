@@ -203,7 +203,7 @@ public class Server {
 
                 System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
 
-                if (mensage.equals(MYIDENTIFIER)){
+                if (mensage.equals(MYIDENTIFIER) || mensage.equals(InetAddress.getLocalHost().getHostAddress()+":8080")){
 
                     String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080" ;
                     buffer = myinfo.getBytes();

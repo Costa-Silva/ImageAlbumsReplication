@@ -77,11 +77,11 @@ public class ClientDiscovery {
 
             try {
                 boolean hasTime;
-                socket.setSoTimeout(7000);
+                Map<String,Server> receivedHost;
                 while (true) {
-
+                    socket.setSoTimeout(7000);
                     sendMulticast();
-
+                    receivedHost = new ConcurrentHashMap<String, Server>();
                     hasTime = true;
 
                     while(hasTime){
@@ -95,27 +95,93 @@ public class ClientDiscovery {
 
                             String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
                                     datagramPacket.getLength());
+                           System.out.println("Tou a por no receivedhost " + newServerHost);
+                            receivedHost.put(newServerHost,getServer(newServerHost));
 
                             if (serverHashMap.get(newServerHost) == null) {
-                                System.out.println("Got new response from server : " + newServerHost);
+                               System.out.println("Got new response from server : " + newServerHost);
                                 serverHashMap.put(newServerHost, getServer(newServerHost));
-
                             }
                         }catch (SocketTimeoutException e){
                             hasTime=false;
                             System.out.println("No connections");
+                        }catch (Exception e){
+                            System.out.println("Outro erro");
                         }
 
                     }
+                    //System.out.println("sai do while com o serverhashmap size a " + serverHashMap.size());
+                    for (Map.Entry<String,Server> entry : serverHashMap.entrySet()){
+
+                        //System.out.println("o received host tem a entry do SHM " + entry.getKey() + " " + receivedHost.containsKey(entry.getKey()));
+                        if(!receivedHost.containsKey(entry.getKey())){
+                            reCheck(entry.getKey());
+                        }
+                    }
+
+                    //System.out.println("REPETIR PRIMEIRO WHILE");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
-
     }
 
+    public void reCheck(String hostname){
 
+    new Thread(()-> {
+        while (true){ try {
+            address = InetAddress.getByName(MULTICASTIP);
+
+            //IOexception
+
+            byte[] input = hostname.getBytes();
+
+            DatagramPacket reSendpak = new DatagramPacket(input, input.length);
+
+            reSendpak.setAddress(address);
+            reSendpak.setPort(PORT);
+
+            socket.setSoTimeout(5000);
+
+            socket.send(reSendpak);
+
+            System.out.println("Sent a recheck multicast with input " + hostname);
+
+
+            byte[] buffer = new byte[MAXBYTESBUFFER];
+
+            reSendpak = new DatagramPacket(buffer, buffer.length);
+
+            socket.receive(reSendpak);
+
+            String newServerHost = new String(reSendpak.getData(), reSendpak.getOffset(),
+                    reSendpak.getLength());
+
+            if(newServerHost.equals(hostname)) {
+
+                System.out.println("Received a recheck of " + newServerHost);
+
+                if (serverHashMap.get(newServerHost) == null) {
+                    System.out.println("Got new response from server : " + newServerHost);
+                    serverHashMap.put(newServerHost, getServer(newServerHost));
+                }
+            }else {
+                throw new SocketTimeoutException();
+            }
+
+        } catch (SocketTimeoutException e) {
+            serverHashMap.remove(hostname);
+            System.out.println("host not found" + hostname);
+        } catch (Exception e) {
+            System.out.println("Erro no resocket");
+            e.printStackTrace();
+        }
+    }
+    }).start();
+
+
+    }
 
 
     public Map<String,Server> getServers(){
