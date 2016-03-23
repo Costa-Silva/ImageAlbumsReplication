@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +20,6 @@ import java.util.Map;
 public class AlbumsResource {
 
     public static final String MAINSOURCE= "./src/";
-    Map<String,String> albumsMap= new HashMap<>();
-    Map<String,String> picturesMap = new HashMap<>();
     File mainDirectory = new File(MAINSOURCE);
 
 
@@ -34,15 +33,16 @@ public class AlbumsResource {
 
             File[] files = mainDirectory.listFiles();
 
+            List<String> albums = new ArrayList<>();
+
             for (File file: files) {
 
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && albumsMap.get(file.getName())==null ){
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".")  ){
 
-                    albumsMap.put(file.getName(),file.getName());
+                    albums.add(file.getName());
                 }
 
             }
-            List<String> albums = new ArrayList<>(albumsMap.values());
             return Response.ok(albums).build();
         }
 
@@ -58,11 +58,13 @@ public class AlbumsResource {
 
         File album = new File(MAINSOURCE+albumName);
 
-        if (albumsMap == null || !mainDirectory.isDirectory() || !album.exists() ) {
+        if (!mainDirectory.isDirectory() || !album.exists() ) {
 
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         else{
+
+            List<String> list = new ArrayList<>();
 
             File albumDir = new File(album.getAbsolutePath());
 
@@ -70,19 +72,63 @@ public class AlbumsResource {
 
             for (File file: files) {
 
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && picturesMap.get(file.getName())==null ){
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
 
-                    picturesMap.put(file.getName(),file.getName());
+                    list.add(file.getName());
 
                 }
             }
 
-            List<String> list = new ArrayList<>(picturesMap.values());
+
             return Response.ok(list).build();
 
         }
 
     }
+
+    @GET
+    @Path("/{albumName}/{picture}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pic){
+        byte[] array;
+
+        System.out.println(albumName+" "+pic);
+        File album = new File(MAINSOURCE+albumName);
+
+        if (!mainDirectory.isDirectory() || !album.exists() ) {
+
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        else{
+
+            List<String> list = new ArrayList<>();
+
+            File albumDir = new File(album.getAbsolutePath());
+
+            File[] files = albumDir.listFiles();
+
+            for (File file: files) {
+
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.getName().equals(pic) )
+                    try {
+                        RandomAccessFile f = new RandomAccessFile(file, "r");
+                        array = new byte[(int) f.length()];
+
+                        f.readFully(array);
+
+                        return Response.ok(array).build();
+
+                    } catch (Exception e) {
+
+                    }
+            }
+
+
+            return Response.ok(list).build();
+
+        }
+    }
+
 
 }
 

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import sd.tp1.client.ClientDiscoveryREST;
-import sd.tp1.client.GetAlbumListREST;
-import sd.tp1.client.GetPicturesListREST;
+import sd.tp1.client.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
@@ -95,6 +93,10 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	@Override
 	public byte[] getPictureData(Album album, Picture picture) {
 		// TODO: obtain remote information 
+		byte[] aux;
+			if((aux = GetPictureDataREST.getPictureData(target,album.getName(), picture.getName()))!=null){
+				return aux;
+		}
 		return null;
 	}
 
