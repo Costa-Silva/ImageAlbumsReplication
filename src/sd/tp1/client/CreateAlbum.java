@@ -13,7 +13,7 @@ import java.util.List;
 public class CreateAlbum {
 
 
-        public static String createAlbum(Server server,String serverHost, String album){
+        public static String createAlbum(Server server, String album){
             try{
 
                 return server.createAlbum(album);

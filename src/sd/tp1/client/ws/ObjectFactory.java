@@ -27,20 +27,31 @@ public class ObjectFactory {
     private final static QName _GetAlbumListResponse_QNAME = new QName("http://server.tp1.sd/", "getAlbumListResponse");
     private final static QName _GetPictureData_QNAME = new QName("http://server.tp1.sd/", "getPictureData");
     private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
+    private final static QName _UpdatePicture_QNAME = new QName("http://server.tp1.sd/", "updatePicture");
     private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
     private final static QName _DeleteAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "deleteAlbumResponse");
     private final static QName _CreateAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "createAlbumResponse");
     private final static QName _GetPicturesListResponse_QNAME = new QName("http://server.tp1.sd/", "getPicturesListResponse");
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
     private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
+    private final static QName _UpdatePictureResponse_QNAME = new QName("http://server.tp1.sd/", "updatePictureResponse");
     private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
     private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
+    private final static QName _UpdatePictureArg2_QNAME = new QName("", "arg2");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: sd.tp1.client.ws
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link UpdatePicture }
+     * 
+     */
+    public UpdatePicture createUpdatePicture() {
+        return new UpdatePicture();
     }
 
     /**
@@ -81,6 +92,14 @@ public class ObjectFactory {
      */
     public GetPictureDataResponse createGetPictureDataResponse() {
         return new GetPictureDataResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdatePictureResponse }
+     * 
+     */
+    public UpdatePictureResponse createUpdatePictureResponse() {
+        return new UpdatePictureResponse();
     }
 
     /**
@@ -151,6 +170,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdatePicture }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "updatePicture")
+    public JAXBElement<UpdatePicture> createUpdatePicture(UpdatePicture value) {
+        return new JAXBElement<UpdatePicture>(_UpdatePicture_QNAME, UpdatePicture.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbum }{@code >}}
      * 
      */
@@ -205,6 +233,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdatePictureResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "updatePictureResponse")
+    public JAXBElement<UpdatePictureResponse> createUpdatePictureResponse(UpdatePictureResponse value) {
+        return new JAXBElement<UpdatePictureResponse>(_UpdatePictureResponse_QNAME, UpdatePictureResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesList }{@code >}}
      * 
      */
@@ -220,6 +257,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "return", scope = GetPictureDataResponse.class)
     public JAXBElement<byte[]> createGetPictureDataResponseReturn(byte[] value) {
         return new JAXBElement<byte[]>(_GetPictureDataResponseReturn_QNAME, byte[].class, GetPictureDataResponse.class, ((byte[]) value));
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "arg2", scope = UpdatePicture.class)
+    public JAXBElement<byte[]> createUpdatePictureArg2(byte[] value) {
+        return new JAXBElement<byte[]>(_UpdatePictureArg2_QNAME, byte[].class, UpdatePicture.class, ((byte[]) value));
     }
 
 }

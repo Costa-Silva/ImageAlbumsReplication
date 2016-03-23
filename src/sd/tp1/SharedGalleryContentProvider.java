@@ -2,7 +2,12 @@ package sd.tp1;
 import java.util.*;
 
 import sd.tp1.client.*;
-import sd.tp1.client.ws.Server;
+import sd.tp1.client.CreateAlbum;
+import sd.tp1.client.DeleteAlbum;
+import sd.tp1.client.GetAlbumList;
+import sd.tp1.client.GetPictureData;
+import sd.tp1.client.UpdatePicture;
+import sd.tp1.client.ws.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
@@ -121,7 +126,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		String nome;
 
 		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
-			if ((nome = CreateAlbum.createAlbum(entry.getValue(), entry.getKey(), name)) != null) {
+			if ((nome = CreateAlbum.createAlbum(entry.getValue(), name)) != null) {
 
 				return new SharedAlbum(nome);
 			}
@@ -145,8 +150,15 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public Picture uploadPicture(Album album, String name, byte[] data) {
-		// TODO: contact servers to add picture name with contents data 
-		return new SharedPicture(name);
+		// TODO: contact servers to add picture name with contents data
+		boolean success=false;
+		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+				success = UpdatePicture.updatePicture(entry.getValue(),data,album.getName(),name);
+
+		}
+		if (success)
+			return new SharedPicture(name);
+		return null;
 	}
 
 	/**

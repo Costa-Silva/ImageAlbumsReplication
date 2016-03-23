@@ -6,13 +6,13 @@ import sd.tp1.utils.HostInfo;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class Server {
 
         if (mainDirectory.isDirectory()) {
 
-           List<String> albumList = new ArrayList<>();
+            List<String> albumList = new ArrayList<>();
 
             File[] files = mainDirectory.listFiles();
 
@@ -97,6 +97,30 @@ public class Server {
     }
 
     @WebMethod
+    public boolean updatePicture(String albumName,String pictureName, byte[] pictureData){
+
+        if (mainDirectory.isDirectory()){
+
+            File album = new File(albumName);
+
+            if (album.exists()) {
+
+                File newPicture = new File(album.getAbsoluteFile()+ "/" + pictureName);
+
+
+                try {
+                    Files.write(newPicture.toPath(),pictureData,StandardOpenOption.CREATE_NEW);
+                    return newPicture.exists();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+
+    @WebMethod
     public byte[] getPictureData(String albumName,String picture) {
         byte[] array;
         if (mainDirectory.isDirectory()) {
@@ -146,10 +170,11 @@ public class Server {
 
         File album = new File(name);
         if(album.isDirectory()){
-        File delAlbum = new File(album.getName().concat(".deleted"));
-        album.renameTo(delAlbum);
+            File delAlbum = new File(album.getName().concat(".deleted"));
+            album.renameTo(delAlbum);
         }
     }
+
 
 
     public static void main(String args[]){
