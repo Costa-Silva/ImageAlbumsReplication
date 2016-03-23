@@ -1,9 +1,8 @@
 package sd.tp1.server;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import sd.tp1.gui.GalleryContentProvider;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -124,13 +123,45 @@ public class AlbumsResource {
             }
 
 
-            return Response.ok(list).build();
+            return Response.ok(null).build();
 
+        }
+    }
+
+    @POST
+    @Path("/{albumName}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createAlbum(@PathParam("albumName") String albumName){
+        SharedAlbum sharedAlbum = new SharedAlbum(albumName);
+        File album = new File(MAINSOURCE+sharedAlbum.getName());
+        if(!album.exists()){
+            album.mkdir();
+            return Response.ok(album.getName()).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+
+    }
+
+    /**
+     * Represents a shared album.
+     */
+    static class SharedAlbum implements GalleryContentProvider.Album {
+        final String name;
+
+        SharedAlbum(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return name;
         }
     }
 
 
 }
+
+
 
 
 

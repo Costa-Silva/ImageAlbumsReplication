@@ -106,8 +106,13 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	 */
 	@Override
 	public Album createAlbum(String name) {
-		// TODO: contact servers to create album 
-		return new SharedAlbum(name);
+		// TODO: contact servers to create album
+		String nome;
+
+			if ((nome = CreateAlbumREST.createAlbum(target, name)) != null) {
+				return new SharedAlbum(nome);
+				}
+		return null;
 	}
 
 	/**
