@@ -6,6 +6,7 @@ import java.util.List;
 
 import sd.tp1.client.ClientDiscoveryREST;
 import sd.tp1.client.GetAlbumListREST;
+import sd.tp1.client.GetPicturesListREST;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
@@ -79,11 +80,12 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	@Override
 	public List<Picture> getListOfPictures(Album album) {
 		// TODO: obtain remote information 
-		List<Picture> lst = new ArrayList<Picture>();
-		lst.add( new SharedPicture("aula 1"));
-		lst.add( new SharedPicture("aula 2"));
-		lst.add( new SharedPicture("aula 3"));
-		return lst;
+		List<Picture> list = new ArrayList<Picture>();
+
+		for (String albumName: GetPicturesListREST.getPicturesList(target,album.getName())) {
+			list.add(new SharedPicture(albumName));
+		}
+		return list;
 	}
 
 	/**

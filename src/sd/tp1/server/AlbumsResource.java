@@ -8,7 +8,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by AntónioSilva on 23/03/2016.
@@ -16,30 +18,31 @@ import java.util.List;
 @Path("/albums")
 public class AlbumsResource {
 
-    public static final String MAINSOURCE= "./src";
+    public static final String MAINSOURCE= "./src/";
+    Map<String,String> albumsMap= new HashMap<>();
+    Map<String,String> picturesMap = new HashMap<>();
+    File mainDirectory = new File(MAINSOURCE);
+
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList() {
-        List<String> albums = new ArrayList<>();
-        System.out.println("Sending Albums");
-        File mainDirectory = new File(MAINSOURCE);
+
 
         if (mainDirectory.isDirectory()) {
-
 
             File[] files = mainDirectory.listFiles();
 
             for (File file: files) {
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
 
-                    albums.add(file.getName());
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && albumsMap.get(file.getName())==null ){
 
+                    albumsMap.put(file.getName(),file.getName());
                 }
 
             }
-
+            List<String> albums = new ArrayList<>(albumsMap.values());
             return Response.ok(albums).build();
         }
 
@@ -48,9 +51,40 @@ public class AlbumsResource {
 
 
 
+    @GET
+    @Path("/{albumName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getListPicturesAt(@PathParam("albumName") String albumName) {
+
+        File album = new File(MAINSOURCE+albumName);
+
+        if (albumsMap == null || !mainDirectory.isDirectory() || !album.exists() ) {
+
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        else{
+
+            File albumDir = new File(album.getAbsolutePath());
+
+            File[] files = albumDir.listFiles();
+
+            for (File file: files) {
+
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && picturesMap.get(file.getName())==null ){
+
+                    picturesMap.put(file.getName(),file.getName());
+
+                }
+            }
+
+            List<String> list = new ArrayList<>(picturesMap.values());
+            return Response.ok(list).build();
+
+        }
+
+    }
+
 }
-
-
 
 
 
