@@ -24,7 +24,8 @@ public class ClientDiscovery {
     private MulticastSocket socket;
     private InetAddress address;
     private Map<String,Server> serverHashMap;
-
+    private Map<String,Server> receivedHost;
+    private List<String> recheckhosts;
 
     public ClientDiscovery() {
         init();
@@ -33,6 +34,7 @@ public class ClientDiscovery {
     public void init(){
 
         serverHashMap = new ConcurrentHashMap<>();
+        recheckhosts = new ArrayList<String>();
         try {
             socket = new MulticastSocket();
         }catch (Exception e){
@@ -77,7 +79,6 @@ public class ClientDiscovery {
 
             try {
                 boolean hasTime;
-                Map<String,Server> receivedHost;
                 while (true) {
                     socket.setSoTimeout(7000);
                     sendMulticast();
@@ -128,58 +129,64 @@ public class ClientDiscovery {
     }
 
     public void reCheck(String hostname){
+    if(!recheckhosts.contains(hostname)) {
+        recheckhosts.add(hostname);
+        new Thread(() -> {
+            boolean go = true;
+            while (go) {
+                try {
+                        address = InetAddress.getByName(MULTICASTIP);
 
-    new Thread(()-> {
-        while (true){ try {
-            address = InetAddress.getByName(MULTICASTIP);
+                        //IOexception
 
-            //IOexception
+                        byte[] input = hostname.getBytes();
 
-            byte[] input = hostname.getBytes();
+                        DatagramPacket reSendpak = new DatagramPacket(input, input.length);
 
-            DatagramPacket reSendpak = new DatagramPacket(input, input.length);
+                        reSendpak.setAddress(address);
+                        reSendpak.setPort(PORT);
 
-            reSendpak.setAddress(address);
-            reSendpak.setPort(PORT);
+                        socket.setSoTimeout(5000);
+                        //socket.setTimeToLive(10);
 
-            socket.setSoTimeout(5000);
+                        socket.send(reSendpak);
 
-            socket.send(reSendpak);
-
-            System.out.println("Sent a recheck multicast with input " + hostname);
+                        System.out.println("Sent a recheck multicast with input " + hostname);
 
 
-            byte[] buffer = new byte[MAXBYTESBUFFER];
+                        byte[] buffer = new byte[MAXBYTESBUFFER];
 
-            reSendpak = new DatagramPacket(buffer, buffer.length);
+                        reSendpak = new DatagramPacket(buffer, buffer.length);
 
-            socket.receive(reSendpak);
+                        socket.receive(reSendpak);
 
-            String newServerHost = new String(reSendpak.getData(), reSendpak.getOffset(),
-                    reSendpak.getLength());
+                        String newServerHost = new String(reSendpak.getData(), reSendpak.getOffset(),
+                                reSendpak.getLength());
 
-            if(newServerHost.equals(hostname)) {
+                        if (newServerHost.equals(hostname)) {
 
-                System.out.println("Received a recheck of " + newServerHost);
+                            System.out.println("Received a recheck of " + newServerHost);
 
-                if (serverHashMap.get(newServerHost) == null) {
-                    System.out.println("Got new response from server : " + newServerHost);
-                    serverHashMap.put(newServerHost, getServer(newServerHost));
+                            if (serverHashMap.get(newServerHost) == null) {
+                                System.out.println("Got new response from server : " + newServerHost);
+                                serverHashMap.put(newServerHost, getServer(newServerHost));
+                                recheckhosts.remove(hostname);
+                                go=false;
+                            }
+                        } else {
+                            throw new SocketTimeoutException();
+                        }
+
+                } catch (SocketTimeoutException e) {
+                    serverHashMap.remove(hostname);
+                    System.out.println("host not found" + hostname);
+                } catch (Exception e) {
+                    System.out.println("Erro no resocket");
+                    e.printStackTrace();
                 }
-            }else {
-                throw new SocketTimeoutException();
             }
-
-        } catch (SocketTimeoutException e) {
-            serverHashMap.remove(hostname);
-            System.out.println("host not found" + hostname);
-        } catch (Exception e) {
-            System.out.println("Erro no resocket");
-            e.printStackTrace();
-        }
+        }).start();
     }
-    }).start();
-
 
     }
 
