@@ -1,17 +1,11 @@
 package sd.tp1;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import sd.tp1.client.ClientDiscoveryREST;
-import sd.tp1.client.ws.GetAlbumListREST;
+import sd.tp1.client.GetAlbumListREST;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
