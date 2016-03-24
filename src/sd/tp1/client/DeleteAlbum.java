@@ -10,7 +10,7 @@ import java.net.URL;
  */
 public class DeleteAlbum {
 
-    public static void deleteAlbum(Server server,String serverHost,String album){
+    public static void deleteAlbum(Server server,String album){
         try{
 
             server.deleteAlbum(album);

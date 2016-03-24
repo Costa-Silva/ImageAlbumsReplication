@@ -105,6 +105,8 @@ public class Server {
 
             if (album.exists()) {
 
+
+
                 File newPicture = new File(album.getAbsoluteFile()+ "/" + pictureName);
 
 
@@ -118,6 +120,38 @@ public class Server {
         }
         return false;
     }
+
+    @WebMethod
+    public boolean deletePicture(String albumName,String pictureName){
+
+        if (mainDirectory.isDirectory() )  {
+
+            File album = new File(albumName);
+
+            if (album.exists()) {
+
+                File picture = new File(album.getAbsolutePath()+"/"+pictureName);
+
+
+                File delpicture = new File(picture.getAbsolutePath().concat(".deleted"));
+
+                System.out.println(delpicture.getAbsolutePath());
+
+
+                            boolean success = picture.renameTo(delpicture);
+                            System.out.println(success);
+
+                            return success;
+
+
+
+
+
+            }
+        }
+        return true;
+    }
+
 
 
     @WebMethod

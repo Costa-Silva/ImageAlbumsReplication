@@ -4,6 +4,7 @@ import java.util.*;
 import sd.tp1.client.*;
 import sd.tp1.client.CreateAlbum;
 import sd.tp1.client.DeleteAlbum;
+import sd.tp1.client.DeletePicture;
 import sd.tp1.client.GetAlbumList;
 import sd.tp1.client.GetPictureData;
 import sd.tp1.client.UpdatePicture;
@@ -140,7 +141,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public void deleteAlbum(Album album) {
 		// TODO: contact servers to delete album
 		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
-			DeleteAlbum.deleteAlbum(entry.getValue(),entry.getKey(), album.getName());
+			DeleteAlbum.deleteAlbum(entry.getValue(), album.getName());
 		}
 	}
 
@@ -153,7 +154,17 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: contact servers to add picture name with contents data
 		boolean success=false;
 		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
-				success = UpdatePicture.updatePicture(entry.getValue(),data,album.getName(),name);
+
+			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
+			if(listReceived!=null) {
+				for (String albumName : listReceived) {
+					if (albumName.equals(album.getName())) {
+						success = UpdatePicture.updatePicture(entry.getValue(), data, album.getName(), name);
+					}
+				}
+
+
+			}
 
 		}
 		if (success)
@@ -167,7 +178,27 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public boolean deletePicture(Album album, Picture picture) {
-		// TODO: contact servers to delete picture from album 
+		// TODO: contact servers to delete picture from album
+		boolean success=false;
+		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+
+			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
+			if(listReceived!=null) {
+				for (String albumName : listReceived) {
+					if (albumName.equals(album.getName())) {
+						success = DeletePicture.deletePicture(entry.getValue(),album.getName(),picture.getName());
+						System.out.println(success);
+					}
+				}
+
+
+			}
+
+		}
+
+
+
+
 		return true;
 	}
 

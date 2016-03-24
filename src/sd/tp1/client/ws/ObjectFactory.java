@@ -27,15 +27,17 @@ public class ObjectFactory {
     private final static QName _GetAlbumListResponse_QNAME = new QName("http://server.tp1.sd/", "getAlbumListResponse");
     private final static QName _GetPictureData_QNAME = new QName("http://server.tp1.sd/", "getPictureData");
     private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
-    private final static QName _UpdatePicture_QNAME = new QName("http://server.tp1.sd/", "updatePicture");
-    private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
     private final static QName _DeleteAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "deleteAlbumResponse");
     private final static QName _CreateAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "createAlbumResponse");
+    private final static QName _DeletePicture_QNAME = new QName("http://server.tp1.sd/", "deletePicture");
+    private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
+    private final static QName _UpdatePicture_QNAME = new QName("http://server.tp1.sd/", "updatePicture");
+    private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
     private final static QName _GetPicturesListResponse_QNAME = new QName("http://server.tp1.sd/", "getPicturesListResponse");
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
     private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
+    private final static QName _DeletePictureResponse_QNAME = new QName("http://server.tp1.sd/", "deletePictureResponse");
     private final static QName _UpdatePictureResponse_QNAME = new QName("http://server.tp1.sd/", "updatePictureResponse");
-    private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
     private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
     private final static QName _UpdatePictureArg2_QNAME = new QName("", "arg2");
 
@@ -47,27 +49,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UpdatePicture }
-     * 
-     */
-    public UpdatePicture createUpdatePicture() {
-        return new UpdatePicture();
-    }
-
-    /**
      * Create an instance of {@link DeleteAlbumResponse }
      * 
      */
     public DeleteAlbumResponse createDeleteAlbumResponse() {
         return new DeleteAlbumResponse();
-    }
-
-    /**
-     * Create an instance of {@link DeleteAlbum }
-     * 
-     */
-    public DeleteAlbum createDeleteAlbum() {
-        return new DeleteAlbum();
     }
 
     /**
@@ -95,6 +81,54 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeletePicture }
+     * 
+     */
+    public DeletePicture createDeletePicture() {
+        return new DeletePicture();
+    }
+
+    /**
+     * Create an instance of {@link GetPicturesList }
+     * 
+     */
+    public GetPicturesList createGetPicturesList() {
+        return new GetPicturesList();
+    }
+
+    /**
+     * Create an instance of {@link CreateAlbumResponse }
+     * 
+     */
+    public CreateAlbumResponse createCreateAlbumResponse() {
+        return new CreateAlbumResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdatePicture }
+     * 
+     */
+    public UpdatePicture createUpdatePicture() {
+        return new UpdatePicture();
+    }
+
+    /**
+     * Create an instance of {@link DeleteAlbum }
+     * 
+     */
+    public DeleteAlbum createDeleteAlbum() {
+        return new DeleteAlbum();
+    }
+
+    /**
+     * Create an instance of {@link DeletePictureResponse }
+     * 
+     */
+    public DeletePictureResponse createDeletePictureResponse() {
+        return new DeletePictureResponse();
+    }
+
+    /**
      * Create an instance of {@link UpdatePictureResponse }
      * 
      */
@@ -111,27 +145,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetPicturesList }
-     * 
-     */
-    public GetPicturesList createGetPicturesList() {
-        return new GetPicturesList();
-    }
-
-    /**
      * Create an instance of {@link GetPicturesListResponse }
      * 
      */
     public GetPicturesListResponse createGetPicturesListResponse() {
         return new GetPicturesListResponse();
-    }
-
-    /**
-     * Create an instance of {@link CreateAlbumResponse }
-     * 
-     */
-    public CreateAlbumResponse createCreateAlbumResponse() {
-        return new CreateAlbumResponse();
     }
 
     /**
@@ -170,24 +188,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link UpdatePicture }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "updatePicture")
-    public JAXBElement<UpdatePicture> createUpdatePicture(UpdatePicture value) {
-        return new JAXBElement<UpdatePicture>(_UpdatePicture_QNAME, UpdatePicture.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbum }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "deleteAlbum")
-    public JAXBElement<DeleteAlbum> createDeleteAlbum(DeleteAlbum value) {
-        return new JAXBElement<DeleteAlbum>(_DeleteAlbum_QNAME, DeleteAlbum.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbumResponse }{@code >}}
      * 
      */
@@ -203,6 +203,42 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "createAlbumResponse")
     public JAXBElement<CreateAlbumResponse> createCreateAlbumResponse(CreateAlbumResponse value) {
         return new JAXBElement<CreateAlbumResponse>(_CreateAlbumResponse_QNAME, CreateAlbumResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeletePicture }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "deletePicture")
+    public JAXBElement<DeletePicture> createDeletePicture(DeletePicture value) {
+        return new JAXBElement<DeletePicture>(_DeletePicture_QNAME, DeletePicture.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesList }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
+    public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
+        return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdatePicture }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "updatePicture")
+    public JAXBElement<UpdatePicture> createUpdatePicture(UpdatePicture value) {
+        return new JAXBElement<UpdatePicture>(_UpdatePicture_QNAME, UpdatePicture.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbum }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "deleteAlbum")
+    public JAXBElement<DeleteAlbum> createDeleteAlbum(DeleteAlbum value) {
+        return new JAXBElement<DeleteAlbum>(_DeleteAlbum_QNAME, DeleteAlbum.class, null, value);
     }
 
     /**
@@ -233,21 +269,21 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeletePictureResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "deletePictureResponse")
+    public JAXBElement<DeletePictureResponse> createDeletePictureResponse(DeletePictureResponse value) {
+        return new JAXBElement<DeletePictureResponse>(_DeletePictureResponse_QNAME, DeletePictureResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UpdatePictureResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "updatePictureResponse")
     public JAXBElement<UpdatePictureResponse> createUpdatePictureResponse(UpdatePictureResponse value) {
         return new JAXBElement<UpdatePictureResponse>(_UpdatePictureResponse_QNAME, UpdatePictureResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesList }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
-    public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
-        return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
     }
 
     /**
