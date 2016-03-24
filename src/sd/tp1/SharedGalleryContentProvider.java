@@ -7,7 +7,7 @@ import sd.tp1.client.DeleteAlbum;
 import sd.tp1.client.DeletePicture;
 import sd.tp1.client.GetAlbumList;
 import sd.tp1.client.GetPictureData;
-import sd.tp1.client.UpdatePicture;
+import sd.tp1.client.UploadPicture;
 import sd.tp1.client.ws.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
@@ -159,7 +159,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			if(listReceived!=null) {
 				for (String albumName : listReceived) {
 					if (albumName.equals(album.getName())) {
-						success = UpdatePicture.updatePicture(entry.getValue(), data, album.getName(), name);
+						success = UploadPicture.uploadPicture(entry.getValue(), data, album.getName(), name);
 					}
 				}
 

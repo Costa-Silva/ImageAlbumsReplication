@@ -97,7 +97,7 @@ public class Server {
     }
 
     @WebMethod
-    public boolean updatePicture(String albumName,String pictureName, byte[] pictureData){
+    public boolean uploadPicture(String albumName,String pictureName, byte[] pictureData){
 
         if (mainDirectory.isDirectory()){
 

@@ -25,21 +25,21 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _GetAlbumListResponse_QNAME = new QName("http://server.tp1.sd/", "getAlbumListResponse");
+    private final static QName _UploadPicture_QNAME = new QName("http://server.tp1.sd/", "uploadPicture");
     private final static QName _GetPictureData_QNAME = new QName("http://server.tp1.sd/", "getPictureData");
     private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
     private final static QName _DeleteAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "deleteAlbumResponse");
     private final static QName _CreateAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "createAlbumResponse");
     private final static QName _DeletePicture_QNAME = new QName("http://server.tp1.sd/", "deletePicture");
     private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
-    private final static QName _UpdatePicture_QNAME = new QName("http://server.tp1.sd/", "updatePicture");
+    private final static QName _UploadPictureResponse_QNAME = new QName("http://server.tp1.sd/", "uploadPictureResponse");
     private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
     private final static QName _GetPicturesListResponse_QNAME = new QName("http://server.tp1.sd/", "getPicturesListResponse");
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
     private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
     private final static QName _DeletePictureResponse_QNAME = new QName("http://server.tp1.sd/", "deletePictureResponse");
-    private final static QName _UpdatePictureResponse_QNAME = new QName("http://server.tp1.sd/", "updatePictureResponse");
     private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
-    private final static QName _UpdatePictureArg2_QNAME = new QName("", "arg2");
+    private final static QName _UploadPictureArg2_QNAME = new QName("", "arg2");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: sd.tp1.client.ws
@@ -81,6 +81,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UploadPicture }
+     * 
+     */
+    public UploadPicture createUploadPicture() {
+        return new UploadPicture();
+    }
+
+    /**
      * Create an instance of {@link DeletePicture }
      * 
      */
@@ -105,11 +113,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UpdatePicture }
+     * Create an instance of {@link UploadPictureResponse }
      * 
      */
-    public UpdatePicture createUpdatePicture() {
-        return new UpdatePicture();
+    public UploadPictureResponse createUploadPictureResponse() {
+        return new UploadPictureResponse();
     }
 
     /**
@@ -126,14 +134,6 @@ public class ObjectFactory {
      */
     public DeletePictureResponse createDeletePictureResponse() {
         return new DeletePictureResponse();
-    }
-
-    /**
-     * Create an instance of {@link UpdatePictureResponse }
-     * 
-     */
-    public UpdatePictureResponse createUpdatePictureResponse() {
-        return new UpdatePictureResponse();
     }
 
     /**
@@ -167,6 +167,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getAlbumListResponse")
     public JAXBElement<GetAlbumListResponse> createGetAlbumListResponse(GetAlbumListResponse value) {
         return new JAXBElement<GetAlbumListResponse>(_GetAlbumListResponse_QNAME, GetAlbumListResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UploadPicture }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "uploadPicture")
+    public JAXBElement<UploadPicture> createUploadPicture(UploadPicture value) {
+        return new JAXBElement<UploadPicture>(_UploadPicture_QNAME, UploadPicture.class, null, value);
     }
 
     /**
@@ -224,12 +233,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link UpdatePicture }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link UploadPictureResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "updatePicture")
-    public JAXBElement<UpdatePicture> createUpdatePicture(UpdatePicture value) {
-        return new JAXBElement<UpdatePicture>(_UpdatePicture_QNAME, UpdatePicture.class, null, value);
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "uploadPictureResponse")
+    public JAXBElement<UploadPictureResponse> createUploadPictureResponse(UploadPictureResponse value) {
+        return new JAXBElement<UploadPictureResponse>(_UploadPictureResponse_QNAME, UploadPictureResponse.class, null, value);
     }
 
     /**
@@ -278,15 +287,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link UpdatePictureResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "updatePictureResponse")
-    public JAXBElement<UpdatePictureResponse> createUpdatePictureResponse(UpdatePictureResponse value) {
-        return new JAXBElement<UpdatePictureResponse>(_UpdatePictureResponse_QNAME, UpdatePictureResponse.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
@@ -299,9 +299,9 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "arg2", scope = UpdatePicture.class)
-    public JAXBElement<byte[]> createUpdatePictureArg2(byte[] value) {
-        return new JAXBElement<byte[]>(_UpdatePictureArg2_QNAME, byte[].class, UpdatePicture.class, ((byte[]) value));
+    @XmlElementDecl(namespace = "", name = "arg2", scope = UploadPicture.class)
+    public JAXBElement<byte[]> createUploadPictureArg2(byte[] value) {
+        return new JAXBElement<byte[]>(_UploadPictureArg2_QNAME, byte[].class, UploadPicture.class, ((byte[]) value));
     }
 
 }
