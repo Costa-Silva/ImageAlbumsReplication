@@ -178,7 +178,6 @@ public class Server {
                             return array;
 
                         } catch (Exception e) {
-                            //System.out.println("DEU ERRO");
                         }
                     }
                 }
