@@ -130,8 +130,11 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	 */
 	@Override
 	public Picture uploadPicture(Album album, String name, byte[] data) {
-		// TODO: contact servers to add picture name with contents data 
+		// TODO: contact servers to add picture name with contents data
+		if (UploadPictureREST.uploadPicture(target,album.getName(),name,data))
 		return new SharedPicture(name);
+
+		return null;
 	}
 
 	/**

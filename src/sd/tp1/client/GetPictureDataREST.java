@@ -14,7 +14,6 @@ public class GetPictureDataREST {
 
     public static byte[] getPictureData(WebTarget target,String album, String pictureName){
 
-       System.out.println(PATH+album+"/"+pictureName);
        byte[] data = target.path(PATH+album+"/"+pictureName)
                 .request()
                 .accept(MediaType.APPLICATION_OCTET_STREAM)

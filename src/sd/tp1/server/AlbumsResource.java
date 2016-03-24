@@ -5,8 +5,12 @@ import sd.tp1.gui.GalleryContentProvider;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,7 +95,6 @@ public class AlbumsResource {
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pic){
         byte[] array;
 
-        System.out.println(albumName+" "+pic);
         File album = new File(MAINSOURCE+albumName);
 
         if (!mainDirectory.isDirectory() || !album.exists() ) {
@@ -142,6 +145,32 @@ public class AlbumsResource {
 
     }
 
+
+    @POST
+    @Path("/{albumName}/{pictureName}")
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData){
+
+        if (mainDirectory.isDirectory()){
+
+            File album = new File(mainDirectory.getAbsolutePath()+ "/"+ albumName);
+            if (album.exists()) {
+                File newPicture = new File(album.getAbsoluteFile()+ "/" + pictureName);
+
+                try {
+                    Files.write(newPicture.toPath(),pictureData, StandardOpenOption.CREATE_NEW);
+                    return Response.ok().build();
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return Response.status(Response.Status.NOT_FOUND).build();
+
+    }
     @DELETE
     @Path("/{albumName}")
     public Response deleteAlbum(@PathParam("albumName") String albumName){

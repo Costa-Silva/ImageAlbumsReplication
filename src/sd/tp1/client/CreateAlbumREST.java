@@ -20,14 +20,10 @@ public class CreateAlbumREST {
                 .request()
                 .post(Entity.entity(albumName,MediaType.APPLICATION_JSON));
 
-        System.out.println(" O STATUS DO POST " + album.getStatus());
-
         List<String> list = target.path("/albums")
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .get(ArrayList.class);
-
-        System.out.println(" O SIZE DO LIST GET " + list.size());
 
 
         if(list.contains(albumName)) {
