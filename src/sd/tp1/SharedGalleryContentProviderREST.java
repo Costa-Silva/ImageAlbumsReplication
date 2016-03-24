@@ -39,7 +39,9 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 						if (!l.isEmpty()) {
 							Iterator<Album> it = l.iterator();
 							while (it.hasNext()) {
-								gui.updateAlbum(it.next());
+								Album album = it.next();
+
+								gui.updateAlbum(album);
 							}
 							gui.updateAlbums();
 						}
@@ -131,9 +133,9 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	@Override
 	public Picture uploadPicture(Album album, String name, byte[] data) {
 		// TODO: contact servers to add picture name with contents data
-		if (UploadPictureREST.uploadPicture(target,album.getName(),name,data))
-		return new SharedPicture(name);
-
+		if (UploadPictureREST.uploadPicture(target,album.getName(),name,data)) {
+			return new SharedPicture(name);
+		}
 		return null;
 	}
 
@@ -144,6 +146,7 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	@Override
 	public boolean deletePicture(Album album, Picture picture) {
 		// TODO: contact servers to delete picture from album 
+		DeletePictureREST.deletePicture(target,album.getName(),picture.getName());
 		return true;
 	}
 

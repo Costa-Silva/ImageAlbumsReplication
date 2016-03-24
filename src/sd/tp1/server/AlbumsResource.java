@@ -183,6 +183,30 @@ public class AlbumsResource {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @DELETE
+    @Path("/{albumName}/{pictureName}")
+    public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName){
+        if (mainDirectory.isDirectory()) {
+
+            File album = new File(mainDirectory.getAbsolutePath() + "/" + albumName);
+            if (album.exists()) {
+                File picture = new File(album.getAbsolutePath()+"/"+pictureName);
+
+                File delpicture = new File(picture.getAbsolutePath().concat(".deleted"));
+
+
+
+                boolean success = picture.renameTo(delpicture);
+
+                return Response.ok().build();
+
+            }
+        }
+
+        return Response.status(Response.Status.NOT_FOUND).build();
+
+
+    }
     /**
      * Represents a shared album.
      */
