@@ -14,8 +14,8 @@ public class SharedGallery extends Application {
 	public SharedGallery() {
 		window = new GalleryWindow(
 
-				new SharedGalleryContentProvider()
-				//new SharedGalleryContentProviderREST()
+				//new SharedGalleryContentProvider()
+				new SharedGalleryContentProviderREST()
 
 		);
 	}	

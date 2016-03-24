@@ -120,7 +120,8 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	 */
 	@Override
 	public void deleteAlbum(Album album) {
-		// TODO: contact servers to delete album 
+		// TODO: contact servers to delete album
+		DeleteAlbumREST.deleteAlbum(target,album.getName());
 	}
 	
 	/**

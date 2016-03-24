@@ -142,6 +142,18 @@ public class AlbumsResource {
 
     }
 
+    @DELETE
+    @Path("/{albumName}")
+    public Response deleteAlbum(@PathParam("albumName") String albumName){
+        File album = new File(MAINSOURCE+albumName);
+        if(album.isDirectory()){
+            File delAlbum = new File(album.getName().concat(".deleted"));
+            album.renameTo(delAlbum);
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
     /**
      * Represents a shared album.
      */
