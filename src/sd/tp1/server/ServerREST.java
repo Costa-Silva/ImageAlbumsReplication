@@ -33,64 +33,7 @@ public class ServerREST {
         System.err.println("REST Server ready... ");
 
 
-        startListening();
+        ServersUtils.startListening();
     }
-
-
-    private static void startListening(){
-
-        try {
-            InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
-            MulticastSocket socket = new MulticastSocket(PORT); //IOexception
-
-            socket.joinGroup(address);
-
-            System.out.println("Listening on "+MULTICASTIP+":"+PORT);
-
-            while (true){
-
-                byte[] buffer = new byte[MAXBYTESBUFFER];
-
-                DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
-
-                socket.receive(datagramPacket);
-
-                HostInfo hostInfo = new HostInfo(datagramPacket.getAddress(),datagramPacket.getPort());
-
-
-                String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
-                        datagramPacket.getLength());
-
-
-                if (mensage.equals(MYIDENTIFIER) || mensage.equals(InetAddress.getLocalHost().getHostAddress()+":8080")){
-
-                    System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
-
-                    String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080" ;
-                    buffer = myinfo.getBytes();
-
-                    datagramPacket = new DatagramPacket(buffer,buffer.length);
-
-                    datagramPacket.setAddress(hostInfo.getAddress());
-                    datagramPacket.setPort(hostInfo.getPort());
-                    socket.send(datagramPacket);
-
-                }
-
-
-
-            }
-
-
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
 
 }
