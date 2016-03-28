@@ -70,7 +70,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 
-			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
+			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
 			if(listReceived!=null) {
 				for (String album : listReceived) {
 					lst.add(new SharedAlbum(album));
@@ -155,7 +155,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		boolean success=false;
 		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 
-			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
+			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
 			if(listReceived!=null) {
 				for (String albumName : listReceived) {
 					if (albumName.equals(album.getName())) {
@@ -182,7 +182,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		boolean success=false;
 		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
 
-			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue(),entry.getKey());
+			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
 			if(listReceived!=null) {
 				for (String albumName : listReceived) {
 					if (albumName.equals(album.getName())) {

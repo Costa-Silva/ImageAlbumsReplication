@@ -255,9 +255,9 @@ public class Server {
                         datagramPacket.getLength());
 
 
-                System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
-
                 if (mensage.equals(MYIDENTIFIER) || mensage.equals(InetAddress.getLocalHost().getHostAddress()+":8080")){
+
+                    System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
 
                     String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080" ;
                     buffer = myinfo.getBytes();

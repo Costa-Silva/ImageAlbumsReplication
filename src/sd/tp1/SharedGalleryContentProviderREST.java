@@ -3,8 +3,10 @@ package sd.tp1;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import sd.tp1.client.*;
+import sd.tp1.client.ws.Server;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
@@ -17,14 +19,15 @@ import javax.ws.rs.client.WebTarget;
  */
 public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 
-	Gui gui;	
-	WebTarget target;
+	Gui gui;
+	private ClientDiscoveryREST clientDiscoveryREST;
 	SharedGalleryContentProviderREST() {
 		// TODO: code to do when shared gallery starts
-		target= ClientDiscoveryREST.getWebTarget();
+		clientDiscoveryREST = new ClientDiscoveryREST();
+		clientDiscoveryREST.checkNewConnections();
 	}
 
-	
+
 	/**
 	 *  Downcall from the GUI to register itself, so that it can be updated via upcalls.
 	 */
@@ -66,10 +69,15 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 
 		List<Album> list = new ArrayList<Album>();
 
-		for (String album: GetAlbumListREST.getAlbumList(target)) {
-			list.add(new SharedAlbum(album));
-		}
+		for (Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
 
+			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
+			if(listReceived!=null) {
+				for (String album : listReceived) {
+					list.add(new SharedAlbum(album));
+				}
+			}
+		}
 		return list;
 	}
 
@@ -82,8 +90,16 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 		// TODO: obtain remote information 
 		List<Picture> list = new ArrayList<Picture>();
 
-		for (String albumName: GetPicturesListREST.getPicturesList(target,album.getName())) {
-			list.add(new SharedPicture(albumName));
+
+		for (Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+
+			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
+			if(listReceived!=null) {
+
+				for (String albumName : GetPicturesListREST.getPicturesList(entry.getValue(), album.getName())) {
+					list.add(new SharedPicture(albumName));
+				}
+			}
 		}
 		return list;
 	}
@@ -95,11 +111,16 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	@Override
 	public byte[] getPictureData(Album album, Picture picture) {
 		// TODO: obtain remote information 
+
 		byte[] aux;
-			if((aux = GetPictureDataREST.getPictureData(target,album.getName(), picture.getName()))!=null){
+		for (Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+			if((aux = GetPictureDataREST.getPictureData(entry.getValue(), album.getName(), picture.getName()))!=null){
 				return aux;
+			}
 		}
+
 		return null;
+
 	}
 
 	/**
@@ -111,10 +132,12 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 		// TODO: contact servers to create album
 		String nome;
 
-			if ((nome = CreateAlbumREST.createAlbum(target, name)) != null) {
+		for (Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+			if ((nome = CreateAlbumREST.createAlbum(entry.getValue(), name)) != null) {
+
 				return new SharedAlbum(nome);
-				}
-		return null;
+			}
+		}return null;
 	}
 
 	/**
@@ -123,9 +146,16 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	@Override
 	public void deleteAlbum(Album album) {
 		// TODO: contact servers to delete album
-		DeleteAlbumREST.deleteAlbum(target,album.getName());
+
+
+		for(Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+
+			//if has album
+			DeleteAlbumREST.deleteAlbum(entry.getValue(), album.getName());
+		}
+
 	}
-	
+
 	/**
 	 * Add a new picture to an album.
 	 * On error this method should return null.
@@ -133,9 +163,21 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	@Override
 	public Picture uploadPicture(Album album, String name, byte[] data) {
 		// TODO: contact servers to add picture name with contents data
-		if (UploadPictureREST.uploadPicture(target,album.getName(),name,data)) {
-			return new SharedPicture(name);
+
+		boolean success=false;
+		for(Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+
+			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
+			if(listReceived!=null) {
+				for (String albumName : listReceived) {
+					if (albumName.equals(album.getName())) {
+						success = UploadPictureREST.uploadPicture(entry.getValue(),album.getName(), name,data);
+					}
+				}
+			}
 		}
+		if (success)
+			return new SharedPicture(name);
 		return null;
 	}
 
@@ -145,12 +187,30 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 	 */
 	@Override
 	public boolean deletePicture(Album album, Picture picture) {
-		// TODO: contact servers to delete picture from album 
-		DeletePictureREST.deletePicture(target,album.getName(),picture.getName());
-		return true;
+		// TODO: contact servers to delete picture from album
+
+		boolean success=false;
+		for(Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+
+			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
+			if(listReceived!=null) {
+				for (String albumName : listReceived) {
+					if (albumName.equals(album.getName())) {
+						success = DeletePictureREST.deletePicture(entry.getValue(),album.getName(),picture.getName());
+						System.out.println(success);
+					}
+				}
+
+
+			}
+
+		}
+
+
+		return success;
 	}
 
-	
+
 	/**
 	 * Represents a shared album.
 	 */

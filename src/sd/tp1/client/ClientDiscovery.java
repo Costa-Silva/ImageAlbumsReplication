@@ -44,34 +44,6 @@ public class ClientDiscovery {
     }
 
 
-    public void sendMulticast() {
-
-
-        try {
-            address = InetAddress.getByName(MULTICASTIP);
-
-            //IOexception
-
-            byte[] input = SVIDENTIFIER.getBytes();
-
-            datagramPacket = new DatagramPacket(input, input.length);
-
-            datagramPacket.setAddress(address);
-            datagramPacket.setPort(PORT);
-
-            socket.send(datagramPacket);
-
-            System.out.println("Sent Multicast");
-
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
 
     public void checkNewConnections(){
 
@@ -111,22 +83,49 @@ public class ClientDiscovery {
                         }
 
                     }
-                    //System.out.println("sai do while com o serverhashmap size a " + serverHashMap.size());
                     for (Map.Entry<String,Server> entry : serverHashMap.entrySet()){
 
-                        //System.out.println("o received host tem a entry do SHM " + entry.getKey() + " " + receivedHost.containsKey(entry.getKey()));
                         if(!receivedHost.containsKey(entry.getKey())){
                             reCheck(entry.getKey());
                         }
                     }
 
-                    //System.out.println("REPETIR PRIMEIRO WHILE");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
     }
+
+
+    public void sendMulticast() {
+
+
+        try {
+            address = InetAddress.getByName(MULTICASTIP);
+
+            //IOexception
+
+            byte[] input = SVIDENTIFIER.getBytes();
+
+            datagramPacket = new DatagramPacket(input, input.length);
+
+            datagramPacket.setAddress(address);
+            datagramPacket.setPort(PORT);
+
+            socket.send(datagramPacket);
+
+            System.out.println("Sent Multicast");
+
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void reCheck(String hostname){
     if(!recheckhosts.contains(hostname)) {

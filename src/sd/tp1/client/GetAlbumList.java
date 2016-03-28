@@ -17,7 +17,7 @@ public class GetAlbumList {
 
 
 
-    public static List<String> getAlbums(Server server ,String serverHost){
+    public static List<String> getAlbums(Server server){
         try{
 
             return server.getAlbumList();
