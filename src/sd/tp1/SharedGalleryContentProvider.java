@@ -7,6 +7,7 @@ import sd.tp1.client.DeleteAlbum;
 import sd.tp1.client.DeletePicture;
 import sd.tp1.client.GetAlbumList;
 import sd.tp1.client.GetPictureData;
+import sd.tp1.client.GetPicturesList;
 import sd.tp1.client.UploadPicture;
 import sd.tp1.client.ws.*;
 import sd.tp1.gui.GalleryContentProvider;
@@ -90,7 +91,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		List<Picture> lst = new ArrayList<Picture>();
 
 		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
-			List<String> listReceived = GetPicturesListClient.getPictures(entry.getValue(), entry.getKey(), album.getName());
+			List<String> listReceived = GetPicturesList.getPictures(entry.getValue(),album.getName());
 			if(listReceived!=null){
 				for (String picture:listReceived) {
 					lst.add(new SharedPicture(picture));
@@ -110,7 +111,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		// TODO: obtain remote information
 		byte[] aux;
 		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
-			if((aux = GetPictureData.getPictureData(entry.getValue(), entry.getKey(), album.getName(), picture.getName()))!=null){
+			if((aux = GetPictureData.getPictureData(entry.getValue(),album.getName(), picture.getName()))!=null){
 				return aux;
 			}
 		}

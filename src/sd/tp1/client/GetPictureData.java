@@ -10,7 +10,7 @@ import java.net.URL;
  */
 public class GetPictureData {
 
-    public static byte[] getPictureData(Server server,String serverHost,String albumName,String pictureName){
+    public static byte[] getPictureData(Server server,String albumName,String pictureName){
         try{
 
             return server.getPictureData(albumName,pictureName);

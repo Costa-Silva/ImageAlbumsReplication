@@ -9,10 +9,10 @@ import java.util.List;
 /**
  * Created by AntónioSilva on 18/03/2016.
  */
-public class GetPicturesListClient {
+public class GetPicturesList {
 
 
-    public static List<String> getPictures(Server server,String serverHost,String albumName){
+    public static List<String> getPictures(Server server,String albumName){
         try{
 
             return server.getPicturesList(albumName);
