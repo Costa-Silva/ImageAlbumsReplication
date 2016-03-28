@@ -20,11 +20,11 @@ import javax.ws.rs.client.WebTarget;
 public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 
 	Gui gui;
-	private ClientDiscoveryREST clientDiscoveryREST;
+	private DiscoveryClient discoveryClient;
+
 	SharedGalleryContentProviderREST() {
-		// TODO: code to do when shared gallery starts
-		clientDiscoveryREST = new ClientDiscoveryREST();
-		clientDiscoveryREST.checkNewConnections();
+		discoveryClient = new DiscoveryClient();
+		discoveryClient.checkNewConnections();
 	}
 
 
@@ -69,7 +69,7 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 
 		List<Album> list = new ArrayList<Album>();
 
-		for (Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
 			if(listReceived!=null) {
@@ -91,7 +91,7 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 		List<Picture> list = new ArrayList<Picture>();
 
 
-		for (Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+		for (Map.Entry<String,WebTarget> entry :discoveryClient.getRESTServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
 			if(listReceived!=null) {
@@ -113,7 +113,7 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 		// TODO: obtain remote information 
 
 		byte[] aux;
-		for (Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 			if((aux = GetPictureDataREST.getPictureData(entry.getValue(), album.getName(), picture.getName()))!=null){
 				return aux;
 			}
@@ -132,7 +132,7 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 		// TODO: contact servers to create album
 		String nome;
 
-		for (Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 			if ((nome = CreateAlbumREST.createAlbum(entry.getValue(), name)) != null) {
 
 				return new SharedAlbum(nome);
@@ -148,7 +148,7 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 		// TODO: contact servers to delete album
 
 
-		for(Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 
 			//if has album
 			DeleteAlbumREST.deleteAlbum(entry.getValue(), album.getName());
@@ -165,7 +165,7 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 		// TODO: contact servers to add picture name with contents data
 
 		boolean success=false;
-		for(Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
 			if(listReceived!=null) {
@@ -190,7 +190,7 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 		// TODO: contact servers to delete picture from album
 
 		boolean success=false;
-		for(Map.Entry<String,WebTarget> entry : clientDiscoveryREST.getServers().entrySet()) {
+		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
 			if(listReceived!=null) {

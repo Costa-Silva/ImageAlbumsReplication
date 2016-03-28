@@ -21,12 +21,11 @@ import sd.tp1.gui.Gui;
 public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
-	private ClientDiscovery clientDiscovery;
-
+	private DiscoveryClient discoveryClient;
 	SharedGalleryContentProvider() {
-		// TODO: code to do when shared gallery starts
-		clientDiscovery = new ClientDiscovery();
-		clientDiscovery.checkNewConnections();
+
+		discoveryClient = new DiscoveryClient();
+		discoveryClient.checkNewConnections();
 	}
 
 
@@ -66,10 +65,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Album> getListOfAlbums() {
-		// TODO: obtain remote information
 		List<Album> lst = new ArrayList<Album>();
 
-		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
 			if(listReceived!=null) {
@@ -87,10 +85,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Picture> getListOfPictures(Album album) {
-		// TODO: obtain remote information 
 		List<Picture> lst = new ArrayList<Picture>();
 
-		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			List<String> listReceived = GetPicturesList.getPictures(entry.getValue(),album.getName());
 			if(listReceived!=null){
 				for (String picture:listReceived) {
@@ -108,9 +105,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public byte[] getPictureData(Album album, Picture picture) {
-		// TODO: obtain remote information
 		byte[] aux;
-		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			if((aux = GetPictureData.getPictureData(entry.getValue(),album.getName(), picture.getName()))!=null){
 				return aux;
 			}
@@ -124,10 +120,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public Album createAlbum(String name) {
-		// TODO: contact servers to create album
 		String nome;
 
-		for (Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			if ((nome = CreateAlbum.createAlbum(entry.getValue(), name)) != null) {
 
 				return new SharedAlbum(nome);
@@ -140,8 +135,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public void deleteAlbum(Album album) {
-		// TODO: contact servers to delete album
-		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			DeleteAlbum.deleteAlbum(entry.getValue(), album.getName());
 		}
 	}
@@ -152,9 +146,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public Picture uploadPicture(Album album, String name, byte[] data) {
-		// TODO: contact servers to add picture name with contents data
 		boolean success=false;
-		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
 			if(listReceived!=null) {
@@ -179,9 +172,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public boolean deletePicture(Album album, Picture picture) {
-		// TODO: contact servers to delete picture from album
 		boolean success=false;
-		for(Map.Entry<String,Server> entry : clientDiscovery.getServers().entrySet()) {
+		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
 			if(listReceived!=null) {

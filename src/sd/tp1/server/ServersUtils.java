@@ -19,7 +19,7 @@ public class ServersUtils {
     public static final String MYIDENTIFIER = "OPENBAR";
 
 
-    public static void startListening(){
+    public static void startListening(String serverType){
 
         try {
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
@@ -48,7 +48,7 @@ public class ServersUtils {
 
                     System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
 
-                    String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080" ;
+                    String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080"+"-"+serverType ;
                     buffer = myinfo.getBytes();
 
                     datagramPacket = new DatagramPacket(buffer,buffer.length);

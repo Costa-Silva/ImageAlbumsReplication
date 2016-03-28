@@ -21,6 +21,7 @@ import java.util.List;
  */
 @WebService
 public class Server {
+    public static final String TYPE = "WS";
 
 
     private File mainDirectory;
@@ -32,6 +33,7 @@ public class Server {
     protected Server(String pathname){
         super();
         this.mainDirectory= new File(pathname);
+
     }
 
 
@@ -213,7 +215,7 @@ public class Server {
         System.err.println("FileServer started");
 
 
-        ServersUtils.startListening();
+        ServersUtils.startListening(TYPE);
     }
 
 

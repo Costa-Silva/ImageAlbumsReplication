@@ -18,7 +18,7 @@ public class ServerREST {
     public static final int PORT = 5555;
     public static final int MAXBYTESBUFFER = 65536;
     public static final String MYIDENTIFIER = "OPENBAR";
-
+    public static final String TYPE = "REST";
 
     public static void main(String[] args) throws Exception {
 
@@ -33,7 +33,7 @@ public class ServerREST {
         System.err.println("REST Server ready... ");
 
 
-        ServersUtils.startListening();
+        ServersUtils.startListening(TYPE);
     }
 
 }
