@@ -1,6 +1,7 @@
 package sd.tp1;
 import java.util.*;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import sd.tp1.client.*;
 import sd.tp1.client.CreateAlbum;
 import sd.tp1.client.DeleteAlbum;
@@ -28,6 +29,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		discoveryClient = new DiscoveryClient();
 		discoveryClient.checkNewConnections();
+
 	}
 
 
@@ -51,11 +53,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 							gui.updateAlbums();
 						}
 					}
-						try {
-							Thread.sleep(4000);
-						}catch (Exception e) {
-						}
+					try {
+						Thread.sleep(20000);
+					}catch (Exception e) {
 					}
+				}
 
 			}).start();
 		}
@@ -115,7 +117,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
 			if(listReceived!=null) {
-
 				for (String albumName : GetPicturesListREST.getPicturesList(entry.getValue(), album.getName())) {
 					list.add(new SharedPicture(albumName));
 				}
@@ -153,21 +154,47 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public Album createAlbum(String name) {
 		String nome;
+		Album album = null;
+		WebTarget target = null;
+		Server server=null;
+		long minServerSize=Integer.MAX_VALUE;
+		String type="";
 
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
-			if ((nome = CreateAlbum.createAlbum(entry.getValue(), name)) != null) {
 
-				return new SharedAlbum(nome);
+			long serverSize = ServerSize.getServerSize(entry.getValue());
+			if (serverSize < minServerSize ){
+				minServerSize = serverSize;
+				server= entry.getValue();
+				type="WS";
 			}
+
 		}
+
 		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
-			if ((nome = CreateAlbumREST.createAlbum(entry.getValue(), name)) != null) {
+			long serverSize = ServerSizeREST.getServerSize(entry.getValue());
 
-				return new SharedAlbum(nome);
+			if (serverSize < minServerSize ){
+				minServerSize = serverSize;
+				type="REST";
+				target=entry.getValue();
+			}
+
+		}
+
+		if (type.equals("REST")){
+			if ((nome = CreateAlbumREST.createAlbum(target, name)) != null) {
+
+				album = new SharedAlbum(nome);
+			}
+
+		}else if(type.equals("WS")){
+			if ((nome = CreateAlbum.createAlbum(server, name)) != null) {
+				album = new SharedAlbum(nome);
 			}
 		}
 
-		return null;
+		return album;
 	}
 
 	/**
@@ -180,7 +207,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		}
 		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 
-			//if has album
 			DeleteAlbumREST.deleteAlbum(entry.getValue(), album.getName());
 		}
 	}
@@ -192,6 +218,51 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public Picture uploadPicture(Album album, String name, byte[] data) {
 		boolean success=false;
+
+		WebTarget target = null;
+		Server server=null;
+		long minServerSize=Integer.MAX_VALUE;
+		String type="";
+
+		for (Map.Entry<String,Server> entryWS : discoveryClient.getWebServicesServers().entrySet()){
+			List<String> listOfAlbums = GetAlbumList.getAlbums(entryWS.getValue());
+
+			if(listOfAlbums!=null)
+			if (listOfAlbums.contains(album.getName())){
+				long serverSize = ServerSize.getServerSize(entryWS.getValue());
+				if (serverSize < minServerSize ){
+					minServerSize = serverSize;
+					server= entryWS.getValue();
+					type="WS";
+				}
+
+			}
+
+		}
+
+
+		for (Map.Entry<String,WebTarget> entryREST : discoveryClient.getRESTServers().entrySet()){
+			List<String> listOfAlbums = GetAlbumListREST.getAlbumList(entryREST.getValue());
+
+			if (listOfAlbums!=null)
+			if (listOfAlbums.contains(album.getName())){
+				long serverSize = ServerSizeREST.getServerSize(entryREST.getValue());
+				if (serverSize < minServerSize ){
+					minServerSize = serverSize;
+					target= entryREST.getValue();
+					type="REST";
+				}
+
+			}
+
+		}
+
+		if (type.equals("REST")){
+				success=UploadPictureREST.uploadPicture(target,album.getName(),name,data);
+		}else if(type.equals("WS")){
+			success=UploadPicture.uploadPicture(server,data,album.getName(),name);
+		}
+	/*
 		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
@@ -201,12 +272,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						success = UploadPicture.uploadPicture(entry.getValue(), data, album.getName(), name);
 					}
 				}
-
-
 			}
-
 		}
-		if (success)
+	*/	if (success)
 			return new SharedPicture(name);
 		return null;
 	}

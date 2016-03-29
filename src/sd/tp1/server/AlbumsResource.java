@@ -28,9 +28,18 @@ public class AlbumsResource {
 
 
     @GET
+    @Path("/serverBytes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getserverSpace() {
+
+      return Response.ok(mainDirectory.length()).build();
+
+    }
+
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList() {
-
 
         if (mainDirectory.isDirectory()) {
 

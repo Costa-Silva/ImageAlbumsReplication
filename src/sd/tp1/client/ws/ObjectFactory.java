@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _GetAlbumListResponse_QNAME = new QName("http://server.tp1.sd/", "getAlbumListResponse");
+    private final static QName _GetserverSpace_QNAME = new QName("http://server.tp1.sd/", "getserverSpace");
     private final static QName _UploadPicture_QNAME = new QName("http://server.tp1.sd/", "uploadPicture");
     private final static QName _GetPictureData_QNAME = new QName("http://server.tp1.sd/", "getPictureData");
     private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
@@ -34,12 +35,13 @@ public class ObjectFactory {
     private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
     private final static QName _UploadPictureResponse_QNAME = new QName("http://server.tp1.sd/", "uploadPictureResponse");
     private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
+    private final static QName _GetserverSpaceResponse_QNAME = new QName("http://server.tp1.sd/", "getserverSpaceResponse");
     private final static QName _GetPicturesListResponse_QNAME = new QName("http://server.tp1.sd/", "getPicturesListResponse");
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
     private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
     private final static QName _DeletePictureResponse_QNAME = new QName("http://server.tp1.sd/", "deletePictureResponse");
-    private final static QName _UploadPictureArg2_QNAME = new QName("", "arg2");
     private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
+    private final static QName _UploadPictureArg2_QNAME = new QName("", "arg2");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: sd.tp1.client.ws
@@ -78,6 +80,14 @@ public class ObjectFactory {
      */
     public GetPictureDataResponse createGetPictureDataResponse() {
         return new GetPictureDataResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetserverSpace }
+     * 
+     */
+    public GetserverSpace createGetserverSpace() {
+        return new GetserverSpace();
     }
 
     /**
@@ -129,6 +139,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetserverSpaceResponse }
+     * 
+     */
+    public GetserverSpaceResponse createGetserverSpaceResponse() {
+        return new GetserverSpaceResponse();
+    }
+
+    /**
      * Create an instance of {@link DeletePictureResponse }
      * 
      */
@@ -167,6 +185,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getAlbumListResponse")
     public JAXBElement<GetAlbumListResponse> createGetAlbumListResponse(GetAlbumListResponse value) {
         return new JAXBElement<GetAlbumListResponse>(_GetAlbumListResponse_QNAME, GetAlbumListResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetserverSpace }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getserverSpace")
+    public JAXBElement<GetserverSpace> createGetserverSpace(GetserverSpace value) {
+        return new JAXBElement<GetserverSpace>(_GetserverSpace_QNAME, GetserverSpace.class, null, value);
     }
 
     /**
@@ -251,6 +278,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetserverSpaceResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getserverSpaceResponse")
+    public JAXBElement<GetserverSpaceResponse> createGetserverSpaceResponse(GetserverSpaceResponse value) {
+        return new JAXBElement<GetserverSpaceResponse>(_GetserverSpaceResponse_QNAME, GetserverSpaceResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesListResponse }{@code >}}
      * 
      */
@@ -290,18 +326,18 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "arg2", scope = UploadPicture.class)
-    public JAXBElement<byte[]> createUploadPictureArg2(byte[] value) {
-        return new JAXBElement<byte[]>(_UploadPictureArg2_QNAME, byte[].class, UploadPicture.class, ((byte[]) value));
+    @XmlElementDecl(namespace = "", name = "return", scope = GetPictureDataResponse.class)
+    public JAXBElement<byte[]> createGetPictureDataResponseReturn(byte[] value) {
+        return new JAXBElement<byte[]>(_GetPictureDataResponseReturn_QNAME, byte[].class, GetPictureDataResponse.class, ((byte[]) value));
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "return", scope = GetPictureDataResponse.class)
-    public JAXBElement<byte[]> createGetPictureDataResponseReturn(byte[] value) {
-        return new JAXBElement<byte[]>(_GetPictureDataResponseReturn_QNAME, byte[].class, GetPictureDataResponse.class, ((byte[]) value));
+    @XmlElementDecl(namespace = "", name = "arg2", scope = UploadPicture.class)
+    public JAXBElement<byte[]> createUploadPictureArg2(byte[] value) {
+        return new JAXBElement<byte[]>(_UploadPictureArg2_QNAME, byte[].class, UploadPicture.class, ((byte[]) value));
     }
 
 }

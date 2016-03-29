@@ -5,6 +5,7 @@ import sd.tp1.utils.HostInfo;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.ws.rs.core.Response;
 import javax.xml.ws.Endpoint;
 import java.io.*;
 import java.net.DatagramPacket;
@@ -205,7 +206,12 @@ public class Server {
             album.renameTo(delAlbum);
         }
     }
+    @WebMethod
+    public long getserverSpace() {
 
+        return mainDirectory.length();
+
+    }
 
 
     public static void main(String args[]){
