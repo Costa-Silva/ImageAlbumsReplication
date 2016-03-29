@@ -262,19 +262,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		}else if(type.equals("WS")){
 			success=UploadPicture.uploadPicture(server,data,album.getName(),name);
 		}
-	/*
-		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
-
-			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
-			if(listReceived!=null) {
-				for (String albumName : listReceived) {
-					if (albumName.equals(album.getName())) {
-						success = UploadPicture.uploadPicture(entry.getValue(), data, album.getName(), name);
-					}
-				}
-			}
-		}
-	*/	if (success)
+		if (success)
 			return new SharedPicture(name);
 		return null;
 	}

@@ -46,7 +46,7 @@ public class DiscoveryClient {
         serversRESTHashMap = new ConcurrentHashMap<>();
         recheckhosts = new ArrayList<String>();
 
-        receivedHost = new ArrayList<String>();
+
 
         try {
             socket = new MulticastSocket();
@@ -95,7 +95,7 @@ public class DiscoveryClient {
                     socket.setSoTimeout(7000);
                     sendMulticast();
                     hasTime = true;
-
+                    receivedHost = new ArrayList<String>();
                     while(hasTime){
 
 
@@ -108,14 +108,14 @@ public class DiscoveryClient {
                             String newServerResponse = new String(datagramPacket.getData(), datagramPacket.getOffset(),
                                     datagramPacket.getLength());
                             String newServerHost = newServerResponse.split("-")[0];
-
+                            receivedHost.add(newServerHost);
                             if (newServerResponse.contains("REST")){
 
 
                                 if (serversRESTHashMap.get(newServerHost) == null) {
                                     System.out.println("Got new response from server : " + newServerHost);
                                     serversRESTHashMap.put(newServerHost, getWebTarget(newServerHost));
-                                    receivedHost.add(newServerHost);
+
                                 }
 
 
@@ -123,11 +123,9 @@ public class DiscoveryClient {
                                 if (serversWebServicesHashMap.get(newServerHost) == null) {
                                     System.out.println("Got new response from server : " + newServerHost);
                                     serversWebServicesHashMap.put(newServerHost, getWebServiceServer(newServerHost));
-                                    receivedHost.add(newServerHost);
+
                                 }
                             }
-
-
 
 
                         }catch (SocketTimeoutException e){
@@ -138,17 +136,19 @@ public class DiscoveryClient {
                         }
 
                     }
-
+                    int counter=1;
                     for (Map.Entry<String,Server> entry : serversWebServicesHashMap.entrySet()){
-
+                        System.out.println(counter++);
                         if(!receivedHost.contains(entry.getKey())){
+                            System.out.println("hey baby dont hurt me ws");
                             reCheck(entry.getKey(),"WS");
                         }
                     }
 
                     for (Map.Entry<String,WebTarget> entry : serversRESTHashMap.entrySet()){
-
+                        System.out.println(counter++);
                         if(!receivedHost.contains(entry.getKey())){
+                            System.out.println("hey baby dont hurt me rest");
                             reCheck(entry.getKey(),"REST");
                         }
                     }
@@ -166,6 +166,7 @@ public class DiscoveryClient {
 
 
     public void reCheck(String hostname,String serverType){
+        System.out.println("recheck chamado");
         if(!recheckhosts.contains(hostname)) {
             recheckhosts.add(hostname);
             new Thread(() -> {
@@ -183,7 +184,7 @@ public class DiscoveryClient {
                         reSendpak.setAddress(address);
                         reSendpak.setPort(PORT);
 
-                        socket.setSoTimeout(5000);
+                        socket.setSoTimeout(3000);
                         //socket.setTimeToLive(10);
 
                         socket.send(reSendpak);
@@ -197,6 +198,7 @@ public class DiscoveryClient {
 
                         socket.receive(reSendpak);
 
+                       // System.out.println("passou");
                         String newServerHost = new String(reSendpak.getData(), reSendpak.getOffset(),
                                 reSendpak.getLength());
 
@@ -232,12 +234,13 @@ public class DiscoveryClient {
                             serversWebServicesHashMap.remove(hostname);
                         }
 
-                        System.out.println("host not found" + hostname);
+                        System.out.println("Host not found: " + hostname);
                     } catch (Exception e) {
                         System.out.println("Erro no resocket");
                         e.printStackTrace();
                     }
                 }
+                go=false;
             }).start();
         }
 
