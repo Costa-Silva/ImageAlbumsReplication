@@ -13,6 +13,8 @@ import sd.tp1.client.ws.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
+import javax.ws.rs.client.WebTarget;
+
 /*
  * This class provides the album/picture content to the gui/main application.
  * 
@@ -65,18 +67,31 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Album> getListOfAlbums() {
-		List<Album> lst = new ArrayList<Album>();
+		List<Album> list = new ArrayList<Album>();
 
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
+			if (listReceived != null) {
+				for (String album : listReceived) {
+					list.add(new SharedAlbum(album));
+				}
+			}
+		}
+
+		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
+
+			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
 			if(listReceived!=null) {
 				for (String album : listReceived) {
-					lst.add(new SharedAlbum(album));
+					list.add(new SharedAlbum(album));
 				}
-			}else return null;
+			}
 		}
-		return lst;
+
+
+
+		return list;
 	}
 
 	/**
@@ -85,18 +100,29 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Picture> getListOfPictures(Album album) {
-		List<Picture> lst = new ArrayList<Picture>();
+		List<Picture> list = new ArrayList<Picture>();
 
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			List<String> listReceived = GetPicturesList.getPictures(entry.getValue(),album.getName());
 			if(listReceived!=null){
 				for (String picture:listReceived) {
-					lst.add(new SharedPicture(picture));
+					list.add(new SharedPicture(picture));
 				}
-			}else return null;
+			}
 		}
 
-		return lst;
+		for (Map.Entry<String,WebTarget> entry :discoveryClient.getRESTServers().entrySet()) {
+
+			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
+			if(listReceived!=null) {
+
+				for (String albumName : GetPicturesListREST.getPicturesList(entry.getValue(), album.getName())) {
+					list.add(new SharedPicture(albumName));
+				}
+			}
+		}
+
+		return list;
 	}
 
 	/**
@@ -108,6 +134,12 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		byte[] aux;
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			if((aux = GetPictureData.getPictureData(entry.getValue(),album.getName(), picture.getName()))!=null){
+				return aux;
+			}
+		}
+
+		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
+			if((aux = GetPictureDataREST.getPictureData(entry.getValue(), album.getName(), picture.getName()))!=null){
 				return aux;
 			}
 		}
@@ -127,7 +159,15 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 				return new SharedAlbum(nome);
 			}
-		}return null;
+		}
+		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
+			if ((nome = CreateAlbumREST.createAlbum(entry.getValue(), name)) != null) {
+
+				return new SharedAlbum(nome);
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -137,6 +177,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public void deleteAlbum(Album album) {
 		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			DeleteAlbum.deleteAlbum(entry.getValue(), album.getName());
+		}
+		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
+
+			//if has album
+			DeleteAlbumREST.deleteAlbum(entry.getValue(), album.getName());
 		}
 	}
 

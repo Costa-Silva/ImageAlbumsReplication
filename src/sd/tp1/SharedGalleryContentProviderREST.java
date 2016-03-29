@@ -137,7 +137,8 @@ public class SharedGalleryContentProviderREST implements GalleryContentProvider{
 
 				return new SharedAlbum(nome);
 			}
-		}return null;
+		}
+		return null;
 	}
 
 	/**
