@@ -54,7 +54,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						}
 					}
 					try {
-						Thread.sleep(20000);
+						Thread.sleep(7000);
 					}catch (Exception e) {
 					}
 				}
@@ -285,6 +285,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public boolean deletePicture(Album album, Picture picture) {
+
 		boolean success=false;
 		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
@@ -293,7 +294,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				for (String albumName : listReceived) {
 					if (albumName.equals(album.getName())) {
 						success = DeletePicture.deletePicture(entry.getValue(),album.getName(),picture.getName());
-						System.out.println(success);
 					}
 				}
 
@@ -302,10 +302,19 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		}
 
+		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 
+			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
+			if(listReceived!=null) {
+				for (String albumName : listReceived) {
+					if (albumName.equals(album.getName())) {
+						success = DeletePictureREST.deletePicture(entry.getValue(),album.getName(),picture.getName());
+					}
+				}
+			}
+		}
 
-
-		return true;
+		return success;
 	}
 
 	/**

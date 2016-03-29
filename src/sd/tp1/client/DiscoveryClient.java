@@ -11,6 +11,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,6 +45,9 @@ public class DiscoveryClient {
         serversWebServicesHashMap = new ConcurrentHashMap<>();
         serversRESTHashMap = new ConcurrentHashMap<>();
         recheckhosts = new ArrayList<String>();
+
+        receivedHost = new ArrayList<String>();
+
         try {
             socket = new MulticastSocket();
         }catch (Exception e){
@@ -90,7 +94,6 @@ public class DiscoveryClient {
                 while (true) {
                     socket.setSoTimeout(7000);
                     sendMulticast();
-                    receivedHost = new ArrayList<String>();
                     hasTime = true;
 
                     while(hasTime){
@@ -256,7 +259,6 @@ public class DiscoveryClient {
         Client client = ClientBuilder.newClient(config);
 
         WebTarget target = client.target(getBaseURI(serverHost));
-        System.out.println(target.getUri());
 
         return  target;
     }
