@@ -163,7 +163,8 @@ public class DiscoveryClient {
     public void reCheck(String hostname,String serverType) {
 
         try {
-
+            System.out.println("vou bloquear");
+            Thread.sleep(50000);
             reSendSocket.setSoTimeout(3000);
             address = InetAddress.getByName(hostname.split(":")[0]);
 
@@ -213,6 +214,8 @@ public class DiscoveryClient {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
