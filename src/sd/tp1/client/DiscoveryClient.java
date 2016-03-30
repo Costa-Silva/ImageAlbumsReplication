@@ -162,63 +162,66 @@ public class DiscoveryClient {
 
     public void reCheck(String hostname,String serverType) {
 
-        try {
-            System.out.println("vou bloquear");
-            Thread.sleep(50000);
-            reSendSocket.setSoTimeout(3000);
-            address = InetAddress.getByName(hostname.split(":")[0]);
 
-            //IOexception
+        new Thread(() -> {
 
-            byte[] input = hostname.getBytes();
+            try {
 
-            datagramPacket = new DatagramPacket(input, input.length);
-
-            datagramPacket.setAddress(address);
-            datagramPacket.setPort(Integer.parseInt(hostname.split(":")[1]));
-
-            reSendSocket.send(datagramPacket);
+               // System.out.println("blocking for testing");
+                //Thread.sleep(7000);
 
 
-            System.out.println("Sent a recheck multicast with input " + hostname);
+                reSendSocket.setSoTimeout(3000);
+
+                address = InetAddress.getByName( (hostname.split(":")[0])   );
+                byte[] input = hostname.getBytes();
+                datagramPacket = new DatagramPacket(input, input.length);
+
+                datagramPacket.setAddress(address);
+                datagramPacket.setPort(PORT);
+
+                reSendSocket.send(datagramPacket);
 
 
-            byte[] buffer = new byte[MAXBYTESBUFFER];
-
-            datagramPacket = new DatagramPacket(buffer, buffer.length);
-
-            reSendSocket.receive(datagramPacket);
+                System.out.println("Sent a recheck  with input " + hostname);
 
 
-            String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
-                    datagramPacket.getLength());
+                byte[] buffer = new byte[MAXBYTESBUFFER];
+
+                datagramPacket = new DatagramPacket(buffer, buffer.length);
+
+                reSendSocket.receive(datagramPacket);
+
+
+                String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
+                        datagramPacket.getLength());
 
 
 
-            if (newServerHost.split("-")[0].equals(hostname)) {
+                if (newServerHost.split("-")[0].equals(hostname)) {
 
-                System.out.println("Received a recheck of " + newServerHost);
+                    System.out.println("Received a recheck of " + newServerHost);
 
-            }else{
-                throw new SocketTimeoutException();
+                }else{
+                    throw new SocketTimeoutException();
+                }
+
+
+            } catch (SocketTimeoutException e) {
+                if (serverType.equals("REST")) {
+                    serversRESTHashMap.remove(hostname);
+                }else{
+                    serversWebServicesHashMap.remove(hostname);
+                }
+                System.out.println("Host not found: " + hostname);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }).start();
 
-
-        } catch (SocketTimeoutException e) {
-            if (serverType.equals("REST")) {
-                serversRESTHashMap.remove(hostname);
-            }else{
-                serversWebServicesHashMap.remove(hostname);
-            }
-            System.out.println("Host not found: " + hostname);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
-    }
 
 
 /*

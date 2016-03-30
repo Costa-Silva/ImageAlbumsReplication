@@ -47,8 +47,8 @@ public class ServersUtils {
                 if (mensage.equals(MYIDENTIFIER) || mensage.equals(InetAddress.getLocalHost().getHostAddress()+":8080")){
 
                     System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
-
                     String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080"+"-"+serverType ;
+
                     buffer = myinfo.getBytes();
 
                     datagramPacket = new DatagramPacket(buffer,buffer.length);
