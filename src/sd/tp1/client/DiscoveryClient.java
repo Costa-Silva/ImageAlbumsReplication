@@ -139,14 +139,12 @@ public class DiscoveryClient {
 
                     for (Map.Entry<String,Server> entry : serversWebServicesHashMap.entrySet()){
                         if(!receivedHost.contains(entry.getKey())){
-                            System.out.println("hey baby dont hurt me ws");
                             reCheck(entry.getKey(),"WS");
                         }
                     }
 
                     for (Map.Entry<String,WebTarget> entry : serversRESTHashMap.entrySet()){
                         if(!receivedHost.contains(entry.getKey())){
-                            System.out.println("hey baby dont hurt me rest");
                             reCheck(entry.getKey(),"REST");
                         }
                     }
