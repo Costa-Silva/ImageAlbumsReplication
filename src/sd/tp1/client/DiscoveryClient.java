@@ -29,13 +29,13 @@ public class DiscoveryClient {
 
     private DatagramPacket datagramPacket;
     private MulticastSocket socket;
+    private MulticastSocket reSendSocket;
     private InetAddress address;
     private Map<String,Server> serversWebServicesHashMap;
     private Map<String,WebTarget> serversRESTHashMap;
     private List<String> receivedHost;
 
     private List<String> recheckhosts;
-
     public DiscoveryClient() {
         init();
     }
@@ -50,6 +50,7 @@ public class DiscoveryClient {
 
         try {
             socket = new MulticastSocket();
+            reSendSocket = new MulticastSocket();
         }catch (Exception e){
             System.out.println("Error creating Socket");
         }
@@ -101,7 +102,6 @@ public class DiscoveryClient {
 
                         try {
                             byte[] buffer = new byte[MAXBYTESBUFFER];
-
                             datagramPacket = new DatagramPacket(buffer, buffer.length);
                             socket.receive(datagramPacket);
 
@@ -136,9 +136,8 @@ public class DiscoveryClient {
                         }
 
                     }
-                    int counter=1;
+
                     for (Map.Entry<String,Server> entry : serversWebServicesHashMap.entrySet()){
-                        System.out.println(counter++);
                         if(!receivedHost.contains(entry.getKey())){
                             System.out.println("hey baby dont hurt me ws");
                             reCheck(entry.getKey(),"WS");
@@ -146,7 +145,6 @@ public class DiscoveryClient {
                     }
 
                     for (Map.Entry<String,WebTarget> entry : serversRESTHashMap.entrySet()){
-                        System.out.println(counter++);
                         if(!receivedHost.contains(entry.getKey())){
                             System.out.println("hey baby dont hurt me rest");
                             reCheck(entry.getKey(),"REST");
@@ -162,13 +160,71 @@ public class DiscoveryClient {
 
 
 
+    public void reCheck(String hostname,String serverType) {
+
+        try {
+
+            reSendSocket.setSoTimeout(3000);
+            address = InetAddress.getByName(hostname.split(":")[0]);
+
+            //IOexception
+
+            byte[] input = hostname.getBytes();
+
+            datagramPacket = new DatagramPacket(input, input.length);
+
+            datagramPacket.setAddress(address);
+            datagramPacket.setPort(Integer.parseInt(hostname.split(":")[1]));
+
+            reSendSocket.send(datagramPacket);
+
+
+            System.out.println("Sent a recheck multicast with input " + hostname);
+
+
+            byte[] buffer = new byte[MAXBYTESBUFFER];
+
+            datagramPacket = new DatagramPacket(buffer, buffer.length);
+
+            reSendSocket.receive(datagramPacket);
+
+
+            String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
+                    datagramPacket.getLength());
 
 
 
-    public void reCheck(String hostname,String serverType){
+            if (newServerHost.split("-")[0].equals(hostname)) {
+
+                System.out.println("Received a recheck of " + newServerHost);
+
+            }else{
+                throw new SocketTimeoutException();
+            }
+
+
+        } catch (SocketTimeoutException e) {
+            if (serverType.equals("REST")) {
+                serversRESTHashMap.remove(hostname);
+            }else{
+                serversWebServicesHashMap.remove(hostname);
+            }
+            System.out.println("Host not found: " + hostname);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+/*
+    public void reCheck(String hostname,String serverType) throws IOException {
         System.out.println("recheck chamado");
         if(!recheckhosts.contains(hostname)) {
             recheckhosts.add(hostname);
+
+
             new Thread(() -> {
                 boolean go = true;
                 while (go) {
@@ -184,10 +240,10 @@ public class DiscoveryClient {
                         reSendpak.setAddress(address);
                         reSendpak.setPort(PORT);
 
-                        socket.setSoTimeout(3000);
+                        resendSocket.setSoTimeout(3000);
                         //socket.setTimeToLive(10);
 
-                        socket.send(reSendpak);
+                        resendSocket.send(reSendpak);
 
                         System.out.println("Sent a recheck multicast with input " + hostname);
 
@@ -196,7 +252,7 @@ public class DiscoveryClient {
 
                         reSendpak = new DatagramPacket(buffer, buffer.length);
 
-                        socket.receive(reSendpak);
+                        resendSocket.receive(reSendpak);
 
                        // System.out.println("passou");
                         String newServerHost = new String(reSendpak.getData(), reSendpak.getOffset(),
@@ -245,7 +301,7 @@ public class DiscoveryClient {
         }
 
     }
-
+*/
 
     public Map<String,WebTarget> getRESTServers(){
 
