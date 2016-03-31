@@ -48,7 +48,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					Map<String,byte[]> picturesMap = new HashMap<>();
 					for (Album album:getListOfAlbums()) {
 
-
+//sad
 						if (currentCacheSize<MAXCACHESIZE){
 							picturesMap = new HashMap<>();
 							for (Picture picture:getListOfPictures(album)) {
