@@ -47,21 +47,39 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					int currentSize=0;
 					Map<String,byte[]> picturesMap = new HashMap<>();
 					for (Album album:getListOfAlbums()) {
+
+
+
+						if (album.getName().equals("oas")){
+							//sdfsdf
+						}
 						if (currentCacheSize<MAXCACHESIZE){
 							picturesMap = new HashMap<>();
 							for (Picture picture:getListOfPictures(album)) {
+
 								if (currentCacheSize<MAXCACHESIZE){
 
 									picturesMap.put(picture.getName(),getPictureData(album,picture));
 
 								}
 
-								cache.put(album.getName(),picturesMap);
-								currentSize+=picturesMap.get(picture.getName()).length;
+								if (picturesMap != null){
+
+									cache.put(album.getName(),picturesMap);
+
+									byte[] x =picturesMap.get(picture.getName());
+
+									currentSize+=x.length;
+								}
+
+
+
 
 
 							}
-
+								if (picturesMap.size()==0){
+									cache.put(album.getName(),picturesMap);
+								}
 						}
 
 					}

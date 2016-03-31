@@ -14,10 +14,7 @@ import java.net.*;
  */
 public class ServerREST {
 
-    public static final String MULTICASTIP = "224.0.0.1";
-    public static final int PORT = 5555;
-    public static final int MAXBYTESBUFFER = 65536;
-    public static final String MYIDENTIFIER = "OPENBAR";
+
     public static final String TYPE = "REST";
 
     public static void main(String[] args) throws Exception {

@@ -23,7 +23,7 @@ import java.util.List;
 @WebService
 public class Server {
     public static final String TYPE = "WS";
-
+    public static final String MAINPATH = "."+File.separator+"src"+File.separator;
 
     private File mainDirectory;
 
@@ -33,7 +33,7 @@ public class Server {
 
     protected Server(String pathname){
         super();
-        this.mainDirectory= new File(pathname);
+        this.mainDirectory= new File(MAINPATH);
 
     }
 
@@ -70,7 +70,7 @@ public class Server {
 
             List<String> list = new ArrayList<>();
 
-            File album = new File(albumName);
+            File album = new File(mainDirectory.getAbsolutePath()+File.separator+albumName);
 
             if (album.exists()){
 
@@ -80,7 +80,7 @@ public class Server {
 
                 for (File file: files) {
 
-                    if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
+                    if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && !file.isDirectory() ){
                         list.add(file.getName());
 
                     }
@@ -100,7 +100,7 @@ public class Server {
 
         if (mainDirectory.isDirectory()){
 
-            File album = new File(albumName);
+            File album = new File(mainDirectory.getAbsolutePath()+File.separator+albumName);
 
             if (album.exists()) {
 
@@ -125,7 +125,7 @@ public class Server {
 
         if (mainDirectory.isDirectory() )  {
 
-            File album = new File(albumName);
+            File album = new File(mainDirectory.getAbsolutePath()+File.separator+albumName);
 
             if (album.exists()) {
 
@@ -158,7 +158,7 @@ public class Server {
         byte[] array;
         if (mainDirectory.isDirectory()) {
 
-            File album = new File(albumName);
+            File album = new File(mainDirectory.getAbsolutePath()+File.separator+albumName);
 
             if (album.exists()) {
 
@@ -188,8 +188,8 @@ public class Server {
 
     @WebMethod
     public String createAlbum(String name){
-        SharedAlbum sharedAlbum = new SharedAlbum(name);
-        File album = new File(sharedAlbum.getName());
+
+        File album = new File(mainDirectory.getAbsolutePath()+File.separator+name);
         if(!album.exists()){
             album.mkdir();
             return album.getName();
@@ -200,7 +200,7 @@ public class Server {
     @WebMethod
     public void deleteAlbum(String name){
 
-        File album = new File(name);
+        File album = new File(mainDirectory.getAbsolutePath()+File.separator+name);
         if(album.isDirectory()){
             File delAlbum = new File(album.getName().concat(".deleted"));
             album.renameTo(delAlbum);
@@ -224,23 +224,6 @@ public class Server {
         ServersUtils.startListening(TYPE);
     }
 
-
-
-    /**
-     * Represents a shared album.
-     */
-    static class SharedAlbum implements GalleryContentProvider.Album {
-        final String name;
-
-        SharedAlbum(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-    }
 
 
 }

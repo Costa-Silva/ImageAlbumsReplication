@@ -20,7 +20,7 @@ import java.util.List;
 @Path("/albums")
 public class AlbumsResource {
 
-    public static final String MAINSOURCE= "."+File.separator+"src"+File.separator;
+    public static final String MAINSOURCE = "."+File.separator+"src"+File.separator;
     File mainDirectory = new File(MAINSOURCE);
 
     @GET
