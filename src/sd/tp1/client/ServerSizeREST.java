@@ -10,9 +10,11 @@ import java.util.List;
  */
 public class ServerSizeREST {
 
+    private static String PATH = "/albums/";
+
     public static Long getServerSize(WebTarget target){
 
-        long size = target.path("/albums/serverBytes")
+        long size = target.path(PATH + "serverBytes")
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .get(Long.class);

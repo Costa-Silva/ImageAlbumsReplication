@@ -14,7 +14,7 @@ public class DeletePictureREST {
     private static String PATH = "/albums/";
 
     public static boolean deletePicture(WebTarget target, String albumName,String pictureName) {
-        target.path("/albums/"+albumName+"/"+pictureName)
+        target.path(PATH+albumName+"/"+pictureName)
                 .request()
                 .delete();
 
