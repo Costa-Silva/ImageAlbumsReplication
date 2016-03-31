@@ -1,5 +1,6 @@
 package sd.tp1;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import sd.tp1.client.*;
@@ -41,7 +42,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 			while (true){
 				try {
-					cache = new HashMap<>();
+					cache = new ConcurrentHashMap<>();
 					currentCacheSize=0;
 
 					for (Album album:getListOfAlbums()) {
