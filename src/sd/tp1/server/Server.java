@@ -129,7 +129,7 @@ public class Server {
 
             if (album.exists()) {
 
-                File picture = new File(album.getAbsolutePath()+"/"+pictureName);
+                File picture = new File(album.getAbsolutePath()+File.separator+pictureName);
 
 
                 File delpicture = new File(picture.getAbsolutePath().concat(".deleted"));
