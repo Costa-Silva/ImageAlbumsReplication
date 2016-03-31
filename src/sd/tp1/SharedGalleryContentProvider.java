@@ -49,10 +49,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					for (Album album:getListOfAlbums()) {
 
 
-
-						if (album.getName().equals("oas")){
-							//sdfsdf
-						}
 						if (currentCacheSize<MAXCACHESIZE){
 							picturesMap = new HashMap<>();
 							for (Picture picture:getListOfPictures(album)) {
