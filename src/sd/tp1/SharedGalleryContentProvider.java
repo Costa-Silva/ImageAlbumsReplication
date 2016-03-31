@@ -24,15 +24,53 @@ import javax.ws.rs.client.WebTarget;
 public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
+	private static final int MAXCACHESIZE = 500000 ; //500kb
+	private int currentCacheSize;
 	private DiscoveryClient discoveryClient;
-	private Map<String,Map<String,Byte>> cache;
+	private Map<String,Map<String,byte[]>> cache;
 
 	SharedGalleryContentProvider() {
-		cache = new HashMap<>();
 		discoveryClient = new DiscoveryClient();
 		discoveryClient.checkNewConnections();
+		cacheValidation();
 	}
 
+	public void cacheValidation(){
+
+		new Thread(()->{
+
+			while (true){
+				try {
+					cache = new HashMap<>();
+					currentCacheSize=0;
+					for (Album album:getListOfAlbums()) {
+						if (currentCacheSize<MAXCACHESIZE){
+
+
+							for (Picture picture:getListOfPictures(album)) {
+
+								if (currentCacheSize<MAXCACHESIZE){
+									Map<String,byte[]> picturesMap = new HashMap<>();
+									picturesMap.put(picture.getName(),getPictureData(album,picture));
+
+									cache.put(album.getName(),picturesMap);
+									currentCacheSize+= picturesMap.get(picture.getName()).length;
+								}
+							}
+						}
+					}
+
+
+					Thread.sleep(10000); //2 minutos 120000
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
+
+
+		}).start();
+	}
 
 
 	/**
@@ -43,7 +81,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		if( this.gui == null ) {
 			this.gui = gui;
 			new Thread(()->{
-				for(;;) {
+
 					List<Album> l = getListOfAlbums();
 					if (l != null){
 						if (!l.isEmpty()) {
@@ -58,7 +96,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						Thread.sleep(7000);
 					}catch (Exception e) {
 					}
-				}
+
 
 			}).start();
 		}
@@ -71,10 +109,19 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public List<Album> getListOfAlbums() {
 
-
-
-
 		List<Album> list = new ArrayList<Album>();
+		if (currentCacheSize>0){
+			System.out.println("USEI CACHE PARA LIST OF ALBUMS");
+			for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
+
+				list.add(new SharedAlbum(entry.getKey()));
+			}
+
+			return list;
+		}
+
+
+		System.out.println("NAO USEI CACHE PARA LIST OF ALBUMS");
 
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
@@ -99,6 +146,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 
 		return list;
+
 	}
 
 	/**
@@ -108,6 +156,27 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public List<Picture> getListOfPictures(Album album) {
 		List<Picture> list = new ArrayList<Picture>();
+
+		if (currentCacheSize>0){
+			System.out.println("USEI CACHE PARA LIST OF PICTURES");
+
+			for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
+
+				if (entry.getKey().equals(album.getName())){
+
+					for (Map.Entry<String,byte[]> pictures :entry.getValue().entrySet()){
+						list.add( new SharedPicture(pictures.getKey()));
+					}
+
+
+				}
+
+			}
+
+			return list;
+		}
+
+
 
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			List<String> listReceived = GetPicturesList.getPictures(entry.getValue(),album.getName());
@@ -137,6 +206,30 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public byte[] getPictureData(Album album, Picture picture) {
+
+		if (currentCacheSize>0){
+			System.out.println("USEI CACHE PARA PICTURE DATA");
+
+			for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
+
+				if (entry.getKey().equals(album.getName())){
+
+					for (Map.Entry<String,byte[]> pictures :entry.getValue().entrySet()){
+
+						if (pictures.getKey().equals(picture.getName())){
+							return pictures.getValue();
+						}
+					}
+
+
+				}
+
+			}
+
+		}
+
+
+
 		byte[] aux;
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			if((aux = GetPictureData.getPictureData(entry.getValue(),album.getName(), picture.getName()))!=null){
@@ -233,15 +326,15 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			List<String> listOfAlbums = GetAlbumList.getAlbums(entryWS.getValue());
 
 			if(listOfAlbums!=null)
-			if (listOfAlbums.contains(album.getName())){
-				long serverSize = ServerSize.getServerSize(entryWS.getValue());
-				if (serverSize < minServerSize ){
-					minServerSize = serverSize;
-					server= entryWS.getValue();
-					type="WS";
-				}
+				if (listOfAlbums.contains(album.getName())){
+					long serverSize = ServerSize.getServerSize(entryWS.getValue());
+					if (serverSize < minServerSize ){
+						minServerSize = serverSize;
+						server= entryWS.getValue();
+						type="WS";
+					}
 
-			}
+				}
 
 		}
 
@@ -250,19 +343,19 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			List<String> listOfAlbums = GetAlbumListREST.getAlbumList(entryREST.getValue());
 
 			if (listOfAlbums!=null)
-			if (listOfAlbums.contains(album.getName())){
-				long serverSize = ServerSizeREST.getServerSize(entryREST.getValue());
-				if (serverSize < minServerSize ){
-					minServerSize = serverSize;
-					target= entryREST.getValue();
-					type="REST";
+				if (listOfAlbums.contains(album.getName())){
+					long serverSize = ServerSizeREST.getServerSize(entryREST.getValue());
+					if (serverSize < minServerSize ){
+						minServerSize = serverSize;
+						target= entryREST.getValue();
+						type="REST";
+					}
 				}
-			}
 
 		}
 
 		if (type.equals("REST")){
-				success=UploadPictureREST.uploadPicture(target,album.getName(),name,data);
+			success=UploadPictureREST.uploadPicture(target,album.getName(),name,data);
 		}else if(type.equals("WS")){
 			success=UploadPicture.uploadPicture(server,data,album.getName(),name);
 		}
