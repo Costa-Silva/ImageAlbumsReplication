@@ -11,10 +11,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by AntónioSilva on 23/03/2016.
@@ -24,7 +22,7 @@ public class AlbumsResource {
 
     public static final String MAINSOURCE= "./src/";
     File mainDirectory = new File(MAINSOURCE);
-
+    static final List<String> EXTENSIONS = Arrays.asList(new String[] { "tiff", "gif", "jpg", "jpeg", "png" });
 
 
     @GET
@@ -49,7 +47,7 @@ public class AlbumsResource {
 
             for (File file: files) {
 
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".")  ){
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.isDirectory()  ){
 
                     albums.add(file.getName());
                 }
@@ -70,7 +68,7 @@ public class AlbumsResource {
 
         File album = new File(MAINSOURCE+albumName);
 
-        if (!mainDirectory.isDirectory() || !album.exists() ) {
+        if (!mainDirectory.isDirectory() || !album.exists()  ) {
 
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -84,7 +82,7 @@ public class AlbumsResource {
 
             for (File file: files) {
 
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && !file.isDirectory()  ){
 
                     list.add(file.getName());
 
