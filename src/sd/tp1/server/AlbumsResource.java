@@ -20,10 +20,8 @@ import java.util.List;
 @Path("/albums")
 public class AlbumsResource {
 
-    public static final String MAINSOURCE= "./src/";
+    public static final String MAINSOURCE= "."+File.separator+"src"+File.separator;
     File mainDirectory = new File(MAINSOURCE);
-    static final List<String> EXTENSIONS = Arrays.asList(new String[] { "tiff", "gif", "jpg", "jpeg", "png" });
-
 
     @GET
     @Path("/serverBytes")
@@ -160,9 +158,9 @@ public class AlbumsResource {
 
         if (mainDirectory.isDirectory()){
 
-            File album = new File(mainDirectory.getAbsolutePath()+ "/"+ albumName);
+            File album = new File(mainDirectory.getAbsolutePath()+ File.separator+ albumName);
             if (album.exists()) {
-                File newPicture = new File(album.getAbsoluteFile()+ "/" + pictureName);
+                File newPicture = new File(album.getAbsoluteFile()+ File.separator + pictureName);
 
                 try {
                     Files.write(newPicture.toPath(),pictureData, StandardOpenOption.CREATE_NEW);

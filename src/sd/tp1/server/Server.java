@@ -48,7 +48,7 @@ public class Server {
             File[] files = mainDirectory.listFiles();
 
             for (File file: files) {
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") ){
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.isDirectory() ){
                     albumList.add(file.getName());
 
                 }
@@ -106,7 +106,7 @@ public class Server {
 
 
 
-                File newPicture = new File(album.getAbsoluteFile()+ "/" + pictureName);
+                File newPicture = new File(album.getAbsoluteFile()+ File.separator + pictureName);
 
 
                 try {
