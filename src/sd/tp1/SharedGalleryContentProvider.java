@@ -25,11 +25,12 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
 	private DiscoveryClient discoveryClient;
-	SharedGalleryContentProvider() {
+	private Map<String,Map<String,Byte>> cache;
 
+	SharedGalleryContentProvider() {
+		cache = new HashMap<>();
 		discoveryClient = new DiscoveryClient();
 		discoveryClient.checkNewConnections();
-
 	}
 
 
@@ -69,6 +70,10 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Album> getListOfAlbums() {
+
+
+
+
 		List<Album> list = new ArrayList<Album>();
 
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
@@ -252,7 +257,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					target= entryREST.getValue();
 					type="REST";
 				}
-
 			}
 
 		}
