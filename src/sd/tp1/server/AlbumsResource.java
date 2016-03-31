@@ -194,17 +194,13 @@ public class AlbumsResource {
     @Path("/{albumName}/{pictureName}")
     public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName){
         if (mainDirectory.isDirectory()) {
-
-            File album = new File(mainDirectory.getAbsolutePath() + "/" + albumName);
+            File album = new File(mainDirectory.getAbsolutePath() + File.separator + albumName);
             if (album.exists()) {
-                File picture = new File(album.getAbsolutePath()+"/"+pictureName);
-
+                File picture = new File(album.getAbsolutePath()+File.separator+pictureName);
                 File delpicture = new File(picture.getAbsolutePath().concat(".deleted"));
 
 
-
                 boolean success = picture.renameTo(delpicture);
-
                 return Response.ok().build();
 
             }
