@@ -43,6 +43,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				try {
 					cache = new HashMap<>();
 					currentCacheSize=0;
+
 					for (Album album:getListOfAlbums()) {
 						if (currentCacheSize<MAXCACHESIZE){
 
@@ -60,7 +61,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						}
 					}
 
-
+					register(gui);
 					Thread.sleep(10000); //2 minutos 120000
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -80,6 +81,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public void register(Gui gui) {
 		if( this.gui == null ) {
 			this.gui = gui;
+		}
+
+
 			new Thread(()->{
 
 					List<Album> l = getListOfAlbums();
@@ -92,14 +96,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 							gui.updateAlbums();
 						}
 					}
-					try {
-						Thread.sleep(7000);
-					}catch (Exception e) {
-					}
-
 
 			}).start();
-		}
+
 	}
 
 	/**
@@ -111,7 +110,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		List<Album> list = new ArrayList<Album>();
 		if (currentCacheSize>0){
-			System.out.println("USEI CACHE PARA LIST OF ALBUMS");
+
 			for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
 
 				list.add(new SharedAlbum(entry.getKey()));
@@ -120,8 +119,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			return list;
 		}
 
-
-		System.out.println("NAO USEI CACHE PARA LIST OF ALBUMS");
 
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
@@ -158,7 +155,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		List<Picture> list = new ArrayList<Picture>();
 
 		if (currentCacheSize>0){
-			System.out.println("USEI CACHE PARA LIST OF PICTURES");
 
 			for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
 
@@ -208,7 +204,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public byte[] getPictureData(Album album, Picture picture) {
 
 		if (currentCacheSize>0){
-			System.out.println("USEI CACHE PARA PICTURE DATA");
 
 			for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
 
