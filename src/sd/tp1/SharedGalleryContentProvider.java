@@ -25,7 +25,7 @@ import javax.ws.rs.client.WebTarget;
 public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
-	private static final int MAXCACHESIZE = 500000 ; //500kb
+	private static final int MAXCACHESIZE = 500000000 ; //500kb 500000
 	private int currentCacheSize;
 	private DiscoveryClient discoveryClient;
 	private Map<String,Map<String,byte[]>> cache;
@@ -44,22 +44,26 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				try {
 					cache = new ConcurrentHashMap<>();
 					currentCacheSize=0;
-
+					Map<String,byte[]> picturesMap = new HashMap<>();
 					for (Album album:getListOfAlbums()) {
 						if (currentCacheSize<MAXCACHESIZE){
 
 
 							for (Picture picture:getListOfPictures(album)) {
-
+								System.out.println("uca uca "+album.getName() + " oisad " + picture.getName() );
 								if (currentCacheSize<MAXCACHESIZE){
-									Map<String,byte[]> picturesMap = new HashMap<>();
+
 									picturesMap.put(picture.getName(),getPictureData(album,picture));
 
-									cache.put(album.getName(),picturesMap);
-									currentCacheSize+= picturesMap.get(picture.getName()).length;
 								}
+								cache.put(album.getName(),picturesMap);
+
+
+								currentCacheSize+= picturesMap.get(picture.getName()).length;
 							}
+
 						}
+
 					}
 
 					register(gui);
@@ -88,6 +92,12 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			new Thread(()->{
 
 					List<Album> l = getListOfAlbums();
+
+				for (Album alb:l) {
+					System.out.println("register : "+alb.getName());
+				}
+
+
 					if (l != null){
 						if (!l.isEmpty()) {
 							Iterator<Album> it = l.iterator();
@@ -211,7 +221,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				if (entry.getKey().equals(album.getName())){
 
 					for (Map.Entry<String,byte[]> pictures :entry.getValue().entrySet()){
-
 						if (pictures.getKey().equals(picture.getName())){
 							return pictures.getValue();
 						}
