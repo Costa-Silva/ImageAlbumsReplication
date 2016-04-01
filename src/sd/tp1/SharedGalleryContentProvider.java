@@ -38,7 +38,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	public void cacheValidation(){
 
+		/*
+
+		//Upfront population technique
 		new Thread(()->{
+
 
 			while (true){
 				try {
@@ -48,7 +52,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					Map<String,byte[]> picturesMap = new HashMap<>();
 					for (Album album:getListOfAlbums()) {
 
-//sad
+
 						if (currentCacheSize<MAXCACHESIZE){
 							picturesMap = new HashMap<>();
 							for (Picture picture:getListOfPictures(album)) {
@@ -90,6 +94,17 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 
 		}).start();
+
+	 */
+
+
+
+
+
+
+
+
+
 	}
 
 
