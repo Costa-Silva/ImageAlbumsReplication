@@ -46,7 +46,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			while (true) {
 				try{
 					cache = new ConcurrentHashMap<>();
-					leastAccessedAlbum = new TreeMap<String, Integer>();
+					leastAccessedAlbum = new HashMap<String, Integer>();
 					currentCacheSize=0;
 					for (Album album : getListOfAlbums()) {
 						cache.put(album.getName(),new HashMap<>());
