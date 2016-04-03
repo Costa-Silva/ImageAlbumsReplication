@@ -26,7 +26,7 @@ import javax.ws.rs.client.WebTarget;
 public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
-	private static final int MAXCACHESIZE = 200000 ; //500kb 500000
+	private static final int MAXCACHESIZE = 500000 ; //500kb 500000
 	private int currentCacheSize;
 	private DiscoveryClient discoveryClient;
 	private Map<String,Map<String,byte[]>> cache;
@@ -100,6 +100,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public List<Album> getListOfAlbums() {
 
 		List<Album> list = new ArrayList<Album>();
+		//como é que sei que a cache tem os albums todos?
 
 
 		if (cache != null && cache.size()>0 ){

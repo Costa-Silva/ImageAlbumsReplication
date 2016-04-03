@@ -130,7 +130,7 @@ public class DiscoveryClient {
                             hasTime=false;
                             System.out.println("No connections");
                         }catch (Exception e){
-                            System.out.println("Outro erro");
+                            System.out.println("Error");
                         }
 
                     }
