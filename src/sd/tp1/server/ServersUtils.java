@@ -50,7 +50,6 @@ public class ServersUtils {
                     String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080"+"-"+serverType ;
 
                     buffer = myinfo.getBytes();
-
                     datagramPacket = new DatagramPacket(buffer,buffer.length);
 
                     datagramPacket.setAddress(hostInfo.getAddress());

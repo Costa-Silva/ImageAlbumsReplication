@@ -15,7 +15,6 @@ import sd.tp1.client.UploadPicture;
 import sd.tp1.client.ws.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
-import sd.tp1.utils.AlbumInfo;
 
 import javax.ws.rs.client.WebTarget;
 
@@ -54,7 +53,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					}
 					
 					register(gui);
-					Thread.sleep(15000); //2 minutos 120000
+					Thread.sleep(8000); //2 minutos 120000
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
