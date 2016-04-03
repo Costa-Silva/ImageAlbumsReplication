@@ -93,7 +93,7 @@ public class DiscoveryClient {
             try {
                 boolean hasTime;
                 while (true) {
-                    socket.setSoTimeout(7000);
+                    socket.setSoTimeout(3000);
                     sendMulticast();
                     hasTime = true;
                     receivedHost = new ArrayList<String>();
@@ -117,8 +117,6 @@ public class DiscoveryClient {
                                     serversRESTHashMap.put(newServerHost, getWebTarget(newServerHost));
 
                                 }
-
-
                             }else{
                                 if (serversWebServicesHashMap.get(newServerHost) == null) {
                                     System.out.println("Got new response from server : " + newServerHost);
@@ -139,12 +137,15 @@ public class DiscoveryClient {
 
                     for (Map.Entry<String,Server> entry : serversWebServicesHashMap.entrySet()){
                         if(!receivedHost.contains(entry.getKey())){
+                            serversWebServicesHashMap.remove(entry.getKey());
                             reCheck(entry.getKey(),"WS");
+
                         }
                     }
 
                     for (Map.Entry<String,WebTarget> entry : serversRESTHashMap.entrySet()){
                         if(!receivedHost.contains(entry.getKey())){
+                            serversRESTHashMap.remove(entry.getKey());
                             reCheck(entry.getKey(),"REST");
                         }
                     }
@@ -162,64 +163,65 @@ public class DiscoveryClient {
 
 
         new Thread(() -> {
+            boolean handShake=false;
+            for (int i=1; i<=3 && !handShake;i++) {
+                try {
 
-            try {
+                    reSendSocket.setSoTimeout(3000);
 
-               // System.out.println("blocking for testing");
-                //Thread.sleep(7000);
+                    address = InetAddress.getByName( (hostname.split(":")[0])   );
+                    byte[] input = hostname.getBytes();
+                    datagramPacket = new DatagramPacket(input, input.length);
 
+                    datagramPacket.setAddress(address);
+                    datagramPacket.setPort(PORT);
 
-                reSendSocket.setSoTimeout(3000);
-
-                address = InetAddress.getByName( (hostname.split(":")[0])   );
-                byte[] input = hostname.getBytes();
-                datagramPacket = new DatagramPacket(input, input.length);
-
-                datagramPacket.setAddress(address);
-                datagramPacket.setPort(PORT);
-
-                reSendSocket.send(datagramPacket);
+                    reSendSocket.send(datagramPacket);
 
 
-                System.out.println("Sent a recheck  with input " + hostname);
+                    System.out.println("Sent a recheck  with input " + hostname);
 
 
-                byte[] buffer = new byte[MAXBYTESBUFFER];
+                    byte[] buffer = new byte[MAXBYTESBUFFER];
 
-                datagramPacket = new DatagramPacket(buffer, buffer.length);
+                    datagramPacket = new DatagramPacket(buffer, buffer.length);
 
-                reSendSocket.receive(datagramPacket);
+                    reSendSocket.receive(datagramPacket);
 
 
-                String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
-                        datagramPacket.getLength());
+                    String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
+                            datagramPacket.getLength());
 
 
 
-                if (newServerHost.split("-")[0].equals(hostname)) {
+                    if (newServerHost.split("-")[0].equals(hostname)) {
 
-                    System.out.println("Received a recheck of " + newServerHost);
+                        System.out.println("Received a recheck of " + newServerHost);
 
-                }else{
-                    throw new SocketTimeoutException();
+                        if (serverType.equals("REST")) {
+                            serversRESTHashMap.put(hostname,getWebTarget(hostname));
+                        }else{
+                            serversWebServicesHashMap.put(hostname,getWebServiceServer(hostname));
+                        }
+
+                        handShake=true;
+
+                    }else{
+                        throw new SocketTimeoutException();
+                    }
+
+
+                } catch (SocketTimeoutException e) {
+                    System.out.println("Host not found: " + hostname);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-
-            } catch (SocketTimeoutException e) {
-                if (serverType.equals("REST")) {
-                    serversRESTHashMap.remove(hostname);
-                }else{
-                    serversWebServicesHashMap.remove(hostname);
-                }
-                System.out.println("Host not found: " + hostname);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }).start();
 
-        }
+    }
 
     public Map<String,WebTarget> getRESTServers(){
 
