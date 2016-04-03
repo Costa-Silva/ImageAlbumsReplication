@@ -52,8 +52,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						cache.put(album.getName(),new HashMap<>());
 						leastAccessedAlbum.put(album.getName(),1);
 					}
-
-
+					
 					register(gui);
 					Thread.sleep(15000); //2 minutos 120000
 				} catch (InterruptedException e) {
@@ -207,17 +206,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				}
 
 
-				while (currentCacheSize>MAXCACHESIZE){
-					String lonelyAlbum =getMinimumAlbumName();
-
-					int albumSize=0;
-					for (Map.Entry<String,byte[]> entry: cache.remove(lonelyAlbum).entrySet()){
-							albumSize+=entry.getValue().length;
-					}
-					leastAccessedAlbum.remove(lonelyAlbum);
-					System.out.println("Cache limited exceeded. Removing "+lonelyAlbum);
-					currentCacheSize-=albumSize;
-				}
+				checkandRemovefromCache();
 
 				cache.put(entryAlbums.getKey(), picturesMap);
 
@@ -231,6 +220,20 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		return list;
 
 
+	}
+
+	private void checkandRemovefromCache() {
+		while (currentCacheSize>MAXCACHESIZE){
+			String lonelyAlbum =getMinimumAlbumName();
+
+			int albumSize=0;
+			for (Map.Entry<String,byte[]> entry: cache.remove(lonelyAlbum).entrySet()){
+				albumSize+=entry.getValue().length;
+			}
+			leastAccessedAlbum.remove(lonelyAlbum);
+			System.out.println("Cache limited exceeded. Removing "+lonelyAlbum);
+			currentCacheSize-=albumSize;
+		}
 	}
 
 	public String getMinimumAlbumName(){
@@ -429,11 +432,12 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 					if (entryAlbums.getKey().equals(album.getName())) {
 
-
+						checkandRemovefromCache();
 						Map<String, byte[]> picturesMap = entryAlbums.getValue();
 						picturesMap.put(name, data);
 						cache.put(entryAlbums.getKey(), picturesMap);
-						currentCacheSize-=data.length;
+						currentCacheSize+=data.length;
+						checkandRemovefromCache();
 					}
 				}
 			}
