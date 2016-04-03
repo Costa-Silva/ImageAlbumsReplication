@@ -1,6 +1,7 @@
 package sd.tp1;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import sd.tp1.client.*;
@@ -14,6 +15,7 @@ import sd.tp1.client.UploadPicture;
 import sd.tp1.client.ws.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
+import sd.tp1.utils.AlbumInfo;
 
 import javax.ws.rs.client.WebTarget;
 
@@ -25,15 +27,14 @@ import javax.ws.rs.client.WebTarget;
 public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 	Gui gui;
-	private static final int MAXCACHESIZE = 500000 ; //500kb 500000
+	private static final int MAXCACHESIZE = 2000 ; //500kb 500000
 	private int currentCacheSize;
 	private DiscoveryClient discoveryClient;
 	private Map<String,Map<String,byte[]>> cache;
-
+	private Map<String,Integer> leastAccessedAlbum;
 	SharedGalleryContentProvider() {
 		discoveryClient = new DiscoveryClient();
 		discoveryClient.checkNewConnections();
-
 		cacheInit();
 	}
 
@@ -42,14 +43,15 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 
 		new Thread(()-> {
-			Map<String,byte[]> picturesMap;
 			while (true) {
 				try{
-					picturesMap = new HashMap<>();
 					cache = new ConcurrentHashMap<>();
+					leastAccessedAlbum = new TreeMap<String, Integer>();
 					for (Album album : getListOfAlbums()) {
-						cache.put(album.getName(),picturesMap);
+						cache.put(album.getName(),new HashMap<>());
+						leastAccessedAlbum.put(album.getName(),1);
 					}
+
 
 					register(gui);
 					Thread.sleep(15000); //2 minutos 120000
@@ -148,6 +150,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		Map<String,byte[]> picturesMap = new HashMap<>();
 
 		if (cache!=null && cache.size()>0) {
+
+
+
 			for (Map.Entry<String, Map<String, byte[]>> entryAlbums : cache.entrySet()) {
 
 
@@ -200,13 +205,53 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 				}
 
+
+				if (currentCacheSize>MAXCACHESIZE){
+					String lonelyAlbum =getMinimumAlbumName();
+
+					int albumSize=0;
+					for (Map.Entry<String,byte[]> entry: cache.remove(lonelyAlbum).entrySet()){
+							albumSize+=entry.getValue().length;
+					}
+					leastAccessedAlbum.remove(lonelyAlbum);
+					System.out.println("Cache limited exceeded. Removing "+lonelyAlbum);
+					currentCacheSize-=albumSize;
+				}
+
 				cache.put(entryAlbums.getKey(), picturesMap);
+
+
 			}
 		}
+
+		int newCounter=leastAccessedAlbum.remove(album.getName()) +1;
+		leastAccessedAlbum.put(album.getName(),newCounter);
+
 		return list;
 
 
 	}
+
+	public String getMinimumAlbumName(){
+
+		String minimum="";
+
+		int minvalue=0;
+		for (Map.Entry<String, Integer> entry: leastAccessedAlbum.entrySet() ) {
+
+				if (entry.getValue()<minvalue){
+					minvalue=entry.getValue();
+					minimum=entry.getKey();
+				}
+
+		}
+
+		return minimum;
+	}
+
+
+
+
 
 	/**
 	 * Returns the contents of picture in album.
@@ -310,16 +355,23 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public void deleteAlbum(Album album) {
+		int albumSize=0;
 		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			DeleteAlbum.deleteAlbum(entry.getValue(), album.getName());
-			cache.remove(album.getName());
+
+
 		}
 		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
 
 			DeleteAlbumREST.deleteAlbum(entry.getValue(), album.getName());
-			cache.remove(album.getName());
-
 		}
+
+
+		if (cache.get(album.getName())!=null)
+			for (Map.Entry<String,byte[]> entryAlbum: cache.remove(album.getName()).entrySet()){
+				albumSize+=entryAlbum.getValue().length;
+			}
+		currentCacheSize-=albumSize;
 	}
 
 	/**
