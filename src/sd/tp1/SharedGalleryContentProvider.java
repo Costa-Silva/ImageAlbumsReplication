@@ -47,6 +47,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				try{
 					cache = new ConcurrentHashMap<>();
 					leastAccessedAlbum = new TreeMap<String, Integer>();
+					currentCacheSize=0;
 					for (Album album : getListOfAlbums()) {
 						cache.put(album.getName(),new HashMap<>());
 						leastAccessedAlbum.put(album.getName(),1);
@@ -206,7 +207,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				}
 
 
-				if (currentCacheSize>MAXCACHESIZE){
+				while (currentCacheSize>MAXCACHESIZE){
 					String lonelyAlbum =getMinimumAlbumName();
 
 					int albumSize=0;
@@ -271,14 +272,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 							return pictures.getValue();
 						}
 					}
-
-
 				}
-
 			}
-
 		}
-
 
 		byte[] aux;
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
@@ -345,7 +341,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				album = new SharedAlbum(nome);
 			}
 		}
-
+		leastAccessedAlbum.put(album.getName(),0);
 		cache.put(album.getName(),new HashMap<>());
 		return album;
 	}
@@ -359,10 +355,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 			DeleteAlbum.deleteAlbum(entry.getValue(), album.getName());
 
-
 		}
 		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
-
 			DeleteAlbumREST.deleteAlbum(entry.getValue(), album.getName());
 		}
 
@@ -372,6 +366,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				albumSize+=entryAlbum.getValue().length;
 			}
 		currentCacheSize-=albumSize;
+		leastAccessedAlbum.remove(album.getName());
 	}
 
 	/**
@@ -381,11 +376,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public Picture uploadPicture(Album album, String name, byte[] data) {
 		boolean success=false;
-
-
-
-
-
 		WebTarget target = null;
 		Server server=null;
 		long minServerSize=Integer.MAX_VALUE;
@@ -443,7 +433,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						Map<String, byte[]> picturesMap = entryAlbums.getValue();
 						picturesMap.put(name, data);
 						cache.put(entryAlbums.getKey(), picturesMap);
-
+						currentCacheSize-=data.length;
 					}
 				}
 			}
@@ -495,18 +485,13 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 
 					if (entryAlbums.getKey().equals(album.getName())) {
-
-
 						Map<String, byte[]> picturesMap = entryAlbums.getValue();
-						picturesMap.remove(picture.getName());
+						currentCacheSize-=picturesMap.remove(picture.getName()).length;
 						cache.put(entryAlbums.getKey(), picturesMap);
-
 					}
 				}
 			}
 		}
-
-
 		return success;
 	}
 
