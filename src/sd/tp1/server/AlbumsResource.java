@@ -180,8 +180,8 @@ public class AlbumsResource {
     @Path("/{albumName}")
     public Response deleteAlbum(@PathParam("albumName") String albumName){
         File album = new File(MAINSOURCE+albumName);
-        if(album.isDirectory()){
-            File delAlbum = new File(album.getName().concat(".deleted"));
+        if(album.isDirectory() && album.exists()){
+            File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
             album.renameTo(delAlbum);
             return Response.ok().build();
         }

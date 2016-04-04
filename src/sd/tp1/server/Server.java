@@ -138,14 +138,8 @@ public class Server {
 
 
                             boolean success = picture.renameTo(delpicture);
-                            System.out.println(success);
 
                             return success;
-
-
-
-
-
             }
         }
         return true;
@@ -202,7 +196,7 @@ public class Server {
 
         File album = new File(mainDirectory.getAbsolutePath()+File.separator+name);
         if(album.isDirectory()){
-            File delAlbum = new File(album.getName().concat(".deleted"));
+            File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
             album.renameTo(delAlbum);
         }
     }
