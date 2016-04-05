@@ -131,9 +131,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				}
 			}
 		}
-
-
-
 		return list;
 
 	}

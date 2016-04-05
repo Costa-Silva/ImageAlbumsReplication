@@ -35,7 +35,6 @@ public class DiscoveryClient {
     private Map<String,WebTarget> serversRESTHashMap;
     private List<String> receivedHost;
 
-    private List<String> recheckhosts;
     public DiscoveryClient() {
         init();
     }
@@ -44,9 +43,6 @@ public class DiscoveryClient {
 
         serversWebServicesHashMap = new ConcurrentHashMap<>();
         serversRESTHashMap = new ConcurrentHashMap<>();
-        recheckhosts = new ArrayList<String>();
-
-
 
         try {
             socket = new MulticastSocket();

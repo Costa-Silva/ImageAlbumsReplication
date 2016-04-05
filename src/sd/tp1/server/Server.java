@@ -1,5 +1,6 @@
 package sd.tp1.server;
 
+import com.sun.xml.internal.ws.server.ServerRtException;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.utils.HostInfo;
 
@@ -8,10 +9,7 @@ import javax.jws.WebService;
 import javax.ws.rs.core.Response;
 import javax.xml.ws.Endpoint;
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -88,7 +86,23 @@ public class Server {
     public static void main(String args[]){
 
         String path = args.length > 0 ? args[0] : ".";
-        Endpoint.publish("http://0.0.0.0:8080/FileServer", new Server(path));
+
+        boolean success=false;
+
+        int port = 8080;
+
+
+        while (!success) {
+            try {
+                Endpoint.publish("http://0.0.0.0:"+port+"/", new Server(path));
+                success=true;
+            } catch (ServerRtException e) {
+                port++;
+            }
+
+        }
+
+
         System.err.println("FileServer started");
 
         ServersUtils.startListening(TYPE);
