@@ -11,8 +11,6 @@ import java.util.List;
 public class DeleteAlbumREST {
     private static String PATH = "/albums/";
     public static void deleteAlbum(WebTarget target, String albumName) {
-        target.path(PATH+albumName)
-                .request()
-                .delete();
+        target.path(PATH+albumName).request().delete();
     }
 }

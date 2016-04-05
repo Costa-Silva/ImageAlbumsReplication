@@ -2,6 +2,7 @@ package sd.tp1.client;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,17 +13,16 @@ public class DeletePictureREST {
 
 
     private static String PATH = "/albums/";
-
+    private static int OK = 200;
     public static boolean deletePicture(WebTarget target, String albumName,String pictureName) {
-        target.path(PATH+albumName+"/"+pictureName)
+
+       Response response = target.path(PATH+albumName+"/"+pictureName)
                 .request()
                 .delete();
 
-        List<String> list = target.path(PATH+albumName)
-                .request()
-                .accept(MediaType.APPLICATION_JSON)
-                .get(ArrayList.class);
-
-        return !list.contains(pictureName);
+        if (response.getStatus()==OK){
+            return true;
+        }
+        return false;
     }
 }

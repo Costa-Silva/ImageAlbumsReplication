@@ -40,171 +40,48 @@ public class Server {
 
     @WebMethod
     public List<String> getAlbumList(){
-
-        if (mainDirectory.isDirectory()) {
-
-            List<String> albumList = new ArrayList<>();
-
-            File[] files = mainDirectory.listFiles();
-
-            for (File file: files) {
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.isDirectory() ){
-                    albumList.add(file.getName());
-
-                }
-
-            }
-
-            return  albumList;
-        }
-        return null;
-
+        return ServersUtils.getAlbumList();
     }
 
     @WebMethod
     public List<String> getPicturesList(String albumName){
 
-
-
-        if (mainDirectory.isDirectory()) {
-
-            List<String> list = new ArrayList<>();
-
-            File album = new File(mainDirectory.getAbsolutePath()+File.separator+albumName);
-
-            if (album.exists()){
-
-                File albumDir = new File(album.getAbsolutePath());
-
-                File[] files = albumDir.listFiles();
-
-                for (File file: files) {
-
-                    if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && !file.isDirectory() ){
-                        list.add(file.getName());
-
-                    }
-
-
-                }
-
-            }
-
-            return list;
-        }
-        return null;
+        return ServersUtils.getPicturesList(albumName);
     }
 
     @WebMethod
     public boolean uploadPicture(String albumName,String pictureName, byte[] pictureData){
 
-        if (mainDirectory.isDirectory()){
-
-            File album = new File(mainDirectory.getAbsolutePath()+File.separator+albumName);
-
-            if (album.exists()) {
-
-
-
-                File newPicture = new File(album.getAbsoluteFile()+ File.separator + pictureName);
-
-
-                try {
-                    Files.write(newPicture.toPath(),pictureData,StandardOpenOption.CREATE_NEW);
-                    return newPicture.exists();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return false;
+        return ServersUtils.uploadPicture(albumName,pictureName,pictureData);
     }
 
     @WebMethod
     public boolean deletePicture(String albumName,String pictureName){
 
-        if (mainDirectory.isDirectory() )  {
-
-            File album = new File(mainDirectory.getAbsolutePath()+File.separator+albumName);
-
-            if (album.exists()) {
-
-                File picture = new File(album.getAbsolutePath()+File.separator+pictureName);
-
-
-                File delpicture = new File(picture.getAbsolutePath().concat(".deleted"));
-
-                System.out.println(delpicture.getAbsolutePath());
-
-
-                            boolean success = picture.renameTo(delpicture);
-
-                            return success;
-            }
-        }
-        return true;
+        return ServersUtils.deletePicture(albumName,pictureName);
     }
-
-
 
     @WebMethod
     public byte[] getPictureData(String albumName,String picture) {
-        byte[] array;
-        if (mainDirectory.isDirectory()) {
 
-            File album = new File(mainDirectory.getAbsolutePath()+File.separator+albumName);
-
-            if (album.exists()) {
-
-                File albumDir = new File(album.getAbsolutePath());
-
-                File[] files = albumDir.listFiles();
-
-                for (File file : files) {
-                    if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.getName().equals(picture)) {
-
-                        try {
-                            RandomAccessFile f = new RandomAccessFile(file, "r");
-                            array = new byte[(int) f.length()];
-
-                            f.readFully(array);
-                            return array;
-
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
+        return ServersUtils.getPictureData(albumName,picture);
     }
 
     @WebMethod
-    public String createAlbum(String name){
+    public String createAlbum(String albumName){
 
-        File album = new File(mainDirectory.getAbsolutePath()+File.separator+name);
-        if(!album.exists()){
-            album.mkdir();
-            return album.getName();
-        }
-        return null;
+        return ServersUtils.createAlbum(albumName);
     }
 
     @WebMethod
-    public void deleteAlbum(String name){
+    public boolean deleteAlbum(String name){
 
-        File album = new File(mainDirectory.getAbsolutePath()+File.separator+name);
-        if(album.isDirectory()){
-            File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
-            album.renameTo(delAlbum);
-        }
+        return ServersUtils.deleteAlbum(name);
     }
     @WebMethod
     public long getserverSpace() {
 
         return mainDirectory.length();
-
     }
 
 
@@ -213,7 +90,6 @@ public class Server {
         String path = args.length > 0 ? args[0] : ".";
         Endpoint.publish("http://0.0.0.0:8080/FileServer", new Server(path));
         System.err.println("FileServer started");
-
 
         ServersUtils.startListening(TYPE);
     }

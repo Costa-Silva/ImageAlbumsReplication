@@ -15,22 +15,17 @@ import java.util.List;
 public class CreateAlbumREST {
 
     private static String PATH = "/albums/";
-
+    private static int OK = 200;
     public static String createAlbum(WebTarget target,String albumName){
 
-        Response album = target.path(PATH+albumName)
+        Response response = target.path(PATH+albumName)
                 .request()
                 .post(Entity.entity(albumName,MediaType.APPLICATION_JSON));
 
-        List<String> list = target.path(PATH)
-                .request()
-                .accept(MediaType.APPLICATION_JSON)
-                .get(ArrayList.class);
-
-
-        if(list.contains(albumName)) {
-            return list.get(list.indexOf(albumName));
-        }else return null;
+       if (response.getStatus()==OK){
+           return albumName;
+       }
+        return null;
     }
 
 }

@@ -27,33 +27,17 @@ public class AlbumsResource {
     @Path("/serverBytes")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getserverSpace() {
-
-      return Response.ok(mainDirectory.length()).build();
-
+        return Response.ok(mainDirectory.length()).build();
     }
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList() {
-
-        if (mainDirectory.isDirectory()) {
-
-            File[] files = mainDirectory.listFiles();
-
-            List<String> albums = new ArrayList<>();
-
-            for (File file: files) {
-
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.isDirectory()  ){
-
-                    albums.add(file.getName());
-                }
-
-            }
-            return Response.ok(albums).build();
+        List<String> list = ServersUtils.getAlbumList();
+        if (list!=null){
+            return Response.ok(list).build();
         }
-
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
@@ -64,88 +48,41 @@ public class AlbumsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getListPicturesAt(@PathParam("albumName") String albumName) {
 
-        File album = new File(MAINSOURCE+albumName);
+        List<String> list = ServersUtils.getPicturesList(albumName);
 
-        if (!mainDirectory.isDirectory() || !album.exists()  ) {
-
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        else{
-
-            List<String> list = new ArrayList<>();
-
-            File albumDir = new File(album.getAbsolutePath());
-
-            File[] files = albumDir.listFiles();
-
-            for (File file: files) {
-
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && !file.isDirectory()  ){
-
-                    list.add(file.getName());
-
-                }
-            }
-
-
+        if (list!=null) {
             return Response.ok(list).build();
-
         }
 
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
+
+
 
     @GET
     @Path("/{albumName}/{picture}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pic){
-        byte[] array;
+    public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName){
 
-        File album = new File(MAINSOURCE+albumName);
-
-        if (!mainDirectory.isDirectory() || !album.exists() ) {
-
-            return Response.status(Response.Status.NOT_FOUND).build();
+        byte[] array = ServersUtils.getPictureData(albumName,pictureName);
+        if (array!=null && array.length>0){
+            return Response.ok(array).build();
         }
-        else{
-
-            List<String> list = new ArrayList<>();
-
-            File albumDir = new File(album.getAbsolutePath());
-
-            File[] files = albumDir.listFiles();
-
-            for (File file: files) {
-
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.getName().equals(pic) )
-                    try {
-                        RandomAccessFile f = new RandomAccessFile(file, "r");
-                        array = new byte[(int) f.length()];
-
-                        f.readFully(array);
-
-                        return Response.ok(array).build();
-
-                    } catch (Exception e) {
-
-                    }
-            }
-
-
-            return Response.ok(null).build();
-
-        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
     @Path("/{albumName}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAlbum(@PathParam("albumName") String albumName){
-        SharedAlbum sharedAlbum = new SharedAlbum(albumName);
-        File album = new File(MAINSOURCE+sharedAlbum.getName());
-        if(!album.exists()){
-            album.mkdir();
-            return Response.ok(album.getName()).build();
+
+        String response = ServersUtils.createAlbum(albumName);
+
+
+        if (response!=null){
+            return Response.ok().build();
         }
+
         return Response.status(Response.Status.NOT_FOUND).build();
 
     }
@@ -156,74 +93,33 @@ public class AlbumsResource {
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData){
 
-        if (mainDirectory.isDirectory()){
-
-            File album = new File(mainDirectory.getAbsolutePath()+ File.separator+ albumName);
-            if (album.exists()) {
-                File newPicture = new File(album.getAbsoluteFile()+ File.separator + pictureName);
-
-                try {
-                    Files.write(newPicture.toPath(),pictureData, StandardOpenOption.CREATE_NEW);
-                    return Response.ok().build();
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        if (ServersUtils.uploadPicture(albumName,pictureName,pictureData)){
+            return Response.ok().build();
         }
-
         return Response.status(Response.Status.NOT_FOUND).build();
-
     }
     @DELETE
     @Path("/{albumName}")
     public Response deleteAlbum(@PathParam("albumName") String albumName){
-        File album = new File(MAINSOURCE+albumName);
-        if(album.isDirectory() && album.exists()){
-            File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
-            album.renameTo(delAlbum);
+
+        if (ServersUtils.deleteAlbum(albumName)){
             return Response.ok().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+
+
     @DELETE
     @Path("/{albumName}/{pictureName}")
     public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName){
-        if (mainDirectory.isDirectory()) {
-            File album = new File(mainDirectory.getAbsolutePath() + File.separator + albumName);
-            if (album.exists()) {
-                File picture = new File(album.getAbsolutePath()+File.separator+pictureName);
-                File delpicture = new File(picture.getAbsolutePath().concat(".deleted"));
 
-
-                boolean success = picture.renameTo(delpicture);
-                return Response.ok().build();
-
-            }
+        if (ServersUtils.deletePicture(albumName,pictureName)){
+            return Response.ok().build();
         }
 
         return Response.status(Response.Status.NOT_FOUND).build();
-
-
     }
-    /**
-     * Represents a shared album.
-     */
-    static class SharedAlbum implements GalleryContentProvider.Album {
-        final String name;
-
-        SharedAlbum(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-    }
-
 
 }
 
