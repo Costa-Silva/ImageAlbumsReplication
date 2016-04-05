@@ -96,7 +96,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public List<Album> getListOfAlbums() {
 
-		List<String> bothList;
 		List<Album> list = new ArrayList<Album>();
 		//como é que sei que a cache tem os albums todos?
 

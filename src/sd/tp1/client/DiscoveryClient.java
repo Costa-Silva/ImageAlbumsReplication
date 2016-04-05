@@ -89,10 +89,10 @@ public class DiscoveryClient {
             try {
                 boolean hasTime;
                 while (true) {
-                    socket.setSoTimeout(3000);
+                    socket.setSoTimeout(2000);
                     sendMulticast();
                     hasTime = true;
-                    receivedHost = new ArrayList<String>();
+                    receivedHost = new ArrayList<>();
                     while(hasTime){
 
 
