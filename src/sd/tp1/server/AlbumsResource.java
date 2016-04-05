@@ -72,12 +72,10 @@ public class AlbumsResource {
     }
 
     @POST
-    @Path("/{albumName}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAlbum(@PathParam("albumName") String albumName){
+    public Response createAlbum(String albumName){
 
         String response = ServersUtils.createAlbum(albumName);
-
 
         if (response!=null){
             return Response.ok().build();

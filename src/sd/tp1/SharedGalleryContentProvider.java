@@ -44,17 +44,21 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		new Thread(()-> {
 			while (true) {
 				try{
+
 					cache = new ConcurrentHashMap<>();
-					leastAccessedAlbum = new ConcurrentHashMap<String, Integer>();
+					leastAccessedAlbum = new ConcurrentHashMap<>();
 					resetCurrentCacheSize();
+					System.err.println("Cache cleared");
 					for (Album album : getListOfAlbums()) {
 						cache.put(album.getName(),new HashMap<>());
 						leastAccessedAlbum.put(album.getName(),1);
 					}
 					
 					register(gui);
+
 					Thread.sleep(8000); //2 minutos 120000
 				} catch (InterruptedException e) {
+					System.err.println("ERROR CACHE INIT");
 					e.printStackTrace();
 				}
 			}
@@ -99,6 +103,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public List<Album> getListOfAlbums() {
 
+		List<String> bothList;
 		List<Album> list = new ArrayList<Album>();
 		//como é que sei que a cache tem os albums todos?
 
@@ -116,6 +121,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
 			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
+
 			if (listReceived != null) {
 				for (String album : listReceived) {
 					list.add(new SharedAlbum(album));
@@ -364,9 +370,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						server= entryWS.getValue();
 						type="WS";
 					}
-
 				}
-
 		}
 
 
@@ -474,7 +478,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public synchronized void setCurrentCacheSize(int currentValue){
 		currentCacheSize+=currentValue;
 	}
-
 	public synchronized void resetCurrentCacheSize(){
 		currentCacheSize=0;
 	}

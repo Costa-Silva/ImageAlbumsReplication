@@ -18,7 +18,7 @@ public class CreateAlbumREST {
     private static int OK = 200;
     public static String createAlbum(WebTarget target,String albumName){
 
-        Response response = target.path(PATH+albumName)
+        Response response = target.path(PATH)
                 .request()
                 .post(Entity.entity(albumName,MediaType.APPLICATION_JSON));
 
