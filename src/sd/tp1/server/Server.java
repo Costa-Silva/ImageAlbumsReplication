@@ -97,7 +97,6 @@ public class Server {
                 Endpoint.publish("http://0.0.0.0:"+port+"/", new Server(path));
                 success=true;
             } catch (ServerRtException e) {
-                success=false;
                 port++;
             }
 
