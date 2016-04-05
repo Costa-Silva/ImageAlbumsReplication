@@ -18,6 +18,7 @@ import sd.tp1.gui.Gui;
 
 import javax.ws.rs.client.WebTarget;
 
+
 /*
  * This class provides the album/picture content to the gui/main application.
  * 
@@ -74,18 +75,18 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		if( this.gui == null ) {
 			this.gui = gui;
 		}
+		List<Album> l = getListOfAlbums();
 
-			List<Album> l = getListOfAlbums();
-
-			if (l != null){
-				if (!l.isEmpty()) {
-					Iterator<Album> it = l.iterator();
-					while (it.hasNext()) {
-						gui.updateAlbum(it.next());
-					}
-					gui.updateAlbums();
+		if (l != null){
+			if (!l.isEmpty()) {
+				Iterator<Album> it = l.iterator();
+				while (it.hasNext()) {
+					gui.updateAlbum(it.next());
 				}
+
 			}
+			gui.updateAlbums();
+		}
 	}
 
 	/**
