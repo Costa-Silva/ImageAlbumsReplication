@@ -55,7 +55,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						cache.put(album.getName(),new HashMap<>());
 						leastAccessedAlbum.put(album.getName(),1);
 					}
-					Thread.sleep(8000); //2 minutos 120000
+					Thread.sleep(120000); //2 minutos 120000
 				} catch (InterruptedException e) {
 					System.err.println("ERROR CACHE INIT");
 					e.printStackTrace();
