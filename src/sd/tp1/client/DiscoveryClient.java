@@ -33,6 +33,9 @@ public class DiscoveryClient {
     private InetAddress address;
     private Map<String,Server> serversWebServicesHashMap;
     private Map<String,WebTarget> serversRESTHashMap;
+
+    private Map<String,SharedGalleryClient> servers;
+
     private List<String> receivedHost;
 
     public DiscoveryClient() {
@@ -40,7 +43,7 @@ public class DiscoveryClient {
     }
 
     public void init(){
-
+        servers = new ConcurrentHashMap<>();
         serversWebServicesHashMap = new ConcurrentHashMap<>();
         serversRESTHashMap = new ConcurrentHashMap<>();
 
@@ -112,12 +115,16 @@ public class DiscoveryClient {
                                     System.out.println("Got new response from server : " + newServerHost);
                                     serversRESTHashMap.put(newServerHost, getWebTarget(newServerHost));
 
+                                    SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost));
+                                    servers.put(newServerHost,sharedGalleryClientREST);
+
                                 }
                             }else{
                                 if (serversWebServicesHashMap.get(newServerHost) == null) {
                                     System.out.println("Got new response from server : " + newServerHost);
                                     serversWebServicesHashMap.put(newServerHost, getWebServiceServer(newServerHost));
-
+                                    SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
+                                    servers.put(newServerHost,sharedGalleryClientSOAP);
                                 }
                             }
 
@@ -227,6 +234,11 @@ public class DiscoveryClient {
     public Map<String,Server> getWebServicesServers(){
 
         return serversWebServicesHashMap;
+    }
+
+    public Map<String,SharedGalleryClient> getServers(){
+
+        return servers;
     }
 
     public static WebTarget getWebTarget(String serverHost){

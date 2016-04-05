@@ -16,6 +16,7 @@ import sd.tp1.client.ws.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
 
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
 
@@ -97,6 +98,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public List<Album> getListOfAlbums() {
 
 		List<Album> list = new ArrayList<Album>();
+		List<String> listString = new ArrayList<>();
 		//como é que sei que a cache tem os albums todos?
 
 
@@ -110,26 +112,18 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		}
 
 
-		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
 
-			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
+		for (Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()) {
 
-			if (listReceived != null) {
-				for (String album : listReceived) {
-					list.add(new SharedAlbum(album));
-				}
-			}
+			listString.addAll(entry.getValue().getListOfAlbums());
+
 		}
 
-		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
-
-			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
-			if(listReceived!=null) {
-				for (String album : listReceived) {
-					list.add(new SharedAlbum(album));
-				}
-			}
+		for (String album: listString) {
+				list.add(new SharedAlbum(album));
 		}
+
+
 		return list;
 
 	}
