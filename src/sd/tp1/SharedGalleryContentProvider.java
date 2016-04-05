@@ -31,6 +31,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	private DiscoveryClient discoveryClient;
 	private Map<String,Map<String,byte[]>> cache;
 	private Map<String,Integer> leastAccessedAlbum;
+
 	SharedGalleryContentProvider() {
 		discoveryClient = new DiscoveryClient();
 		discoveryClient.checkNewConnections();
@@ -53,9 +54,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 						cache.put(album.getName(),new HashMap<>());
 						leastAccessedAlbum.put(album.getName(),1);
 					}
-
-					register(gui);
-
 					Thread.sleep(8000); //2 minutos 120000
 				} catch (InterruptedException e) {
 					System.err.println("ERROR CACHE INIT");
@@ -88,9 +86,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					gui.updateAlbums();
 				}
 			}
-
-
-
 	}
 
 	/**

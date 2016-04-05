@@ -176,6 +176,7 @@ public class ServersUtils {
                             array = new byte[(int) f.length()];
 
                             f.readFully(array);
+                            f.close();
                             return array;
 
                         } catch (Exception e) {
