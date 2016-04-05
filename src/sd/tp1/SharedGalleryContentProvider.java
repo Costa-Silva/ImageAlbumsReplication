@@ -31,6 +31,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	private DiscoveryClient discoveryClient;
 	private Map<String,Map<String,byte[]>> cache;
 	private Map<String,Integer> leastAccessedAlbum;
+
+	//gui.updateAlbums();
+
 	SharedGalleryContentProvider() {
 		discoveryClient = new DiscoveryClient();
 		discoveryClient.checkNewConnections();
@@ -76,23 +79,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		if( this.gui == null ) {
 			this.gui = gui;
 		}
-
-
-		new Thread(()->{
-
-			List<Album> l = getListOfAlbums();
-
-			if (l != null){
-				if (!l.isEmpty()) {
-					Iterator<Album> it = l.iterator();
-					while (it.hasNext()) {
-						gui.updateAlbum(it.next());
-					}
-					gui.updateAlbums();
-				}
-			}
-
-		}).start();
 
 	}
 
