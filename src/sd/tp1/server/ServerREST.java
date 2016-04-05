@@ -5,6 +5,7 @@ import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import sd.tp1.utils.HostInfo;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.*;
@@ -19,13 +20,33 @@ public class ServerREST {
 
     public static void main(String[] args) throws Exception {
 
-        URI baseUri = UriBuilder.fromUri("http://0.0.0.0/").port(8080).build();
+        boolean success=false;
+        int port = 8080;
 
         ResourceConfig config = new ResourceConfig();
 
         config.register(AlbumsResource.class);
 
-        HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
+
+
+
+        while (!success){
+
+            try{
+                URI baseUri = UriBuilder.fromUri("http://0.0.0.0/").port(port).build();
+
+                HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
+                success=true;
+            }catch (ProcessingException e){
+            success=false;
+            port++;
+            }
+
+
+
+        }
+
+
 
         System.err.println("REST Server ready... ");
 
