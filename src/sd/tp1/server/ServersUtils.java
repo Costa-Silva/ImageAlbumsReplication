@@ -240,7 +240,6 @@ public class ServersUtils {
     }
 
     private static boolean checkExtension(File f){
-            //COPIADO DO GALLERYWINDOW
             String filename = f.getName();
             int i = filename.lastIndexOf('.');
             String ext = i < 0 ? "" : filename.substring(i + 1).toLowerCase();
