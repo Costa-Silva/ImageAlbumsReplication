@@ -31,8 +31,6 @@ public class DiscoveryClient {
     private MulticastSocket socket;
     private MulticastSocket reSendSocket;
     private InetAddress address;
-    private Map<String,Server> serversWebServicesHashMap;
-    private Map<String,WebTarget> serversRESTHashMap;
 
     private Map<String,SharedGalleryClient> servers;
 
@@ -44,8 +42,6 @@ public class DiscoveryClient {
 
     public void init(){
         servers = new ConcurrentHashMap<>();
-        serversWebServicesHashMap = new ConcurrentHashMap<>();
-        serversRESTHashMap = new ConcurrentHashMap<>();
 
         try {
             socket = new MulticastSocket();
@@ -108,26 +104,20 @@ public class DiscoveryClient {
                                     datagramPacket.getLength());
                             String newServerHost = newServerResponse.split("-")[0];
                             receivedHost.add(newServerHost);
-                            if (newServerResponse.contains("REST")){
-
-
-                                if (serversRESTHashMap.get(newServerHost) == null) {
-                                    System.out.println("Got new response from server : " + newServerHost);
-                                    serversRESTHashMap.put(newServerHost, getWebTarget(newServerHost));
+                            if (servers.get(newServerHost) == null) {
+                                System.out.println("Got new response from server : " + newServerHost);
+                                if (newServerResponse.contains("REST")) {
 
                                     SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost));
-                                    servers.put(newServerHost,sharedGalleryClientREST);
+                                    servers.put(newServerHost, sharedGalleryClientREST);
 
-                                }
-                            }else{
-                                if (serversWebServicesHashMap.get(newServerHost) == null) {
-                                    System.out.println("Got new response from server : " + newServerHost);
-                                    serversWebServicesHashMap.put(newServerHost, getWebServiceServer(newServerHost));
+
+                                } else {
                                     SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
-                                    servers.put(newServerHost,sharedGalleryClientSOAP);
+                                    servers.put(newServerHost, sharedGalleryClientSOAP);
+
                                 }
                             }
-
 
                         }catch (SocketTimeoutException e){
                             hasTime=false;
@@ -138,21 +128,15 @@ public class DiscoveryClient {
 
                     }
 
-                    for (Map.Entry<String,Server> entry : serversWebServicesHashMap.entrySet()){
+                    for (Map.Entry<String,SharedGalleryClient> entry : servers.entrySet()){
+
                         if(!receivedHost.contains(entry.getKey())){
-                            serversWebServicesHashMap.remove(entry.getKey());
+                            if (servers.remove(entry.getKey()).getType().equals("REST")){
+                                reCheck(entry.getKey(),"REST");
+                            }else
                             reCheck(entry.getKey(),"WS");
-
                         }
                     }
-
-                    for (Map.Entry<String,WebTarget> entry : serversRESTHashMap.entrySet()){
-                        if(!receivedHost.contains(entry.getKey())){
-                            serversRESTHashMap.remove(entry.getKey());
-                            reCheck(entry.getKey(),"REST");
-                        }
-                    }
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -202,9 +186,13 @@ public class DiscoveryClient {
                         System.out.println("Received a recheck of " + newServerHost);
 
                         if (serverType.equals("REST")) {
-                            serversRESTHashMap.put(hostname,getWebTarget(hostname));
+
+                            SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost));
+                            servers.put(hostname,sharedGalleryClientREST);
+
                         }else{
-                            serversWebServicesHashMap.put(hostname,getWebServiceServer(hostname));
+                            SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
+                            servers.put(newServerHost, sharedGalleryClientSOAP);
                         }
 
                         handShake=true;
@@ -212,8 +200,6 @@ public class DiscoveryClient {
                     }else{
                         throw new SocketTimeoutException();
                     }
-
-
                 } catch (SocketTimeoutException e) {
                     System.out.println("Host not found: " + hostname);
                 } catch (UnknownHostException e) {
@@ -224,16 +210,6 @@ public class DiscoveryClient {
             }
         }).start();
 
-    }
-
-    public Map<String,WebTarget> getRESTServers(){
-
-        return serversRESTHashMap;
-    }
-
-    public Map<String,Server> getWebServicesServers(){
-
-        return serversWebServicesHashMap;
     }
 
     public Map<String,SharedGalleryClient> getServers(){

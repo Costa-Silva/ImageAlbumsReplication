@@ -9,9 +9,8 @@ import java.util.List;
  * Created by AntónioSilva on 05/04/2016.
  */
 public class SharedGalleryClientSOAP implements SharedGalleryClient {
-
+    private static final String TYPE= "SOAP";
     Server server;
-
 
     public SharedGalleryClientSOAP(Server server){
             this.server = server;
@@ -55,5 +54,10 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
     @Override
     public long getServerSize() {
         return ServerSize.getServerSize(server);
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 }
