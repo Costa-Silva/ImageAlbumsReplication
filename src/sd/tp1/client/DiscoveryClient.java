@@ -154,7 +154,7 @@ public class DiscoveryClient {
             for (int i=1; i<=3 && !handShake;i++) {
                 try {
 
-                    reSendSocket.setSoTimeout(3000);
+                    reSendSocket.setSoTimeout(2000);
 
                     address = InetAddress.getByName( (hostname.split(":")[0])   );
                     byte[] input = hostname.getBytes();
@@ -194,9 +194,7 @@ public class DiscoveryClient {
                             SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
                             servers.put(newServerHost, sharedGalleryClientSOAP);
                         }
-
                         handShake=true;
-
                     }else{
                         throw new SocketTimeoutException();
                     }
