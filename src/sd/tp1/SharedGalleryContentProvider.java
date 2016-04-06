@@ -76,18 +76,20 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		if( this.gui == null ) {
 			this.gui = gui;
 		}
-		List<Album> l = getListOfAlbums();
 
-		if (l != null){
-			if (!l.isEmpty()) {
-				Iterator<Album> it = l.iterator();
-				while (it.hasNext()) {
-					gui.updateAlbum(it.next());
-				}
-
+		new Thread(()-> {
+			List<Album> l = new ArrayList<>();
+			while (l.isEmpty()) {
+				l = getListOfAlbums();
+					if (!l.isEmpty()) {
+						Iterator<Album> it = l.iterator();
+						while (it.hasNext()) {
+							gui.updateAlbum(it.next());
+						}
+						gui.updateAlbums();
+					}
 			}
-			gui.updateAlbums();
-		}
+		}).start();
 	}
 
 	/**
