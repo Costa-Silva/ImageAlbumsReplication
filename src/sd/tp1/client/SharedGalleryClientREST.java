@@ -11,7 +11,7 @@ import java.util.Map;
  * Created by AntónioSilva on 05/04/2016.
  */
 public class SharedGalleryClientREST implements SharedGalleryClient {
-
+    private static final String TYPE= "REST";
     WebTarget target;
 
     public SharedGalleryClientREST(WebTarget target){
@@ -57,5 +57,10 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
     @Override
     public long getServerSize() {
         return ServerSizeREST.getServerSize(target);
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 }
