@@ -21,46 +21,41 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
 
     @Override
     public List<String> getListOfAlbums() {
-        List<String> list = new ArrayList<>();
-
-
-            List<String> listReceived = GetAlbumListREST.getAlbumList(target);
-            if(listReceived!=null) {
-                for (String album : listReceived) {
-                    list.add(album);
-                }
-            }
-
-            return list;
+        return GetAlbumListREST.getAlbumList(target);
     }
 
     @Override
     public List<String> getListOfPictures(String albumName) {
-        return null;
+        return GetPicturesListREST.getPicturesList(target,albumName);
     }
 
     @Override
     public byte[] getPictureData(String albumName, String pictureName) {
-        return new byte[0];
+        return GetPictureDataREST.getPictureData(target,albumName,pictureName);
     }
 
     @Override
     public String createAlbum(String name) {
-        return null;
+        return CreateAlbumREST.createAlbum(target,name);
     }
 
     @Override
     public void deleteAlbum(String albumName) {
-
+        DeleteAlbumREST.deleteAlbum(target,albumName);
     }
 
     @Override
-    public String uploadPicture(String albumName, String pictureName, byte[] data) {
-        return null;
+    public boolean uploadPicture(String albumName, String pictureName, byte[] data) {
+        return UploadPictureREST.uploadPicture(target,albumName,pictureName,data);
     }
 
     @Override
     public boolean deletePicture(String albumName, String pictureName) {
-        return false;
+        return DeletePictureREST.deletePicture(target,albumName,pictureName);
+    }
+
+    @Override
+    public long getServerSize() {
+        return ServerSizeREST.getServerSize(target);
     }
 }

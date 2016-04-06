@@ -12,7 +12,8 @@ public interface SharedGalleryClient {
     byte[] getPictureData(String albumName,String pictureName);
     String createAlbum(String name);
     void deleteAlbum(String albumName);
-    String uploadPicture(String albumName, String pictureName, byte[] data);
+    boolean uploadPicture(String albumName, String pictureName, byte[] data);
     boolean deletePicture(String albumName,String pictureName);
+    long getServerSize();
 
 }

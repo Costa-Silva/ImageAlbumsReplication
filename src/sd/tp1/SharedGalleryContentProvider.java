@@ -112,11 +112,11 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		}
 
 
-
+		List<String> listReceived;
 		for (Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()) {
-
-			listString.addAll(entry.getValue().getListOfAlbums());
-
+			if((listReceived = entry.getValue().getListOfAlbums())!=null) {
+				listString.addAll(listReceived);
+			}
 		}
 
 		for (String album: listString) {
@@ -157,30 +157,13 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 					} else {
 
-						for (Map.Entry<String, Server> entrySV : discoveryClient.getWebServicesServers().entrySet()) {
-							List<String> listReceived = GetPicturesList.getPictures(entrySV.getValue(), album.getName());
+						for (Map.Entry<String, SharedGalleryClient> entrySV : discoveryClient.getServers().entrySet()) {
+							List<String> listReceived = entrySV.getValue().getListOfPictures(album.getName());
 							if (listReceived != null && listReceived.size() > 0) {
 								for (String picture : listReceived) {
 
 									Picture pictureObj = new SharedPicture(picture);
 
-									byte[] pictureData = getPictureData(album, pictureObj);
-									picturesMap.put(picture, pictureData);
-
-									setCurrentCacheSize(pictureData.length);
-
-									list.add(pictureObj);
-								}
-							}
-						}
-
-						for (Map.Entry<String, WebTarget> entryWT : discoveryClient.getRESTServers().entrySet()) {
-
-							List<String> listReceived = GetAlbumListREST.getAlbumList(entryWT.getValue());
-							if (listReceived != null && listReceived.size() > 0) {
-								for (String picture : GetPicturesListREST.getPicturesList(entryWT.getValue(), album.getName())) {
-
-									Picture pictureObj = new SharedPicture(picture);
 									byte[] pictureData = getPictureData(album, pictureObj);
 									picturesMap.put(picture, pictureData);
 
@@ -200,18 +183,15 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		if (leastAccessedAlbum.get(album.getName())!=null){
 
-
-
-		int newCounter=leastAccessedAlbum.remove(album.getName()) +1;
-		leastAccessedAlbum.put(album.getName(),newCounter);
+			int newCounter=leastAccessedAlbum.remove(album.getName()) +1;
+			leastAccessedAlbum.put(album.getName(),newCounter);
 		}else{
 			leastAccessedAlbum.put(album.getName(),0);
 			cache.put(album.getName(),new HashMap<>());
+
 		}
 
 		return list;
-
-
 	}
 
 
@@ -238,14 +218,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		}
 
 		byte[] aux;
-		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
-			if((aux = GetPictureData.getPictureData(entry.getValue(),album.getName(), picture.getName()))!=null){
-				return aux;
-			}
-		}
-
-		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
-			if((aux = GetPictureDataREST.getPictureData(entry.getValue(), album.getName(), picture.getName()))!=null){
+		for (Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()) {
+			if((aux = entry.getValue().getPictureData(album.getName(),picture.getName()))!=null){
 				return aux;
 			}
 		}
@@ -260,48 +234,25 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public Album createAlbum(String name) {
 		String nome;
 		Album album = null;
-		WebTarget target = null;
-		Server server=null;
+		SharedGalleryClient client = null;
 		long minServerSize=Integer.MAX_VALUE;
-		String type="";
 
 
 
 		//LESS POPULATED SERVER
-		for (Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
+		for (Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()) {
 
-			long serverSize = ServerSize.getServerSize(entry.getValue());
+			long serverSize = entry.getValue().getServerSize();
 			if (serverSize < minServerSize ){
 				minServerSize = serverSize;
-				server= entry.getValue();
-				type="WS";
+				client =entry.getValue();
 			}
-
 		}
-
-		for (Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
-			long serverSize = ServerSizeREST.getServerSize(entry.getValue());
-
-			if (serverSize < minServerSize ){
-				minServerSize = serverSize;
-				type="REST";
-				target=entry.getValue();
-			}
-
-		}
-
-
-		if (type.equals("REST")){
-			if ((nome = CreateAlbumREST.createAlbum(target, name)) != null) {
+		if (client!=null)
+			if ((nome = client.createAlbum(name)) != null) {
 
 				album = new SharedAlbum(nome);
 			}
-
-		}else if(type.equals("WS")){
-			if ((nome = CreateAlbum.createAlbum(server, name)) != null) {
-				album = new SharedAlbum(nome);
-			}
-		}
 		leastAccessedAlbum.put(album.getName(),0);
 		cache.put(album.getName(),new HashMap<>());
 		return album;
@@ -313,15 +264,10 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public void deleteAlbum(Album album) {
 		int albumSize=0;
-		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
-			DeleteAlbum.deleteAlbum(entry.getValue(), album.getName());
+		for(Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()) {
+			entry.getValue().deleteAlbum(album.getName());
 
 		}
-		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
-			DeleteAlbumREST.deleteAlbum(entry.getValue(), album.getName());
-		}
-
-
 		if (cache.get(album.getName())!=null)
 			for (Map.Entry<String,byte[]> entryAlbum: cache.remove(album.getName()).entrySet()){
 				albumSize+=entryAlbum.getValue().length;
@@ -337,48 +283,23 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public Picture uploadPicture(Album album, String name, byte[] data) {
 		boolean success=false;
-		WebTarget target = null;
-		Server server=null;
+		SharedGalleryClient client = null;
 		long minServerSize=Integer.MAX_VALUE;
-		String type="";
 
-		for (Map.Entry<String,Server> entryWS : discoveryClient.getWebServicesServers().entrySet()){
-			List<String> listOfAlbums = GetAlbumList.getAlbums(entryWS.getValue());
+		for (Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()){
+			List<String> listOfAlbums = entry.getValue().getListOfAlbums();
 
 			if(listOfAlbums!=null)
 				if (listOfAlbums.contains(album.getName())){
-					long serverSize = ServerSize.getServerSize(entryWS.getValue());
+					long serverSize = entry.getValue().getServerSize();
 					if (serverSize < minServerSize ){
 						minServerSize = serverSize;
-						server= entryWS.getValue();
-						type="WS";
+						client = entry.getValue();
 					}
 				}
 		}
-
-
-		for (Map.Entry<String,WebTarget> entryREST : discoveryClient.getRESTServers().entrySet()){
-			List<String> listOfAlbums = GetAlbumListREST.getAlbumList(entryREST.getValue());
-
-			if (listOfAlbums!=null)
-				if (listOfAlbums.contains(album.getName())){
-					long serverSize = ServerSizeREST.getServerSize(entryREST.getValue());
-					if (serverSize < minServerSize ){
-						minServerSize = serverSize;
-						target= entryREST.getValue();
-						type="REST";
-					}
-				}
-
-		}
-
-		if (type.equals("REST")){
-			success=UploadPictureREST.uploadPicture(target,album.getName(),name,data);
-		}else if(type.equals("WS")){
-			success=UploadPicture.uploadPicture(server,data,album.getName(),name);
-		}
-
-
+			if (client!=null)
+			success=client.uploadPicture(album.getName(),name,data);
 
 		if (success) {
 
@@ -412,33 +333,17 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public boolean deletePicture(Album album, Picture picture) {
 
 		boolean success=false;
-		for(Map.Entry<String,Server> entry : discoveryClient.getWebServicesServers().entrySet()) {
+		for(Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()) {
 
-			List<String> listReceived = GetAlbumList.getAlbums(entry.getValue());
+			List<String> listReceived = entry.getValue().getListOfAlbums();
 			if(listReceived!=null) {
 				for (String albumName : listReceived) {
 					if (albumName.equals(album.getName())) {
-						success = DeletePicture.deletePicture(entry.getValue(),album.getName(),picture.getName());
-					}
-				}
-
-
-			}
-
-		}
-
-		for(Map.Entry<String,WebTarget> entry : discoveryClient.getRESTServers().entrySet()) {
-
-			List<String> listReceived = GetAlbumListREST.getAlbumList(entry.getValue());
-			if(listReceived!=null) {
-				for (String albumName : listReceived) {
-					if (albumName.equals(album.getName())) {
-						success = DeletePictureREST.deletePicture(entry.getValue(),album.getName(),picture.getName());
+						success = entry.getValue().deletePicture(albumName,picture.getName());
 					}
 				}
 			}
 		}
-
 		if (success){
 			if (cache!=null && cache.size()>0) {
 				for (Map.Entry<String, Map<String, byte[]>> entryAlbums : cache.entrySet()) {

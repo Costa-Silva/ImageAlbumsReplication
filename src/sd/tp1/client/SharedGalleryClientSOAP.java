@@ -1,10 +1,9 @@
 package sd.tp1.client;
 
-import sd.tp1.client.ws.Server;
+import sd.tp1.client.ws.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by AntónioSilva on 05/04/2016.
@@ -20,45 +19,41 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
 
     @Override
     public List<String> getListOfAlbums() {
-
-        List<String> list = new ArrayList<>();
-
-            List<String> listReceived = GetAlbumList.getAlbums(server);
-            if (listReceived != null) {
-                for (String album : listReceived) {
-                    list.add(album);
-                }
-            }
-    return list;
+        return GetAlbumList.getAlbums(server);
     }
 
     @Override
     public List<String> getListOfPictures(String albumName) {
-        return null;
+        return GetPicturesList.getPictures(server,albumName);
     }
 
     @Override
     public byte[] getPictureData(String albumName, String pictureName) {
-        return new byte[0];
+        return GetPictureData.getPictureData(server,albumName,pictureName);
     }
 
     @Override
     public String createAlbum(String name) {
-        return null;
+        return CreateAlbum.createAlbum(server,name);
     }
 
     @Override
     public void deleteAlbum(String albumName) {
-
+        DeleteAlbum.deleteAlbum(server,albumName);
     }
 
     @Override
-    public String uploadPicture(String albumName, String pictureName, byte[] data) {
-        return null;
+    public boolean uploadPicture(String albumName, String pictureName, byte[] data) {
+        return UploadPicture.uploadPicture(server,data,albumName,pictureName);
     }
 
     @Override
     public boolean deletePicture(String albumName, String pictureName) {
-        return false;
+        return DeletePicture.deletePicture(server,albumName,pictureName);
+    }
+
+    @Override
+    public long getServerSize() {
+        return ServerSize.getServerSize(server);
     }
 }
