@@ -33,6 +33,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	private DiscoveryClient discoveryClient;
 	private Map<String,Map<String,byte[]>> cache;
 	private Map<String,Integer> leastAccessedAlbum;
+	private boolean gotnewInfo;
 
 	SharedGalleryContentProvider() {
 		discoveryClient = new DiscoveryClient();
@@ -51,10 +52,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					leastAccessedAlbum = new ConcurrentHashMap<>();
 					resetCurrentCacheSize();
 					System.err.println("Cache cleared");
-					for (Album album : getListOfAlbums()) {
-						cache.put(album.getName(),new HashMap<>());
-						leastAccessedAlbum.put(album.getName(),1);
-					}
 					Thread.sleep(120000); //2 minutos 120000
 				} catch (InterruptedException e) {
 					System.err.println("ERROR CACHE INIT");
@@ -86,6 +83,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 				if (discoveryClient.newHostFound()){
 					gui.updateAlbums();
+					setGotnewInfo(true);
 				}
 				try {
 					Thread.sleep(1000);
@@ -107,16 +105,16 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		List<Album> list = new ArrayList<Album>();
 		List<String> listString = new ArrayList<>();
-		//como é que sei que a cache tem os albums todos?
 
+		if (isGotnewInfo()){
+			if (cache != null && cache.size()>0 ){
+				for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
 
-		if (cache != null && cache.size()>0 ){
-			for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
+					list.add(new SharedAlbum(entry.getKey()));
+				}
+				return list;
 
-				list.add(new SharedAlbum(entry.getKey()));
 			}
-			return list;
-
 		}
 
 		List<String> listReceived;
@@ -128,9 +126,13 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		for (String album: listString) {
 			list.add(new SharedAlbum(album));
+
+			if (cache.get(album)==null){
+				cache.put(album,new HashMap<>());
+				leastAccessedAlbum.put(album,1);
+			}
 		}
-
-
+		setGotnewInfo(false);
 		return list;
 
 	}
@@ -145,25 +147,13 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		Map<String,byte[]> picturesMap = new HashMap<>();
 
 		if (cache!=null && cache.size()>0) {
-
-
-
 			for (Map.Entry<String, Map<String, byte[]>> entryAlbums : cache.entrySet()) {
-
-
 				if (entryAlbums.getKey().equals(album.getName())) {
-
-
 					if (cache.get(entryAlbums.getKey()).size() > 0) {
-
 						for (Map.Entry<String, byte[]> pictures : entryAlbums.getValue().entrySet()) {
-
 							list.add(new SharedPicture(pictures.getKey()));
-
 						}
-
 					} else {
-
 						for (Map.Entry<String, SharedGalleryClient> entrySV : discoveryClient.getServers().entrySet()) {
 							List<String> listReceived = entrySV.getValue().getListOfPictures(album.getName());
 							if (listReceived != null && listReceived.size() > 0) {
@@ -410,6 +400,14 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		}
 
 		return minimum;
+	}
+
+	public synchronized boolean isGotnewInfo() {
+		return gotnewInfo;
+	}
+
+	public synchronized void setGotnewInfo(boolean gotnewInfo) {
+		this.gotnewInfo = gotnewInfo;
 	}
 
 
