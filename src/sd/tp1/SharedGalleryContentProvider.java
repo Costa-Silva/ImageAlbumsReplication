@@ -47,7 +47,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		new Thread(()-> {
 			while (true) {
 				try{
-
 					cache = new ConcurrentHashMap<>();
 					leastAccessedAlbum = new ConcurrentHashMap<>();
 					resetCurrentCacheSize();
@@ -76,20 +75,27 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		if( this.gui == null ) {
 			this.gui = gui;
 		}
+		newServerHost();
+	}
+
+
+	public void newServerHost(){
 
 		new Thread(()-> {
-			List<Album> l = new ArrayList<>();
-			while (l.isEmpty()) {
-				l = getListOfAlbums();
-					if (!l.isEmpty()) {
-						Iterator<Album> it = l.iterator();
-						while (it.hasNext()) {
-							gui.updateAlbum(it.next());
-						}
-						gui.updateAlbums();
-					}
+			while (true){
+
+				if (discoveryClient.newHostFound()){
+					gui.updateAlbums();
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
+
+
 	}
 
 	/**
@@ -113,7 +119,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		}
 
-
 		List<String> listReceived;
 		for (Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()) {
 			if((listReceived = entry.getValue().getListOfAlbums())!=null) {
@@ -122,7 +127,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		}
 
 		for (String album: listString) {
-				list.add(new SharedAlbum(album));
+			list.add(new SharedAlbum(album));
 		}
 
 
@@ -175,8 +180,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 								}
 							}
 						}
-						checkandRemovefromCache();
 
+						checkandRemovefromCache();
 						cache.put(entryAlbums.getKey(), picturesMap);
 					}
 				}
@@ -300,7 +305,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					}
 				}
 		}
-			if (client!=null)
+		if (client!=null)
 			success=client.uploadPicture(album.getName(),name,data);
 
 		if (success) {

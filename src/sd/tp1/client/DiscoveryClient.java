@@ -24,18 +24,15 @@ public class DiscoveryClient {
     public static final String MULTICASTIP = "224.0.0.1";
     public static final int PORT = 5555;
     public static final int MAXBYTESBUFFER = 65536;
-
     public static final String SVIDENTIFIER = "OPENBAR";
 
     private DatagramPacket datagramPacket;
     private MulticastSocket socket;
     private MulticastSocket reSendSocket;
     private InetAddress address;
-
     private Map<String,SharedGalleryClient> servers;
-
     private List<String> receivedHost;
-
+    private boolean newHostFound;
     public DiscoveryClient() {
         init();
     }
@@ -57,8 +54,6 @@ public class DiscoveryClient {
 
         try {
             address = InetAddress.getByName(MULTICASTIP);
-
-            //IOexception
 
             byte[] input = SVIDENTIFIER.getBytes();
 
@@ -110,12 +105,13 @@ public class DiscoveryClient {
 
                                     SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost));
                                     servers.put(newServerHost, sharedGalleryClientREST);
-
-
                                 } else {
                                     SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
                                     servers.put(newServerHost, sharedGalleryClientSOAP);
 
+                                }
+                                synchronized(this){
+                                    newHostFound = true;
                                 }
                             }
 
@@ -134,7 +130,7 @@ public class DiscoveryClient {
                             if (servers.remove(entry.getKey()).getType().equals("REST")){
                                 reCheck(entry.getKey(),"REST");
                             }else
-                            reCheck(entry.getKey(),"WS");
+                                reCheck(entry.getKey(),"WS");
                         }
                     }
                 }
@@ -189,12 +185,15 @@ public class DiscoveryClient {
 
                             SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost));
                             servers.put(hostname,sharedGalleryClientREST);
-
                         }else{
                             SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
                             servers.put(newServerHost, sharedGalleryClientSOAP);
                         }
                         handShake=true;
+                        synchronized(this){
+                            newHostFound = true;
+                        }
+
                     }else{
                         throw new SocketTimeoutException();
                     }
@@ -208,6 +207,16 @@ public class DiscoveryClient {
             }
         }).start();
 
+    }
+
+
+    public synchronized boolean newHostFound(){
+
+     if (newHostFound){
+         newHostFound=false;
+         return !newHostFound;
+     }else
+         return newHostFound;
     }
 
     public Map<String,SharedGalleryClient> getServers(){
