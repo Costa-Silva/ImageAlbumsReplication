@@ -175,19 +175,19 @@ public class DiscoveryClient {
                     String newServerHost = new String(datagramPacket.getData(), datagramPacket.getOffset(),
                             datagramPacket.getLength());
 
-
+                    String serverHost = newServerHost.split("-")[0];
 
                     if (newServerHost.split("-")[0].equals(hostname)) {
 
-                        System.out.println("Received a recheck of " + newServerHost);
+                        System.out.println("Received a recheck of " + serverHost);
 
                         if (serverType.equals("REST")) {
 
                             SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost));
-                            servers.put(hostname,sharedGalleryClientREST);
+                            servers.put(serverHost,sharedGalleryClientREST);
                         }else{
                             SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
-                            servers.put(newServerHost, sharedGalleryClientSOAP);
+                            servers.put(serverHost, sharedGalleryClientSOAP);
                         }
                         handShake=true;
                         synchronized(this){
