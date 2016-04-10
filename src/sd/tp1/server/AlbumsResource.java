@@ -18,7 +18,7 @@ import java.util.List;
  * Created by AntónioSilva on 23/03/2016.
  */
 @Path("/albums")
-public class AlbumsResource {
+public class AlbumsResource implements ServerRESTInterface{
 
     public static final String MAINSOURCE = "."+File.separator+"src"+File.separator;
     File mainDirectory = new File(MAINSOURCE);
@@ -30,7 +30,6 @@ public class AlbumsResource {
         return Response.ok(mainDirectory.length()).build();
     }
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList() {
@@ -40,7 +39,6 @@ public class AlbumsResource {
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
-
 
 
     @GET

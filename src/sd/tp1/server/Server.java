@@ -19,7 +19,7 @@ import java.util.List;
  * Created by AntónioSilva on 16/03/2016.
  */
 @WebService
-public class Server {
+public class Server implements ServerSOAPInterface {
     public static final String TYPE = "WS";
     public static final String MAINPATH = "."+File.separator+"src"+File.separator;
 
@@ -34,7 +34,6 @@ public class Server {
         this.mainDirectory= new File(MAINPATH);
 
     }
-
 
     @WebMethod
     public List<String> getAlbumList(){
@@ -76,6 +75,7 @@ public class Server {
 
         return ServersUtils.deleteAlbum(name);
     }
+
     @WebMethod
     public long getserverSpace() {
 
