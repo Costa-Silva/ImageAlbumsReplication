@@ -117,6 +117,28 @@ public class AlbumsResource implements ServerRESTInterface{
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @GET
+    @Path("/get/{filename}")
+    @Produces("image/jpg")
+    public Response getPicture(@PathParam("filename") String filename){
+        File file = new File(mainDirectory + "/" + filename);
+
+        try{
+            if (file.exists()){
+                Response rep = Response.ok(Files.readAllBytes(file.toPath())).build();
+                rep.getHeaders().add("Access-Control-Allow-Origin", "*");
+                return rep;
+            }else {
+                Response res = Response.status(Response.Status.NOT_FOUND).build();
+                res.getHeaders().add("Access-Control-Allow-Origin", "*");
+                return  res;
+            }
+        }catch (Exception e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+
 }
 
 
