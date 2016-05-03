@@ -34,6 +34,7 @@ public class ServerREST {
 
             try{
                 URI baseUri = UriBuilder.fromUri("http://0.0.0.0/").port(port).build();
+                System.out.println(baseUri);
                 HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
                 success=true;
             }catch (ProcessingException e){

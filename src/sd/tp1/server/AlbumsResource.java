@@ -9,6 +9,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
@@ -69,6 +72,7 @@ public class AlbumsResource implements ServerRESTInterface{
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAlbum(String albumName){
@@ -108,6 +112,7 @@ public class AlbumsResource implements ServerRESTInterface{
 
     @DELETE
     @Path("/{albumName}/{pictureName}")
+
     public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName){
 
         if (ServersUtils.deletePicture(albumName,pictureName)){
@@ -117,26 +122,48 @@ public class AlbumsResource implements ServerRESTInterface{
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
-    @GET
-    @Path("/get/{filename}")
-    @Produces("image/jpg")
-    public Response getPicture(@PathParam("filename") String filename){
-        File file = new File(mainDirectory + "/" + filename);
 
-        try{
-            if (file.exists()){
-                Response rep = Response.ok(Files.readAllBytes(file.toPath())).build();
-                rep.getHeaders().add("Access-Control-Allow-Origin", "*");
-                return rep;
-            }else {
-                Response res = Response.status(Response.Status.NOT_FOUND).build();
-                res.getHeaders().add("Access-Control-Allow-Origin", "*");
-                return  res;
+    @GET
+    @Path("/search/{pattern}/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchSomething(@PathParam("pattern") String pattern){
+
+
+        List<String> list = new ArrayList<>();
+        File[] albums = mainDirectory.listFiles();
+        for (File album:albums) {
+            if (album.isDirectory()) {
+                File[] albumContent = album.listFiles();
+
+                for (File picture : albumContent) {
+                    if (picture.isFile()) {
+
+                        if (picture.getName().contains(pattern) && picture.getName().endsWith("jpg")) {
+
+                            System.out.println(picture.getName());
+
+                            list.add("http://localhost:8080/albums/" + album.getName() + "/" + picture.getName());
+
+                        }
+                    }
+                }
             }
-        }catch (Exception e){
-            return Response.status(Response.Status.BAD_REQUEST).build();
         }
+        Response rep;
+
+
+        if (list.size()>0){
+
+            rep = Response.ok(list.toArray(new String[list.size()])).build();
+            rep.getHeaders().add("Access-Control-Allow-Origin", "*");
+            return rep;
+        }
+
+        rep = Response.status(Response.Status.NOT_FOUND).build();
+        rep.getHeaders().add("Access-Control-Allow-Origin", "*");
+        return rep;
     }
+
 
 
 }
