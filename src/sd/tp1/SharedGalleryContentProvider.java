@@ -21,7 +21,7 @@ import javax.ws.rs.client.WebTarget;
 
 
 /*
- * This class provides the album/picture content to the gui/main application.
+ * This class provides the album/picture content to the gui/f application.
  * 
  * Project 1 implementation should complete this class. 
  */

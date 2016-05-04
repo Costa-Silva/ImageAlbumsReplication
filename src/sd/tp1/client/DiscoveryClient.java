@@ -4,12 +4,16 @@ import org.glassfish.jersey.client.ClientConfig;
 import sd.tp1.client.ws.Server;
 import sd.tp1.client.ws.ServerService;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.*;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -224,17 +228,30 @@ public class DiscoveryClient {
         return servers;
     }
 
-    public static WebTarget getWebTarget(String serverHost){
-        ClientConfig config = new ClientConfig();
-        Client client = ClientBuilder.newClient(config);
+    public static WebTarget getWebTarget(String serverHost) {
+        WebTarget target = null;
+        try {
+            SSLContext sc = SSLContext.getInstance("TLSv1");
 
-        WebTarget target = client.target(getBaseURI(serverHost));
+            TrustManager[] trustAllCerts = {new InsecureClass.InsecureTrustManager()};
+            sc.init(null,trustAllCerts,new SecureRandom());
 
+            Client client = ClientBuilder.newBuilder()
+                    .hostnameVerifier(new InsecureClass.InsecureHostnameVerifier())
+                    .sslContext(sc)
+                    .build();
+
+            target = client.target(getBaseURI(serverHost));
+
+
+        }catch (Exception e){
+            System.out.print("Erro no client");
+        }
         return  target;
     }
 
     private static URI getBaseURI(String serverHost) {
-        return UriBuilder.fromUri("http://"+serverHost+"/").build();
+        return UriBuilder.fromUri("https://"+serverHost+"/").build();
     }
 
 
