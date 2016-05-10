@@ -66,17 +66,15 @@ public class ServerProxy {
                 String id= in.nextLine() ;
                 downloadImageFromIMAGEr(id);
             }
-
         }
-
     }
 
     private static void downloadImageFromIMAGEr(String id) {
-        String imgurUrl = "https://api.imgur.com/3/account/me/image/"+id;
+        String imgurUrl = "https://api.imgur.com/3/account/me/image/" + id;
         try {
-            OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
-            service.signRequest(accessToken, albumsReq);
-            final Response imagesRes = albumsReq.send();
+            OAuthRequest imageReq = new OAuthRequest(Verb.GET, imgurUrl, service);
+            service.signRequest(accessToken, imageReq);
+            final Response imagesRes = imageReq.send();
             System.out.println(imagesRes.getCode());
 
             JSONParser parser = new JSONParser();
@@ -91,8 +89,43 @@ public class ServerProxy {
 
             System.out.println(downloadLink);
 
+            downloadContentAndSave(downloadLink,imageId);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void downloadImagesFromIMAGER() {
+        try {
+            String imgurUrl = "https://api.imgur.com/3/account/me/images/";
+            OAuthRequest imagesReq = new OAuthRequest(Verb.GET, imgurUrl, service);
+            service.signRequest(accessToken, imagesReq);
+            final Response imagesRes = imagesReq.send();
+            System.out.println(imagesRes.getCode());
+            if (imagesRes.getCode() == 200){
+
+                JSONParser parser = new JSONParser();
+                JSONObject res = (JSONObject) parser.parse(imagesRes.getBody());
+                JSONArray images = (JSONArray) res.get("data");
+
+                for (int i = 0; i < images.size(); i++) {
+                    String eachImage = images.get(i).toString();
+                    String downloadLink = eachImage.split("\"link\":\"")[1].split("\",")[0].replace("\\/", "/");
+                    String imageId = downloadLink.split(".com/")[1];
+                    downloadContentAndSave(downloadLink,imageId);
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void downloadContentAndSave(String downloadLink,String imageId){
+
+        try {
 
             URL url = new URL(downloadLink);
+
             InputStream inputStream = new BufferedInputStream(url.openStream());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
@@ -106,67 +139,11 @@ public class ServerProxy {
             FileOutputStream fos = new FileOutputStream("./" + imageId);
             fos.write(response);
             fos.close();
-
-        } catch (ParseException e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void downloadImagesFromIMAGER(){
-        try {
-            String imgurUrl = "https://api.imgur.com/3/account/me/images/";
-            OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
-            service.signRequest(accessToken, albumsReq);
-            final Response imagesRes = albumsReq.send();
-            System.out.println(imagesRes.getCode());
-
-            JSONParser parser = new JSONParser();
-
-            JSONObject res = (JSONObject) parser.parse(imagesRes.getBody());
-
-            JSONArray images = (JSONArray) res.get("data");
-
-            for (int i = 0; i < images.size(); i++) {
-
-                String eachImage = images.get(i).toString();
-
-                String downloadLink = eachImage.split("\"link\":\"")[1].split("\",")[0].replace("\\/", "/");
-
-                String imageId = downloadLink.split(".com/")[1];
-
-                System.out.println(downloadLink);
-
-
-                URL url = new URL(downloadLink);
-                InputStream inputStream = new BufferedInputStream(url.openStream());
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                byte[] buf = new byte[1024];
-                int n = 0;
-                while (-1 != (n = inputStream.read(buf))) {
-                    out.write(buf, 0, n);
-                }
-                out.close();
-                inputStream.close();
-                byte[] response = out.toByteArray();
-                FileOutputStream fos = new FileOutputStream("./" + imageId);
-                fos.write(response);
-                fos.close();
-
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
