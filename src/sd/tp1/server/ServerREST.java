@@ -41,17 +41,25 @@ public class ServerREST {
 
     public static void main(String[] args) throws Exception {
 
+        //Initialize varibles
+        String jkspass = "";
+        String keypass = "";
+        String srvpass = "";
+        Scanner in = new Scanner(System.in);
+
         boolean success=false;
         int port = 8080;
 
         ResourceConfig config = new ResourceConfig();
 
-        AlbumsProxyResource albumsProxyResource = new AlbumsProxyResource();
-
+        System.out.println("Set a server password");
+        srvpass=in.nextLine();
+        AlbumsResource albumsResource = new AlbumsResource(srvpass);
         if (args.length>0){
-            config.register(AlbumsResource.class);
+            config.register(albumsResource);
         }else{
             openConnection();
+            AlbumsProxyResource albumsProxyResource = new AlbumsProxyResource(service,accessToken);
             config.register(albumsProxyResource);
         }
 
@@ -60,12 +68,6 @@ public class ServerREST {
         while (!success){
 
             try{
-
-                //Initialize varibles
-                String jkspass = "";
-                String keypass = "";
-                String srvpass = "";
-                Scanner in = new Scanner(System.in);
 
                 URI baseUri = UriBuilder.fromUri("https://0.0.0.0/").port(port).build();
                 System.out.println(baseUri);
@@ -91,14 +93,9 @@ public class ServerREST {
 
                 sslContext.init(kmf.getKeyManagers(),tmf.getTrustManagers(),new SecureRandom());
 
-                System.out.println("Set a server password");
-                srvpass=in.nextLine();
-                in.close();
-
-                ServerPassword serverPassword = new ServerPassword(srvpass);
                 HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config,sslContext);
                 success=true;
-
+                in.close();
             }catch (ProcessingException e){
                 port++;
             }
