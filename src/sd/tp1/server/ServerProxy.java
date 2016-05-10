@@ -89,6 +89,8 @@ public class ServerProxy {
                 System.out.println(downloadLink);
 
                 downloadContentAndSave(downloadLink, imageId);
+            }else {
+                System.err.println("No 200 code received");
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -115,6 +117,8 @@ public class ServerProxy {
                     String imageId = downloadLink.split(".com/")[1];
                     downloadContentAndSave(downloadLink,imageId);
                 }
+            }else {
+                System.err.println("No 200 code received");
             }
         } catch (ParseException e) {
             e.printStackTrace();
