@@ -8,13 +8,17 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+
 
 /**
  * Created by Antonio on 10/05/16.
@@ -22,18 +26,22 @@ import java.util.List;
 @Path("/albums")
 public class AlbumsProxyResource {
 
-    public static final String MAINSOURCE = "."+ File.separator+"src"+File.separator;
-    private  File mainDirectory = new File(MAINSOURCE);
-
     private OAuth20Service service;
-
     private OAuth2AccessToken accessToken;
-
-    public AlbumsProxyResource(OAuth20Service service, OAuth2AccessToken accessToken){
+    private String srvpass;
+    private Map<String,String> albumsIdName;
+    private Map<String,String> picturesIdName;
+    public AlbumsProxyResource(OAuth20Service service, OAuth2AccessToken accessToken,String srvpass){
         this.service = service;
         this.accessToken = accessToken;
+        this.srvpass= srvpass;
+        albumsIdName = new HashMap<>();
+        picturesIdName = new HashMap<>();
     }
 
+    private boolean checkPassword(String srvpass){
+        return this.srvpass.equals(srvpass);
+    }
     @GET
     @Path("/serverBytes/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -47,30 +55,41 @@ public class AlbumsProxyResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList(@PathParam("password") String password) {
 
-        String imgurUrl = "https://api.imgur.com/3/account/me/albums";
-        try {
-            OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
-            service.signRequest(accessToken, albumsReq);
-            final com.github.scribejava.core.model.Response albumsRes = albumsReq.send();
-            if (albumsRes.getCode() == 200) {
+        if (checkPassword(password)) {
+            String imgurUrl = "https://api.imgur.com/3/account/me/albums";
+            try {
+                List<String> albumsTitleList = new LinkedList<>();
+                OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
+                service.signRequest(accessToken, albumsReq);
+                final com.github.scribejava.core.model.Response albumsRes = albumsReq.send();
+                if (albumsRes.getCode() == 200) {
 
-                JSONParser parser = new JSONParser();
+                    JSONParser parser = new JSONParser();
 
-                JSONObject res = (JSONObject) parser.parse(albumsRes.getBody());
-                JSONArray images = (JSONArray) res.get("data");
+                    JSONObject res = (JSONObject) parser.parse(albumsRes.getBody());
+                    JSONArray images = (JSONArray) res.get("data");
 
-                Iterator albumsIt = images.iterator();
+                    Iterator albumsIt = images.iterator();
+                    albumsIdName.clear();
+                    while(albumsIt.hasNext()){
 
-                while(albumsIt.hasNext()){
-                    System.out.println(albumsIt.next());
+                        JSONObject objects = (JSONObject) albumsIt.next();
+                        String title = objects.get("title").toString();
+                        String albumId= objects.get("id").toString();
+                        albumsTitleList.add(title);
+                        albumsIdName.put(title,albumId);
+                    }
+                }else {
+                    System.err.println("No 200 code received");
                 }
+                if (albumsTitleList != null) {
+                    return Response.ok(albumsTitleList).build();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
 
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-
-
 
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
@@ -80,32 +99,43 @@ public class AlbumsProxyResource {
     @Path("/{albumName}/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getListPicturesAt(@PathParam("albumName") String albumName, @PathParam("password") String password) {
+        List<String> picturesList = new LinkedList<>();
 
+        if (checkPassword(password)) {
+            if (albumsIdName.get(albumName)!=null){
+                String albumUrl = "https://api.imgur.com/3/album/"+albumsIdName.get(albumName)+"/images";
+                try{
+                    OAuthRequest albumReq = new OAuthRequest(Verb.GET,albumUrl,service);
+                    service.signRequest(accessToken,albumReq);
+                    final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
+                    if (albumPRes.getCode() == 200){
+                        JSONParser parser = new JSONParser();
+                        JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
+                        System.out.println(res.toJSONString());
+                        JSONArray images = (JSONArray) res.get("data");
 
-            String albumID = albumName;
+                        Iterator albumsIt = images.iterator();
+                        while (albumsIt.hasNext()){
 
-        String albumUrl = "https://api.imgur.com/3/album/"+albumID+"/images";
-        try{
-            OAuthRequest albumReq = new OAuthRequest(Verb.GET,albumUrl,service);
-            service.signRequest(accessToken,albumReq);
-            final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
+                            JSONObject objects = (JSONObject) albumsIt.next();
+                            String title = (String)objects.get("title");
+                            String pictureId= (String)objects.get("id");
+                            picturesList.add(title);
+                            picturesIdName.put(title,pictureId);
+                            System.out.println("recebi: "+title);
+                        }
 
-            if (albumPRes.getCode()==200){
-
-                JSONParser parser = new JSONParser();
-
-                JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
-
-                System.out.print(res.toJSONString());
+                    }else {
+                        System.err.println("No 200 code received");
+                    }
+                    if (picturesList != null) {
+                        return Response.ok(picturesList).build();
+                    }
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
             }
-        }catch (ParseException e){
-            e.printStackTrace();
         }
-
-
-
-
-
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
@@ -115,6 +145,45 @@ public class AlbumsProxyResource {
     @Path("/{albumName}/{picture}/key/{password}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
+
+        if (checkPassword(password)) {
+            if (albumsIdName.get(albumName) != null) {
+                if (picturesIdName.get(pictureName)!=null) {
+                    try {
+                        String imageUrl = "https://api.imgur.com/3/album/" + albumsIdName.get(albumName) + "/image/" + picturesIdName.get(pictureName);
+
+                        OAuthRequest albumReq = new OAuthRequest(Verb.GET,imageUrl,service);
+                        service.signRequest(accessToken,albumReq);
+                        final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
+                        if (albumPRes.getCode() == 200) {
+                            JSONParser parser = new JSONParser();
+                            JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
+
+                            String downloadlink = (String)((JSONObject)res.get("data")).get("link");
+
+                            URL url = new URL(downloadlink);
+
+                            InputStream inputStream = new BufferedInputStream(url.openStream());
+
+                            ByteArrayOutputStream out = new ByteArrayOutputStream();
+                            byte[] buf = new byte[1024];
+                            int n = 0;
+                            while (-1 != (n = inputStream.read(buf))) {
+                                out.write(buf, 0, n);
+                            }
+                            out.close();
+                            inputStream.close();
+                            return Response.ok(out.toByteArray()).build();
+                        }else {
+                            System.err.println("No 200 code received");
+                        }
+
+                    } catch (IOException | ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
 
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
