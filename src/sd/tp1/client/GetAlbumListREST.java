@@ -15,7 +15,7 @@ public class GetAlbumListREST {
 
     public static List<String> getAlbumList(WebTarget target,String password ){
 
-        List<String> list = target.path(PATH+"/"+KEY+password)
+        List<String> list = target.path(PATH+KEY+password)
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .get(ArrayList.class);

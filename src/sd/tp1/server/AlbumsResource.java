@@ -1,5 +1,7 @@
 package sd.tp1.server;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,19 +22,24 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/serverBytes/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getserverSpace(@PathParam("password") String password) {
-
-        return Response.ok(mainDirectory.length()).build();
+        if (ServerPassword.checkPassword(password)){
+            return Response.ok(mainDirectory.length()).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @GET
     @Path("/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList(@PathParam("password") String password) {
-        List<String> list = ServersUtils.getAlbumList();
-        if (list!=null){
-            return Response.ok(list).build();
+
+        if (ServerPassword.checkPassword(password)) {
+            List<String> list = ServersUtils.getAlbumList();
+            if (list != null) {
+                return Response.ok(list).build();
+            }
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 
@@ -40,14 +47,14 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/{albumName}/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getListPicturesAt(@PathParam("albumName") String albumName, @PathParam("password") String password) {
+        if (ServerPassword.checkPassword(password)){
+            List<String> list = ServersUtils.getPicturesList(albumName);
 
-        List<String> list = ServersUtils.getPicturesList(albumName);
-
-        if (list!=null) {
-            return Response.ok(list).build();
+           if (list != null) {
+                return Response.ok(list).build();
+            }
         }
-
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 
@@ -56,12 +63,13 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/{albumName}/{picture}/key/{password}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
-
-        byte[] array = ServersUtils.getPictureData(albumName,pictureName);
-        if (array!=null && array.length>0){
-            return Response.ok(array).build();
+        if (ServerPassword.checkPassword(password)) {
+            byte[] array = ServersUtils.getPictureData(albumName, pictureName);
+            if (array != null && array.length > 0) {
+                return Response.ok(array).build();
+            }
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 
@@ -70,14 +78,13 @@ public class AlbumsResource implements ServerRESTInterface{
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAlbum(String albumName,@PathParam("password") String password){
 
-        String response = ServersUtils.createAlbum(albumName);
-
-        if (response!=null){
-            return Response.ok().build();
+        if (ServerPassword.checkPassword(password)) {
+            String response = ServersUtils.createAlbum(albumName);
+            if (response != null) {
+                return Response.ok().build();
+            }
         }
-
-        return Response.status(Response.Status.NOT_FOUND).build();
-
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 
@@ -85,20 +92,23 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/{albumName}/{pictureName}/key/{password}")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData,@PathParam("password")String password){
-
-        if (ServersUtils.uploadPicture(albumName,pictureName,pictureData)){
-            return Response.ok().build();
+        if (ServerPassword.checkPassword(password)) {
+            if (ServersUtils.uploadPicture(albumName, pictureName, pictureData)) {
+                return Response.ok().build();
+            }
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     @DELETE
     @Path("/{albumName}/key/{password}")
     public Response deleteAlbum(@PathParam("albumName") String albumName,@PathParam("password") String password){
 
-        if (ServersUtils.deleteAlbum(albumName)){
-            return Response.ok().build();
+        if (ServerPassword.checkPassword(password)) {
+            if (ServersUtils.deleteAlbum(albumName)) {
+                return Response.ok().build();
+            }
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 
@@ -108,11 +118,12 @@ public class AlbumsResource implements ServerRESTInterface{
 
     public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName,@PathParam("password")String password){
 
-        if (ServersUtils.deletePicture(albumName,pictureName)){
-            return Response.ok().build();
+        if(ServerPassword.checkPassword(password)) {
+            if (ServersUtils.deletePicture(albumName, pictureName)) {
+                return Response.ok().build();
+            }
         }
-
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 
@@ -120,6 +131,7 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/search/{pattern}/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchSomething(@PathParam("pattern") String pattern){
+
 
 
         List<String> list = new ArrayList<>();

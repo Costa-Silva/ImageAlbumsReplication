@@ -233,7 +233,6 @@ public class ServersUtils {
         return albums;
     }
 
-
     private static boolean correctMainDirectory(){
 
         return mainDirectory.exists() && mainDirectory.isDirectory();
