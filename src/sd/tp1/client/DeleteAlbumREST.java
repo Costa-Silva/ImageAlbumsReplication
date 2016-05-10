@@ -12,8 +12,10 @@ import java.util.List;
 public class DeleteAlbumREST {
     private static int OK = 200;
     private static String PATH = "/albums/";
-    public static boolean deleteAlbum(WebTarget target, String albumName) {
-       Response response= target.path(PATH+albumName).request().delete();
+    private static String KEY = "key/";
+
+    public static boolean deleteAlbum(WebTarget target, String albumName, String password) {
+       Response response= target.path(PATH+albumName+"/"+KEY+password).request().delete();
 
 
         if (response.getStatus()==OK){

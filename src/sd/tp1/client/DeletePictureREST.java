@@ -13,10 +13,13 @@ public class DeletePictureREST {
 
 
     private static String PATH = "/albums/";
-    private static int OK = 200;
-    public static boolean deletePicture(WebTarget target, String albumName,String pictureName) {
+    private static String KEY = "key/";
 
-       Response response = target.path(PATH+albumName+"/"+pictureName)
+    private static int OK = 200;
+
+    public static boolean deletePicture(WebTarget target, String albumName,String pictureName,String password) {
+
+       Response response = target.path(PATH+albumName+"/"+pictureName+"/"+KEY+password)
                 .request()
                 .delete();
 

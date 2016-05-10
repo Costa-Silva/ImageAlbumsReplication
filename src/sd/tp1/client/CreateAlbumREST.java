@@ -15,10 +15,11 @@ import java.util.List;
 public class CreateAlbumREST {
 
     private static String PATH = "/albums/";
+    private static String KEY = "key/";
     private static int OK = 200;
-    public static String createAlbum(WebTarget target,String albumName){
+    public static String createAlbum(WebTarget target,String albumName,String password){
 
-        Response response = target.path(PATH)
+        Response response = target.path(PATH+KEY+password)
                 .request()
                 .post(Entity.entity(albumName,MediaType.APPLICATION_JSON));
 

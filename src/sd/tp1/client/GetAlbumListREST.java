@@ -11,10 +11,11 @@ import java.util.List;
 public class GetAlbumListREST {
 
     private static String PATH = "/albums/";
+    private static String KEY = "key/";
 
-    public static List<String> getAlbumList(WebTarget target){
+    public static List<String> getAlbumList(WebTarget target,String password ){
 
-        List<String> list = target.path(PATH)
+        List<String> list = target.path(PATH+"/"+KEY+password)
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .get(ArrayList.class);

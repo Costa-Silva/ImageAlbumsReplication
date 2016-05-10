@@ -11,10 +11,12 @@ import java.util.List;
 public class GetPictureDataREST {
 
     private static String PATH = "/albums/";
+    private static String KEY = "key/";
 
-    public static byte[] getPictureData(WebTarget target,String album, String pictureName){
 
-       byte[] data = target.path(PATH+album+"/"+pictureName)
+    public static byte[] getPictureData(WebTarget target,String album, String pictureName,String password){
+
+       byte[] data = target.path(PATH+album+"/"+pictureName+"/"+KEY+password)
                 .request()
                 .accept(MediaType.APPLICATION_OCTET_STREAM)
                 .get(byte[].class);

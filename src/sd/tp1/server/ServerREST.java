@@ -45,14 +45,20 @@ public class ServerREST {
         while (!success){
 
             try{
+
+                //Initialize varibles
+                String jkspass = "";
+                String keypass = "";
+                String srvpass = "";
+                Scanner in = new Scanner(System.in);
+
                 URI baseUri = UriBuilder.fromUri("https://0.0.0.0/").port(port).build();
                 System.out.println(baseUri);
 
                 System.out.println("JKS pass?");
-                Scanner in = new Scanner(System.in);
-                String jkspass=in.nextLine();
+                jkspass=in.nextLine();
                 System.out.println("KEY pass?");
-                String keypass=in.nextLine();
+                keypass=in.nextLine();
 
                 SSLContext sslContext = SSLContext.getInstance("TLSv1");
                 KeyStore keyStore = KeyStore.getInstance("JKS");
@@ -69,6 +75,10 @@ public class ServerREST {
                 tmf.init(keyStore);
 
                 sslContext.init(kmf.getKeyManagers(),tmf.getTrustManagers(),new SecureRandom());
+
+                System.out.println("Set a server password");
+                srvpass=in.nextLine();
+                in.close();
                 HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config,sslContext);
                 success=true;
 
