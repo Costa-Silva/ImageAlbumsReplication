@@ -34,12 +34,21 @@ public class DiscoveryClient {
     private Map<String,SharedGalleryClient> servers;
     private List<String> receivedHost;
     private boolean newHostFound;
+    private String password;
+
     public DiscoveryClient() {
         init();
     }
 
     public void init(){
+
         servers = new ConcurrentHashMap<>();
+
+        System.out.println("Set a password");
+
+        Scanner in = new Scanner(System.in);
+        password = in.nextLine();
+        in.close();
 
         try {
             socket = new MulticastSocket();
@@ -103,11 +112,6 @@ public class DiscoveryClient {
                             if (servers.get(newServerHost) == null) {
                                 System.out.println("Got new response from server : " + newServerHost);
                                 if (newServerResponse.contains("REST")) {
-                                    System.out.println("Set a password");
-
-                                    Scanner in = new Scanner(System.in);
-                                    String password = in.nextLine();
-                                    in.close();
                                     SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost),password);
                                     servers.put(newServerHost, sharedGalleryClientREST);
                                 } else {
