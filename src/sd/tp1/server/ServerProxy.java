@@ -53,14 +53,69 @@ public class ServerProxy {
         System.out.println("A obter o Access Token!");
         accessToken = service.getAccessToken(code);
 
+        System.out.println("option");
 
         while(true) {
-
-            if(in.nextLine().equals("img")){
+            String typo= in.nextLine();
+            if(typo.equals("imgs")){
                 downloadImagesFromIMAGER();
             }
+
+            if (typo.equals("img")){
+                System.out.println("id for image");
+                String id= in.nextLine() ;
+                downloadImageFromIMAGEr(id);
+            }
+
         }
 
+    }
+
+    private static void downloadImageFromIMAGEr(String id) {
+        String imgurUrl = "https://api.imgur.com/3/account/me/image/"+id;
+        try {
+            OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
+            service.signRequest(accessToken, albumsReq);
+            final Response imagesRes = albumsReq.send();
+            System.out.println(imagesRes.getCode());
+
+            JSONParser parser = new JSONParser();
+
+            JSONObject res = (JSONObject) parser.parse(imagesRes.getBody());
+
+            String image = res.get("data").toString();
+
+            String downloadLink = image.split("\"link\":\"")[1].split("\",")[0].replace("\\/", "/");
+
+            String imageId = downloadLink.split(".com/")[1];
+
+            System.out.println(downloadLink);
+
+
+            URL url = new URL(downloadLink);
+            InputStream inputStream = new BufferedInputStream(url.openStream());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            int n = 0;
+            while (-1 != (n = inputStream.read(buf))) {
+                out.write(buf, 0, n);
+            }
+            out.close();
+            inputStream.close();
+            byte[] response = out.toByteArray();
+            FileOutputStream fos = new FileOutputStream("./" + imageId);
+            fos.write(response);
+            fos.close();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -69,12 +124,12 @@ public class ServerProxy {
             String imgurUrl = "https://api.imgur.com/3/account/me/images/";
             OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
             service.signRequest(accessToken, albumsReq);
-            final Response albumsRes = albumsReq.send();
-            System.out.println(albumsRes.getCode());
+            final Response imagesRes = albumsReq.send();
+            System.out.println(imagesRes.getCode());
 
             JSONParser parser = new JSONParser();
 
-            JSONObject res = (JSONObject) parser.parse(albumsRes.getBody());
+            JSONObject res = (JSONObject) parser.parse(imagesRes.getBody());
 
             JSONArray images = (JSONArray) res.get("data");
 
