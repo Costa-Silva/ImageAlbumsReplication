@@ -79,9 +79,9 @@ public class ServerREST {
                 System.out.println("Set a server password");
                 srvpass=in.nextLine();
                 in.close();
+                ServerPassword serverPassword = new ServerPassword(srvpass);
                 HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config,sslContext);
                 success=true;
-
 
             }catch (ProcessingException e){
                 port++;
