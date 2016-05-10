@@ -75,21 +75,21 @@ public class ServerProxy {
             OAuthRequest imageReq = new OAuthRequest(Verb.GET, imgurUrl, service);
             service.signRequest(accessToken, imageReq);
             final Response imagesRes = imageReq.send();
-            System.out.println(imagesRes.getCode());
+            if (imagesRes.getCode() == 200) {
+                JSONParser parser = new JSONParser();
 
-            JSONParser parser = new JSONParser();
+                JSONObject res = (JSONObject) parser.parse(imagesRes.getBody());
 
-            JSONObject res = (JSONObject) parser.parse(imagesRes.getBody());
+                String image = res.get("data").toString();
 
-            String image = res.get("data").toString();
+                String downloadLink = image.split("\"link\":\"")[1].split("\",")[0].replace("\\/", "/");
 
-            String downloadLink = image.split("\"link\":\"")[1].split("\",")[0].replace("\\/", "/");
+                String imageId = downloadLink.split(".com/")[1];
 
-            String imageId = downloadLink.split(".com/")[1];
+                System.out.println(downloadLink);
 
-            System.out.println(downloadLink);
-
-            downloadContentAndSave(downloadLink,imageId);
+                downloadContentAndSave(downloadLink, imageId);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -102,11 +102,11 @@ public class ServerProxy {
             OAuthRequest imagesReq = new OAuthRequest(Verb.GET, imgurUrl, service);
             service.signRequest(accessToken, imagesReq);
             final Response imagesRes = imagesReq.send();
-            System.out.println(imagesRes.getCode());
             if (imagesRes.getCode() == 200){
 
                 JSONParser parser = new JSONParser();
                 JSONObject res = (JSONObject) parser.parse(imagesRes.getBody());
+
                 JSONArray images = (JSONArray) res.get("data");
 
                 for (int i = 0; i < images.size(); i++) {

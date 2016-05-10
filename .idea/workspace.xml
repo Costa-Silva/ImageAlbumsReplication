@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ServerProxy.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ServerProxy.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ServerProxy.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ServerProxy.java" />
     </list>
@@ -30,8 +29,8 @@
       <file leaf-file-name="ServerProxy.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServerProxy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1005">
-              <caret line="67" column="13" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
+            <state relative-caret-position="161">
+              <caret line="108" column="16" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -925,7 +924,7 @@
       <workItem from="1462290535352" duration="1380000" />
       <workItem from="1462535334379" duration="21000" />
       <workItem from="1462815474795" duration="13132000" />
-      <workItem from="1462890005476" duration="4571000" />
+      <workItem from="1462890005476" duration="5024000" />
     </task>
     <task id="LOCAL-00001" summary="factorizacao do codigo, o cliente tem uma serverconnection e nao precisa de estar sempre a criar uma conexao.">
       <created>1458373915740</created>
@@ -1137,11 +1136,18 @@
       <option name="project" value="LOCAL" />
       <updated>1462897914638</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="proxy download method">
+      <created>1462898664578</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1462898664578</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98184000" />
+    <option name="totallyTimeSpent" value="98637000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1221,7 +1227,8 @@
     <MESSAGE value="proxy class method" />
     <MESSAGE value="added download by id" />
     <MESSAGE value="edited proxy" />
-    <option name="LAST_COMMIT_MESSAGE" value="edited proxy" />
+    <MESSAGE value="proxy download method" />
+    <option name="LAST_COMMIT_MESSAGE" value="proxy download method" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1610,8 +1617,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServerProxy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1005">
-          <caret line="67" column="13" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
+        <state relative-caret-position="161">
+          <caret line="108" column="16" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
