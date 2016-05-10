@@ -14,10 +14,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.*;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -106,8 +103,12 @@ public class DiscoveryClient {
                             if (servers.get(newServerHost) == null) {
                                 System.out.println("Got new response from server : " + newServerHost);
                                 if (newServerResponse.contains("REST")) {
+                                    System.out.println("Set a password");
 
-                                    SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost));
+                                    Scanner in = new Scanner(System.in);
+                                    String password = in.nextLine();
+                                    in.close();
+                                    SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost),password);
                                     servers.put(newServerHost, sharedGalleryClientREST);
                                 } else {
                                     SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
@@ -181,13 +182,15 @@ public class DiscoveryClient {
 
                     String serverHost = newServerHost.split("-")[0];
 
-                    if (newServerHost.split("-")[0].equals(hostname)) {
+                        if (newServerHost.split("-")[0].equals(hostname)) {
 
                         System.out.println("Received a recheck of " + serverHost);
 
                         if (serverType.equals("REST")) {
-
-                            SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost));
+                            Scanner in = new Scanner(System.in);
+                            String password = in.nextLine();
+                            in.close();
+                            SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost),password);
                             servers.put(serverHost,sharedGalleryClientREST);
                         }else{
                             SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));

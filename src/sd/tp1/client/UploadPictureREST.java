@@ -13,12 +13,15 @@ import java.util.List;
 public class UploadPictureREST {
 
     private static String PATH = "/albums/";
+    private static String KEY = "key/";
+
     private static int OK = 200;
-    public static boolean uploadPicture(WebTarget target, String albumName,String pictureName,byte[] pictureData){
+
+    public static boolean uploadPicture(WebTarget target, String albumName,String pictureName,byte[] pictureData,String password){
 
 
 
-        Response response = target.path(PATH+albumName+"/"+pictureName)
+        Response response = target.path(PATH+albumName+"/"+pictureName+"/"+KEY+password)
                 .request()
                 .post(Entity.entity(pictureData,MediaType.APPLICATION_OCTET_STREAM));
 

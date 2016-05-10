@@ -1,19 +1,9 @@
 package sd.tp1.server;
 
-import sd.tp1.gui.GalleryContentProvider;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.List;
 
@@ -27,15 +17,17 @@ public class AlbumsResource implements ServerRESTInterface{
     File mainDirectory = new File(MAINSOURCE);
 
     @GET
-    @Path("/serverBytes")
+    @Path("/serverBytes/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getserverSpace() {
+    public Response getserverSpace(@PathParam("password") String password) {
+
         return Response.ok(mainDirectory.length()).build();
     }
 
     @GET
+    @Path("/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAlbumList() {
+    public Response getAlbumList(@PathParam("password") String password) {
         List<String> list = ServersUtils.getAlbumList();
         if (list!=null){
             return Response.ok(list).build();
@@ -45,9 +37,9 @@ public class AlbumsResource implements ServerRESTInterface{
 
 
     @GET
-    @Path("/{albumName}")
+    @Path("/{albumName}/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getListPicturesAt(@PathParam("albumName") String albumName) {
+    public Response getListPicturesAt(@PathParam("albumName") String albumName, @PathParam("password") String password) {
 
         List<String> list = ServersUtils.getPicturesList(albumName);
 
@@ -61,9 +53,9 @@ public class AlbumsResource implements ServerRESTInterface{
 
 
     @GET
-    @Path("/{albumName}/{picture}")
+    @Path("/{albumName}/{picture}/key/{password}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName){
+    public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
 
         byte[] array = ServersUtils.getPictureData(albumName,pictureName);
         if (array!=null && array.length>0){
@@ -74,8 +66,9 @@ public class AlbumsResource implements ServerRESTInterface{
 
 
     @POST
+    @Path("/key/{password}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAlbum(String albumName){
+    public Response createAlbum(String albumName,@PathParam("password") String password){
 
         String response = ServersUtils.createAlbum(albumName);
 
@@ -89,9 +82,9 @@ public class AlbumsResource implements ServerRESTInterface{
 
 
     @POST
-    @Path("/{albumName}/{pictureName}")
+    @Path("/{albumName}/{pictureName}/key/{password}")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
-    public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData){
+    public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData,@PathParam("password")String password){
 
         if (ServersUtils.uploadPicture(albumName,pictureName,pictureData)){
             return Response.ok().build();
@@ -99,8 +92,8 @@ public class AlbumsResource implements ServerRESTInterface{
         return Response.status(Response.Status.NOT_FOUND).build();
     }
     @DELETE
-    @Path("/{albumName}")
-    public Response deleteAlbum(@PathParam("albumName") String albumName){
+    @Path("/{albumName}/key/{password}")
+    public Response deleteAlbum(@PathParam("albumName") String albumName,@PathParam("password") String password){
 
         if (ServersUtils.deleteAlbum(albumName)){
             return Response.ok().build();
@@ -111,9 +104,9 @@ public class AlbumsResource implements ServerRESTInterface{
 
 
     @DELETE
-    @Path("/{albumName}/{pictureName}")
+    @Path("/{albumName}/{pictureName}/key/{password}")
 
-    public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName){
+    public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName,@PathParam("password")String password){
 
         if (ServersUtils.deletePicture(albumName,pictureName)){
             return Response.ok().build();
