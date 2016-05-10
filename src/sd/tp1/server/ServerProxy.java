@@ -11,6 +11,8 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import org.json.simple.JSONArray;
@@ -47,6 +49,7 @@ public class ServerProxy {
         System.out.println(authorizationUrl);
         System.out.println("e copiar o codigo obtido para aqui:");
         System.out.print(">>");
+
         final String code = in.nextLine();
 
         // Trade the Request Token and Verifier for the Access Token
@@ -65,6 +68,10 @@ public class ServerProxy {
                 System.out.println("id for image");
                 String id= in.nextLine() ;
                 downloadImageFromIMAGEr(id);
+            }
+
+            if (typo.equals("albums")){
+                listOfAlbums();
             }
         }
     }
@@ -124,6 +131,36 @@ public class ServerProxy {
             e.printStackTrace();
         }
     }
+
+    public static void listOfAlbums(){
+
+        String imgurUrl = "https://api.imgur.com/3/account/me/albums";
+        try {
+            OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
+            service.signRequest(accessToken, albumsReq);
+            final Response albumsRes = albumsReq.send();
+            if (albumsRes.getCode() == 200) {
+
+                JSONParser parser = new JSONParser();
+
+                JSONObject res = (JSONObject) parser.parse(albumsRes.getBody());
+                JSONArray images = (JSONArray) res.get("data");
+
+                Iterator albumsIt = images.iterator();
+
+                while(albumsIt.hasNext()){
+
+                    System.out.println(albumsIt.next());
+
+                }
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private static void downloadContentAndSave(String downloadLink,String imageId){
 
         try {
@@ -152,4 +189,6 @@ public class ServerProxy {
         }
     }
 
+
 }
+
