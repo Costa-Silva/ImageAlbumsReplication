@@ -1,19 +1,9 @@
 package sd.tp1.server;
 
-import sd.tp1.gui.GalleryContentProvider;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.List;
 

@@ -1,12 +1,9 @@
 package sd.tp1.client;
 
-import org.glassfish.jersey.client.ClientConfig;
 import sd.tp1.client.ws.Server;
 import sd.tp1.client.ws.ServerService;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -15,7 +12,6 @@ import java.io.IOException;
 import java.net.*;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
