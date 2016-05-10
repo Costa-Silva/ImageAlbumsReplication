@@ -32,12 +32,21 @@ public class ServerREST {
 
     public static void main(String[] args) throws Exception {
 
+
+        //Initialize varibles
+        String jkspass = "";
+        String keypass = "";
+        String srvpass = "";
+        Scanner in = new Scanner(System.in);
         boolean success=false;
         int port = 8080;
 
         ResourceConfig config = new ResourceConfig();
+        System.out.println("Set a server password");
+        srvpass=in.nextLine();
 
-        config.register(AlbumsResource.class);
+        AlbumsResource albumsResource = new AlbumsResource(srvpass);
+        config.register(albumsResource);
 
 
 
@@ -46,12 +55,6 @@ public class ServerREST {
 
             try{
 
-                //Initialize varibles
-                String jkspass = "";
-                String keypass = "";
-                String srvpass = "";
-                Scanner in = new Scanner(System.in);
-
                 URI baseUri = UriBuilder.fromUri("https://0.0.0.0/").port(port).build();
                 System.out.println(baseUri);
 
@@ -59,7 +62,7 @@ public class ServerREST {
                 jkspass=in.nextLine();
                 System.out.println("KEY pass?");
                 keypass=in.nextLine();
-
+                in.close();
                 SSLContext sslContext = SSLContext.getInstance("TLSv1");
                 KeyStore keyStore = KeyStore.getInstance("JKS");
 
@@ -76,10 +79,6 @@ public class ServerREST {
 
                 sslContext.init(kmf.getKeyManagers(),tmf.getTrustManagers(),new SecureRandom());
 
-                System.out.println("Set a server password");
-                srvpass=in.nextLine();
-                in.close();
-                ServerPassword serverPassword = new ServerPassword(srvpass);
                 HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config,sslContext);
                 success=true;
 

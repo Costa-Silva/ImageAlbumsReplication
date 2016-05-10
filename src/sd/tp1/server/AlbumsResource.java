@@ -18,11 +18,20 @@ public class AlbumsResource implements ServerRESTInterface{
     public static final String MAINSOURCE = "."+File.separator+"src"+File.separator;
     File mainDirectory = new File(MAINSOURCE);
 
+    private String srvpass;
+
+    public AlbumsResource(String srvpass){
+        this.srvpass=srvpass;
+    }
+
+    private boolean checkPassword(String srvpass){
+        return this.srvpass.equals(srvpass);
+    }
     @GET
     @Path("/serverBytes/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getserverSpace(@PathParam("password") String password) {
-        if (ServerPassword.checkPassword(password)){
+        if (checkPassword(password)){
             return Response.ok(mainDirectory.length()).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -33,7 +42,7 @@ public class AlbumsResource implements ServerRESTInterface{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList(@PathParam("password") String password) {
 
-        if (ServerPassword.checkPassword(password)) {
+        if (checkPassword(password)) {
             List<String> list = ServersUtils.getAlbumList();
             if (list != null) {
                 return Response.ok(list).build();
@@ -47,7 +56,7 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/{albumName}/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getListPicturesAt(@PathParam("albumName") String albumName, @PathParam("password") String password) {
-        if (ServerPassword.checkPassword(password)){
+        if (checkPassword(password)){
             List<String> list = ServersUtils.getPicturesList(albumName);
 
            if (list != null) {
@@ -63,7 +72,7 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/{albumName}/{picture}/key/{password}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
-        if (ServerPassword.checkPassword(password)) {
+        if (checkPassword(password)) {
             byte[] array = ServersUtils.getPictureData(albumName, pictureName);
             if (array != null && array.length > 0) {
                 return Response.ok(array).build();
@@ -78,7 +87,7 @@ public class AlbumsResource implements ServerRESTInterface{
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAlbum(String albumName,@PathParam("password") String password){
 
-        if (ServerPassword.checkPassword(password)) {
+        if (checkPassword(password)) {
             String response = ServersUtils.createAlbum(albumName);
             if (response != null) {
                 return Response.ok().build();
@@ -92,7 +101,7 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/{albumName}/{pictureName}/key/{password}")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData,@PathParam("password")String password){
-        if (ServerPassword.checkPassword(password)) {
+        if (checkPassword(password)) {
             if (ServersUtils.uploadPicture(albumName, pictureName, pictureData)) {
                 return Response.ok().build();
             }
@@ -103,7 +112,7 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/{albumName}/key/{password}")
     public Response deleteAlbum(@PathParam("albumName") String albumName,@PathParam("password") String password){
 
-        if (ServerPassword.checkPassword(password)) {
+        if (checkPassword(password)) {
             if (ServersUtils.deleteAlbum(albumName)) {
                 return Response.ok().build();
             }
@@ -118,7 +127,7 @@ public class AlbumsResource implements ServerRESTInterface{
 
     public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName,@PathParam("password")String password){
 
-        if(ServerPassword.checkPassword(password)) {
+        if(checkPassword(password)) {
             if (ServersUtils.deletePicture(albumName, pictureName)) {
                 return Response.ok().build();
             }
