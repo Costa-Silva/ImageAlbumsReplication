@@ -81,16 +81,9 @@ public class ServerProxy {
 
             JSONParser parser = new JSONParser();
 
-            JSONObject res = null;
+            JSONObject res = (JSONObject) parser.parse(imagesRes.getBody());
 
-            res = (JSONObject) parser.parse(imagesRes.getBody());
-
-
-
-            String image = ((JSONObject) res.get("data")).toString();
-
-
-
+            String image = res.get("data").toString();
 
             String downloadLink = image.split("\"link\":\"")[1].split("\",")[0].replace("\\/", "/");
 
