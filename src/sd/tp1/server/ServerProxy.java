@@ -11,7 +11,6 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -26,9 +25,6 @@ import org.json.simple.parser.ParseException;
  */
 public class ServerProxy {
 
-
-    private static final String SERVICE_NAME = "Imgur";
-
     private static final String apiKey = "2ad0de2edda68b0";
 
     private static final String apiSecret = "18737726e52ee67e856c21cd7eac98e194cf0d26";
@@ -36,7 +32,8 @@ public class ServerProxy {
     private static OAuth20Service service;
 
     private static OAuth2AccessToken accessToken;
-    public static void main(String... args) {
+
+    public ServerProxy(){
 
         service = new ServiceBuilder().apiKey(apiKey).apiSecret(apiSecret)
                 .build(ImgurApi.instance());
@@ -56,27 +53,9 @@ public class ServerProxy {
         System.out.println("A obter o Access Token!");
         accessToken = service.getAccessToken(code);
 
-        System.out.println("option");
-
-        while(true) {
-            String typo= in.nextLine();
-            if(typo.equals("imgs")){
-                downloadImagesFromIMAGER();
-            }
-
-            if (typo.equals("img")){
-                System.out.println("id for image");
-                String id= in.nextLine() ;
-                downloadImageFromIMAGEr(id);
-            }
-
-            if (typo.equals("albums")){
-                listOfAlbums();
-            }
-        }
     }
 
-    private static void downloadImageFromIMAGEr(String id) {
+    private void downloadImageFromIMAGEr(String id) {
         String imgurUrl = "https://api.imgur.com/3/account/me/image/" + id;
         try {
             OAuthRequest imageReq = new OAuthRequest(Verb.GET, imgurUrl, service);
@@ -105,7 +84,7 @@ public class ServerProxy {
     }
 
 
-    public static void downloadImagesFromIMAGER() {
+    public void downloadImagesFromIMAGER() {
         try {
             String imgurUrl = "https://api.imgur.com/3/account/me/images/";
             OAuthRequest imagesReq = new OAuthRequest(Verb.GET, imgurUrl, service);
@@ -132,36 +111,9 @@ public class ServerProxy {
         }
     }
 
-    public static void listOfAlbums(){
-
-        String imgurUrl = "https://api.imgur.com/3/account/me/albums";
-        try {
-            OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
-            service.signRequest(accessToken, albumsReq);
-            final Response albumsRes = albumsReq.send();
-            if (albumsRes.getCode() == 200) {
-
-                JSONParser parser = new JSONParser();
-
-                JSONObject res = (JSONObject) parser.parse(albumsRes.getBody());
-                JSONArray images = (JSONArray) res.get("data");
-
-                Iterator albumsIt = images.iterator();
-
-                while(albumsIt.hasNext()){
-
-                    System.out.println(albumsIt.next());
-
-                }
-
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
 
-    private static void downloadContentAndSave(String downloadLink,String imageId){
+    private void downloadContentAndSave(String downloadLink,String imageId){
 
         try {
 

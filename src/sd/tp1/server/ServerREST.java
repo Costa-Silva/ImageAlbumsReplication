@@ -1,5 +1,9 @@
 package sd.tp1.server;
 
+import com.github.scribejava.apis.ImgurApi;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.github.scribejava.core.oauth.OAuth20Service;
 import com.sun.net.httpserver.HttpServer;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -28,7 +32,12 @@ public class ServerREST {
 
     public static final String TYPE = "REST";
     public static final File KEYSTONE  = new File("./server.jks");
+    public static OAuth20Service service;
+    public static OAuth2AccessToken accessToken;
 
+    public static final String APIKEY = "2ad0de2edda68b0";
+
+    public static final String APISECRET = "18737726e52ee67e856c21cd7eac98e194cf0d26";
 
     public static void main(String[] args) throws Exception {
 
@@ -37,8 +46,14 @@ public class ServerREST {
 
         ResourceConfig config = new ResourceConfig();
 
-        config.register(AlbumsResource.class);
+        AlbumsProxyResource albumsProxyResource = new AlbumsProxyResource();
 
+        if (args.length>0){
+            config.register(AlbumsResource.class);
+        }else{
+            openConnection();
+            config.register(albumsProxyResource);
+        }
 
 
 
@@ -79,6 +94,7 @@ public class ServerREST {
                 System.out.println("Set a server password");
                 srvpass=in.nextLine();
                 in.close();
+
                 ServerPassword serverPassword = new ServerPassword(srvpass);
                 HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config,sslContext);
                 success=true;
@@ -87,16 +103,34 @@ public class ServerREST {
                 port++;
             }
 
-
-
         }
-
-
 
         System.err.println("SSL REST Server ready... ");
 
-
         ServersUtils.startListening(TYPE);
+    }
+
+
+    private static void openConnection(){
+
+        service = new ServiceBuilder().apiKey(APIKEY).apiSecret(APISECRET)
+                .build(ImgurApi.instance());
+        final Scanner in = new Scanner(System.in);
+
+        // Obtain the Authorization URL
+        System.out.println("A obter o Authorization URL...");
+        final String authorizationUrl = service.getAuthorizationUrl();
+        System.out.println("Necessario dar permissao neste URL:");
+        System.out.println(authorizationUrl);
+        System.out.println("e copiar o codigo obtido para aqui:");
+        System.out.print(">>");
+
+        final String code = in.nextLine();
+
+        // Trade the Request Token and Verifier for the Access Token
+        System.out.println("A obter o Access Token!");
+        accessToken = service.getAccessToken(code);
+
     }
 
 }
