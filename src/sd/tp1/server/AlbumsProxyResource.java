@@ -4,6 +4,7 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import org.apache.commons.codec.binary.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -30,7 +31,7 @@ public class AlbumsProxyResource {
     private OAuth2AccessToken accessToken;
     private String srvpass;
     private Map<String,String> albumsIdName;
-    private Map<String,String> picturesIdName;
+    private Map<String,Map<String,String >> picturesIdName;
     public AlbumsProxyResource(OAuth20Service service, OAuth2AccessToken accessToken,String srvpass){
         this.service = service;
         this.accessToken = accessToken;
@@ -77,7 +78,7 @@ public class AlbumsProxyResource {
                         String title = objects.get("title").toString();
                         String albumId= objects.get("id").toString();
                         albumsTitleList.add(title);
-                        albumsIdName.put(title,albumId);
+                        albumsIdName.put(albumId,title);
                     }
                 }else {
                     System.err.println("No 200 code received");
@@ -121,7 +122,18 @@ public class AlbumsProxyResource {
                             String title = (String)objects.get("title");
                             String pictureId= (String)objects.get("id");
                             picturesList.add(title);
-                            picturesIdName.put(title,pictureId);
+
+                            String albumId="";
+                            for(String key : albumsIdName.keySet()){
+                                if (albumsIdName.get(key).equals(albumName)){
+                                    albumId=key;
+                                    break;
+                                }
+                            }
+
+                            Map<String,String> picOfAlbum = new HashMap<>();
+                            picOfAlbum.put(title,albumId);
+                            picturesIdName.put(pictureId,picOfAlbum);
                             System.out.println("recebi: "+title);
                         }
 
@@ -193,8 +205,34 @@ public class AlbumsProxyResource {
     @Path("/key/{password}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAlbum(String albumName,@PathParam("password") String password){
+        if(checkPassword(password)){
+                try{
+                    String creationUrl = "https://api.imgur.com/3/album";
+                    OAuthRequest albumReq = new OAuthRequest(Verb.POST,creationUrl,service);
+                    albumReq.addParameter("title",albumName);
+                    service.signRequest(accessToken,albumReq);
 
+                    final com.github.scribejava.core.model.Response albumRes = albumReq.send();
+
+                    if(albumRes.getCode()==200){
+                        JSONParser parser = new JSONParser();
+                        JSONObject res = (JSONObject) parser.parse(albumRes.getBody());
+
+                        String albumID = (String)((JSONObject)res.get("data")).get("id");
+
+                        albumsIdName.put(albumID,albumName);
+
+                        return Response.ok().build();
+                    }
+                    return Response.status(Response.Status.NOT_FOUND).build();
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+        }
         return Response.status(Response.Status.UNAUTHORIZED).build();
+
     }
 
 
@@ -202,7 +240,45 @@ public class AlbumsProxyResource {
     @Path("/{albumName}/{pictureName}/key/{password}")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData,@PathParam("password")String password){
+        if (checkPassword(password)){
+            try{
+                boolean hasAlbum = false;
+                String albumID="";
+                for (String key : albumsIdName.keySet()){
+                    if(albumsIdName.get(key).equals(albumName)){
+                        hasAlbum = true;
+                        albumID=key;
+                    }
+                }
+                if(hasAlbum) {
+                    String upImageUrl = "https://api.imgur.com/3/image";
+                    OAuthRequest upImageReq = new OAuthRequest(Verb.POST, upImageUrl, service);
+                    upImageReq.addParameter("image", org.apache.commons.codec.binary.Base64.encodeBase64String(pictureData));
+                    upImageReq.addParameter("title", pictureName);
+                    upImageReq.addParameter("album", albumID);
+                    service.signRequest(accessToken, upImageReq);
 
+                    final com.github.scribejava.core.model.Response upImageRes = upImageReq.send();
+
+                    if(upImageRes.getCode()==200){
+                        JSONParser parser = new JSONParser();
+                        JSONObject res = (JSONObject) parser.parse(upImageRes.getBody());
+
+                        String imageID = (String)((JSONObject)res.get("data")).get("id");
+                        Map<String,String> picOfAlbum = new HashMap<>();
+                        picOfAlbum.put(pictureName,albumID);
+                        picturesIdName.put(imageID,picOfAlbum);
+
+                        return Response.ok().build();
+                    }
+                    return Response.status(Response.Status.NOT_FOUND).build();
+
+
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     @DELETE

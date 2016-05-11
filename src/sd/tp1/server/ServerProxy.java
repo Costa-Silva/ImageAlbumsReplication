@@ -12,9 +12,11 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -77,7 +79,81 @@ public class ServerProxy {
             if (typo.equals("nana")){
                 newMethod();
             }
+
+            if (typo.equals("c album")){
+                System.out.println("album title");
+                String album= in.nextLine() ;
+                createAlbum(album);
+            }
+
+            if(typo.equals("UP")){
+                System.out.println("album title");
+                String album= in.nextLine() ;
+                System.out.println("picture title");
+                String pic= in.nextLine() ;
+                File f = new File("C:/Users/paulo/Imagem.jpg");
+                try {
+                    String data = Base64.encodeBase64String(Files.readAllBytes(f.toPath()));
+                    uploadPicture(album,pic,data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                
+            }
+
+
         }
+    }
+
+    private static void uploadPicture(String album, String pic, String data) {
+        String upImageUrl = "https://api.imgur.com/3/image";
+        OAuthRequest upImageReq = new OAuthRequest(Verb.POST,upImageUrl,service);
+        upImageReq.addParameter("image",data);
+        upImageReq.addParameter("title",pic);
+        upImageReq.addParameter("album","8YkHV");
+        service.signRequest(accessToken,upImageReq);
+
+        final Response upImageRes = upImageReq.send();
+        JSONParser parser = new JSONParser();
+
+        try {
+            JSONObject res = (JSONObject) parser.parse(upImageRes.getBody());
+            System.out.println(res.toJSONString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(upImageRes.getCode()==200){
+            System.out.println("Criou");
+        }else {
+            System.out.println("Nao criou");
+        }
+
+    }
+
+    private static void createAlbum(String albumName) {
+
+        String creationUrl = "https://api.imgur.com/3/album";
+        OAuthRequest albumReq = new OAuthRequest(Verb.POST,creationUrl,service);
+        albumReq.addParameter("title",albumName);
+        service.signRequest(accessToken,albumReq);
+
+        final Response albumRes = albumReq.send();
+        JSONParser parser = new JSONParser();
+
+        try {
+            JSONObject res = (JSONObject) parser.parse(albumRes.getBody());
+            System.out.println(res.toJSONString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(albumRes.getCode()==200){
+            System.out.println("Criou");
+        }else {
+            System.out.println("Nao criou");
+        }
+
+
     }
 
     private static void downloadImageFromIMAGEr(String id) {
