@@ -293,11 +293,42 @@ public class AlbumsProxyResource {
 
     @DELETE
     @Path("/{albumName}/{pictureName}/key/{password}")
-
     public Response deletePicture(@PathParam("albumName") String albumName, @PathParam("pictureName")String pictureName,@PathParam("password")String password){
 
+        if(checkPassword(password)){
+            String albumID;
+            if((albumID = albumName2Id(albumName)) !=null){
+                String pic = "";
+                for (String picID: picturesIdName.keySet()) {
+                    Map<String,String> picIdAlbumID = picturesIdName.get(picID);
+                       for(String picName :picIdAlbumID.keySet()){
+                            if(picName.equals(pictureName) && picIdAlbumID.get(picName).equals(albumID)){
+                                pic=picID;
+                            }
+                       }
+                    if(!pic.equals(""))
+                        break;
+                }
 
+                String dPicUrl = "https://api.imgur.com/3/image/"+pic ;
+                OAuthRequest dPicReq = new OAuthRequest(Verb.DELETE,dPicUrl,service);
+                service.signRequest(accessToken,dPicReq);
+
+                final com.github.scribejava.core.model.Response dPicRes = dPicReq.send();
+
+                return Response.status(dPicRes.getCode()).build();
+            }
+        }
         return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+    private String albumName2Id(String name){
+        for (String key : albumsIdName.keySet()){
+            if (albumsIdName.get(key).equals(name)){
+                return key;
+            }
+        }
+        return null;
     }
 
 

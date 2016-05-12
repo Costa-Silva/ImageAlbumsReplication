@@ -98,11 +98,39 @@ public class ServerProxy {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
 
-                
+            if (typo.equals("DP")){
+                System.out.println("album title");
+                String album= in.nextLine() ;
+                System.out.println("picture title");
+                String pic= in.nextLine() ;
+
+                deletePicture(album,pic);
             }
 
 
+        }
+    }
+
+    private static void deletePicture(String album, String pic) {
+        String dPicUrl = "https://api.imgur.com/3/image/7b225TY";
+        OAuthRequest dPicReq = new OAuthRequest(Verb.DELETE,dPicUrl,service);
+        service.signRequest(accessToken,dPicReq);
+
+        final Response dPicRes = dPicReq.send();
+        JSONParser parser = new JSONParser();
+
+        try {
+            JSONObject res = (JSONObject) parser.parse(dPicRes.getBody());
+            System.out.println(res.toJSONString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(dPicRes.getCode()==200){
+            System.out.println("Eliminou");
+        }else {
+            System.out.println("Nao Eliminou");
         }
     }
 
