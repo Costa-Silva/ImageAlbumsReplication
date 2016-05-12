@@ -24,7 +24,7 @@ import java.util.*;
 /**
  * Created by Antonio on 10/05/16.
  */
-@Path("/albums")
+@Path("/proxy")
 public class AlbumsProxyResource {
 
     private OAuth20Service service;
@@ -42,13 +42,6 @@ public class AlbumsProxyResource {
 
     private boolean checkPassword(String srvpass){
         return this.srvpass.equals(srvpass);
-    }
-    @GET
-    @Path("/serverBytes/key/{password}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getserverSpace(@PathParam("password") String password) {
-
-        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @GET
@@ -284,8 +277,18 @@ public class AlbumsProxyResource {
     @DELETE
     @Path("/{albumName}/key/{password}")
     public Response deleteAlbum(@PathParam("albumName") String albumName,@PathParam("password") String password){
+        if (checkPassword(password)) {
+            String albumID;
+            if((albumID = albumName2Id(albumName))!=null) {
+                String dAlbUrl = "https://api.imgur.com/3/album/"+albumID;
+                OAuthRequest dAlbReq = new OAuthRequest(Verb.DELETE, dAlbUrl, service);
+                service.signRequest(accessToken, dAlbReq);
 
+                final com.github.scribejava.core.model.Response dAlbRes = dAlbReq.send();
 
+                return  Response.status(dAlbRes.getCode()).build();
+            }else return Response.status(Response.Status.NOT_FOUND).build();
+        }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 

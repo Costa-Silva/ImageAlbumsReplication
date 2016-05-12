@@ -108,10 +108,39 @@ public class ServerProxy {
 
                 deletePicture(album,pic);
             }
+            if (typo.equals("DA")){
+                System.out.println("album title");
+                String album= in.nextLine() ;
+
+                deleteAlbum(album);
+            }
 
 
         }
     }
+
+    private static void deleteAlbum(String album) {
+        String dAlbUrl = "https://api.imgur.com/3/album/VEbxh";
+        OAuthRequest dAlbReq = new OAuthRequest(Verb.DELETE,dAlbUrl,service);
+        service.signRequest(accessToken,dAlbReq);
+
+        final Response dAlbRes = dAlbReq.send();
+        JSONParser parser = new JSONParser();
+
+        try {
+            JSONObject res = (JSONObject) parser.parse(dAlbRes.getBody());
+            System.out.println(res.toJSONString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(dAlbRes.getCode()==200){
+            System.out.println("Eliminou");
+        }else {
+            System.out.println("Nao Eliminou");
+        }
+
+    }
+
 
     private static void deletePicture(String album, String pic) {
         String dPicUrl = "https://api.imgur.com/3/image/7b225TY";
