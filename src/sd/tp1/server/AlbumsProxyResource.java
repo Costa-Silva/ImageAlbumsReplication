@@ -16,7 +16,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -24,20 +23,20 @@ import java.util.*;
 /**
  * Created by Antonio on 10/05/16.
  */
-@Path("/proxy")
+@Path("/albums")
 public class AlbumsProxyResource {
 
     private OAuth20Service service;
     private OAuth2AccessToken accessToken;
     private String srvpass;
     private Map<String,String> albumsIdName;
-    private Map<String,Map<String,String >> picturesIdName;
+    private List<ImgurPicture> pictures;
     public AlbumsProxyResource(OAuth20Service service, OAuth2AccessToken accessToken,String srvpass){
         this.service = service;
         this.accessToken = accessToken;
         this.srvpass= srvpass;
         albumsIdName = new HashMap<>();
-        picturesIdName = new HashMap<>();
+        pictures = new LinkedList<>();
     }
 
     private boolean checkPassword(String srvpass){
@@ -65,6 +64,7 @@ public class AlbumsProxyResource {
 
                     Iterator albumsIt = images.iterator();
                     albumsIdName.clear();
+
                     while(albumsIt.hasNext()){
 
                         JSONObject objects = (JSONObject) albumsIt.next();
@@ -73,16 +73,15 @@ public class AlbumsProxyResource {
                         albumsTitleList.add(title);
                         albumsIdName.put(albumId,title);
                     }
-                }else {
-                    System.err.println("No 200 code received");
                 }
-                if (albumsTitleList != null) {
+                if (albumsTitleList.size()>0) {
                     return Response.ok(albumsTitleList).build();
                 }
+
+                return  Response.status(Response.Status.NOT_FOUND).build();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
 
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -96,8 +95,9 @@ public class AlbumsProxyResource {
         List<String> picturesList = new LinkedList<>();
 
         if (checkPassword(password)) {
-            if (albumsIdName.get(albumName)!=null){
-                String albumUrl = "https://api.imgur.com/3/album/"+albumsIdName.get(albumName)+"/images";
+            String albumID;
+            if ((albumID = albumName2Id(albumName))!=null){
+                String albumUrl = "https://api.imgur.com/3/album/"+albumID+"/images";
                 try{
                     OAuthRequest albumReq = new OAuthRequest(Verb.GET,albumUrl,service);
                     service.signRequest(accessToken,albumReq);
@@ -105,7 +105,6 @@ public class AlbumsProxyResource {
                     if (albumPRes.getCode() == 200){
                         JSONParser parser = new JSONParser();
                         JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
-                        System.out.println(res.toJSONString());
                         JSONArray images = (JSONArray) res.get("data");
 
                         Iterator albumsIt = images.iterator();
@@ -116,26 +115,18 @@ public class AlbumsProxyResource {
                             String pictureId= (String)objects.get("id");
                             picturesList.add(title);
 
-                            String albumId="";
-                            for(String key : albumsIdName.keySet()){
-                                if (albumsIdName.get(key).equals(albumName)){
-                                    albumId=key;
-                                    break;
-                                }
-                            }
+                            ImgurPicture iP = new ImgurPicture(pictureId,title,albumID);
 
-                            Map<String,String> picOfAlbum = new HashMap<>();
-                            picOfAlbum.put(title,albumId);
-                            picturesIdName.put(pictureId,picOfAlbum);
-                            System.out.println("recebi: "+title);
+                            if(!pictures.contains(iP)){
+                                pictures.add(iP);
+                            }
                         }
 
-                    }else {
-                        System.err.println("No 200 code received");
+                        if (picturesList.size()>0) {
+                            return Response.ok(picturesList).build();
+                        }
                     }
-                    if (picturesList != null) {
-                        return Response.ok(picturesList).build();
-                    }
+                    return Response.status(Response.Status.NOT_FOUND).build();
                 }catch (ParseException e){
                     e.printStackTrace();
                 }
@@ -153,9 +144,10 @@ public class AlbumsProxyResource {
 
         if (checkPassword(password)) {
             if (albumsIdName.get(albumName) != null) {
-                if (picturesIdName.get(pictureName)!=null) {
+                ImgurPicture iP;
+                if ((iP=getPictureWithName(pictureName))!=null) {
                     try {
-                        String imageUrl = "https://api.imgur.com/3/album/" + albumsIdName.get(albumName) + "/image/" + picturesIdName.get(pictureName);
+                        String imageUrl = "https://api.imgur.com/3/album/" + albumsIdName.get(albumName) + "/image/" + iP.getId();
 
                         OAuthRequest albumReq = new OAuthRequest(Verb.GET,imageUrl,service);
                         service.signRequest(accessToken,albumReq);
@@ -180,7 +172,7 @@ public class AlbumsProxyResource {
                             inputStream.close();
                             return Response.ok(out.toByteArray()).build();
                         }else {
-                            System.err.println("No 200 code received");
+                            return Response.status(Response.Status.NOT_FOUND).build();
                         }
 
                     } catch (IOException | ParseException e) {
@@ -258,16 +250,14 @@ public class AlbumsProxyResource {
                         JSONObject res = (JSONObject) parser.parse(upImageRes.getBody());
 
                         String imageID = (String)((JSONObject)res.get("data")).get("id");
-                        Map<String,String> picOfAlbum = new HashMap<>();
-                        picOfAlbum.put(pictureName,albumID);
-                        picturesIdName.put(imageID,picOfAlbum);
+
+                        pictures.add(new ImgurPicture(imageID,pictureName,albumID));
 
                         return Response.ok().build();
                     }
-                    return Response.status(Response.Status.NOT_FOUND).build();
-
-
                 }
+
+                return Response.status(Response.Status.NOT_FOUND).build();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -286,6 +276,8 @@ public class AlbumsProxyResource {
 
                 final com.github.scribejava.core.model.Response dAlbRes = dAlbReq.send();
 
+                albumsIdName.remove(albumID);
+
                 return  Response.status(dAlbRes.getCode()).build();
             }else return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -302,24 +294,25 @@ public class AlbumsProxyResource {
             String albumID;
             if((albumID = albumName2Id(albumName)) !=null){
                 String pic = "";
-                for (String picID: picturesIdName.keySet()) {
-                    Map<String,String> picIdAlbumID = picturesIdName.get(picID);
-                       for(String picName :picIdAlbumID.keySet()){
-                            if(picName.equals(pictureName) && picIdAlbumID.get(picName).equals(albumID)){
-                                pic=picID;
-                            }
-                       }
-                    if(!pic.equals(""))
+                for ( ImgurPicture picture : pictures) {
+                    if(picture.getPicName().equals(pictureName) && picture.getAlbumId().equals(albumID)){
+                        pic = picture.getId();
+                        pictures.remove(picture);
                         break;
+                    }
                 }
 
-                String dPicUrl = "https://api.imgur.com/3/image/"+pic ;
-                OAuthRequest dPicReq = new OAuthRequest(Verb.DELETE,dPicUrl,service);
-                service.signRequest(accessToken,dPicReq);
+                if(!pic.equals("")) {
+                    String dPicUrl = "https://api.imgur.com/3/image/" + pic;
+                    OAuthRequest dPicReq = new OAuthRequest(Verb.DELETE, dPicUrl, service);
+                    service.signRequest(accessToken, dPicReq);
 
-                final com.github.scribejava.core.model.Response dPicRes = dPicReq.send();
+                    final com.github.scribejava.core.model.Response dPicRes = dPicReq.send();
 
-                return Response.status(dPicRes.getCode()).build();
+
+                    return Response.status(dPicRes.getCode()).build();
+                }
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -329,6 +322,17 @@ public class AlbumsProxyResource {
         for (String key : albumsIdName.keySet()){
             if (albumsIdName.get(key).equals(name)){
                 return key;
+            }
+        }
+        return null;
+    }
+
+
+    private ImgurPicture getPictureWithName(String name){
+
+        for (ImgurPicture iP: pictures) {
+            if(iP.getPicName().equals(name)){
+                return iP;
             }
         }
         return null;

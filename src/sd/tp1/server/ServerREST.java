@@ -75,7 +75,9 @@ public class ServerREST {
 
         sslContext.init(kmf.getKeyManagers(),tmf.getTrustManagers(),new SecureRandom());
 
-        if (args.length>0){
+        Scanner s = new Scanner(System.in);
+        int n = s.nextInt();
+        if (n>0){
             AlbumsResource albumsResource = new AlbumsResource(srvpass);
             config.register(albumsResource);
         }else{
