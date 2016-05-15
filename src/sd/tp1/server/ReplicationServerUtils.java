@@ -1,15 +1,17 @@
-package sd.tp1.utils;
+package sd.tp1.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import sd.tp1.utils.Clock;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 /**
  * Created by Antonio on 14/05/16.
  */
-public class ReplicationXoXo {
+public class ReplicationServerUtils {
     public static final String REPLICAID= "replicaId";
     public static final String TOTALSERVERS= "totalServers";
     public static final String TIMESTAMP= "timestamps";

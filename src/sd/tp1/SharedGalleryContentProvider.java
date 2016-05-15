@@ -1,23 +1,9 @@
 package sd.tp1;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
-
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import sd.tp1.client.*;
-import sd.tp1.client.CreateAlbum;
-import sd.tp1.client.DeleteAlbum;
-import sd.tp1.client.DeletePicture;
-import sd.tp1.client.GetAlbumList;
-import sd.tp1.client.GetPictureData;
-import sd.tp1.client.GetPicturesList;
-import sd.tp1.client.UploadPicture;
-import sd.tp1.client.ws.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
 
 
 /*

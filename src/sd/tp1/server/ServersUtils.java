@@ -6,10 +6,7 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -25,6 +22,7 @@ public class ServersUtils {
     public static final int PORT = 5555;
     public static final int MAXBYTESBUFFER = 65536;
     public static final String MYIDENTIFIER = "OPENBAR";
+    public static final String SERVERSIDENTIFIER = "OPENBARSV";
     public static final String MAINSOURCE = "."+File.separator+"src"+File.separator;
     public static File mainDirectory = new File(MAINSOURCE);
 
@@ -32,6 +30,8 @@ public class ServersUtils {
     public static void startListening(String serverType,int port){
 
         try {
+            sendingMyInfo(port);
+            ReplicationServer replicationServer = new ReplicationServer();
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
 
@@ -42,18 +42,11 @@ public class ServersUtils {
             while (true){
 
                 byte[] buffer = new byte[MAXBYTESBUFFER];
-
                 DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
-
                 socket.receive(datagramPacket);
-
                 HostInfo hostInfo = new HostInfo(datagramPacket.getAddress(),datagramPacket.getPort());
-
-
                 String message = new String(datagramPacket.getData(),datagramPacket.getOffset(),
                         datagramPacket.getLength());
-
-
                 if (message.equals(MYIDENTIFIER) || message.equals(InetAddress.getLocalHost().getHostAddress()+":"+port)){
 
                     System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
@@ -65,15 +58,42 @@ public class ServersUtils {
                     datagramPacket.setAddress(hostInfo.getAddress());
                     datagramPacket.setPort(hostInfo.getPort());
                     socket.send(datagramPacket);
+                }else if (message.contains(SERVERSIDENTIFIER)){
+                    String myip= InetAddress.getLocalHost().getHostAddress()+":"+port ;
+                    String ip = message.split("-")[1];
+                    if (!myip.equals(ip))
+                   replicationServer.addServer(ip);
                 }
+
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static void sendingMyInfo(int port){
 
+        new Thread(()->{
+            try {
+                InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
+                MulticastSocket socket = new MulticastSocket(); //IOexception
+                socket.joinGroup(address);
+                String myinfo= SERVERSIDENTIFIER+"-"+InetAddress.getLocalHost().getHostAddress()+":"+port ;
+                byte[] buffer = myinfo.getBytes();
+                DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
+                datagramPacket.setAddress(address);
+                datagramPacket.setPort(PORT);
+                while (true){
+                    socket.send(datagramPacket);
+                    System.out.println("Sent Multicast");
+                    Thread.sleep(3000);
+                }
+            }catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
 
@@ -239,10 +259,10 @@ public class ServersUtils {
     }
 
     private static boolean checkExtension(File f){
-            String filename = f.getName();
-            int i = filename.lastIndexOf('.');
-            String ext = i < 0 ? "" : filename.substring(i + 1).toLowerCase();
-            return f.isFile() && !filename.startsWith(".") && EXTENSIONS.contains(ext);
+        String filename = f.getName();
+        int i = filename.lastIndexOf('.');
+        String ext = i < 0 ? "" : filename.substring(i + 1).toLowerCase();
+        return f.isFile() && !filename.startsWith(".") && EXTENSIONS.contains(ext);
     }
 
 }
