@@ -93,14 +93,14 @@ public class DiscoveryClient {
             try {
                 boolean hasTime;
                 while (true) {
-                    socket.setSoTimeout(2000);
+
+                    socket.setSoTimeout(5000);
                     sendMulticast();
                     hasTime = true;
                     receivedHost = new ArrayList<>();
                     while(hasTime){
-
-
                         try {
+
                             byte[] buffer = new byte[MAXBYTESBUFFER];
                             datagramPacket = new DatagramPacket(buffer, buffer.length);
                             socket.receive(datagramPacket);
@@ -108,7 +108,10 @@ public class DiscoveryClient {
                             String newServerResponse = new String(datagramPacket.getData(), datagramPacket.getOffset(),
                                     datagramPacket.getLength());
                             String newServerHost = newServerResponse.split("-")[0];
+
+
                             receivedHost.add(newServerHost);
+
                             if (servers.get(newServerHost) == null) {
                                 System.out.println("Got new response from server : " + newServerHost);
                                 if (newServerResponse.contains("REST")) {
@@ -134,19 +137,21 @@ public class DiscoveryClient {
                     }
 
                     for (Map.Entry<String,SharedGalleryClient> entry : servers.entrySet()){
-
                         if(!receivedHost.contains(entry.getKey())){
                             if (servers.remove(entry.getKey()).getType().equals("REST")){
                                 reCheck(entry.getKey(),"REST");
-                            }else
-                                reCheck(entry.getKey(),"WS");
+                            }else {
+                                reCheck(entry.getKey(), "WS");
+                            }
                         }
                     }
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
+
     }
 
 
@@ -168,10 +173,9 @@ public class DiscoveryClient {
                     datagramPacket.setAddress(address);
                     datagramPacket.setPort(PORT);
 
+                    System.out.println("Send recheck to " +hostname);
+
                     reSendSocket.send(datagramPacket);
-
-
-                    System.out.println("Sent a recheck  with input " + hostname);
 
 
                     byte[] buffer = new byte[MAXBYTESBUFFER];
@@ -186,18 +190,15 @@ public class DiscoveryClient {
 
                     String serverHost = newServerHost.split("-")[0];
 
-                        if (newServerHost.split("-")[0].equals(hostname)) {
+                        if (serverHost.equals(hostname)) {
 
-                        System.out.println("Received a recheck of " + serverHost);
 
                         if (serverType.equals("REST")) {
-                            Scanner in = new Scanner(System.in);
-                            String password = in.nextLine();
-                            in.close();
-                            SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost),password);
+
+                            SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(serverHost),password);
                             servers.put(serverHost,sharedGalleryClientREST);
                         }else{
-                            SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
+                            SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(serverHost));
                             servers.put(serverHost, sharedGalleryClientSOAP);
                         }
                         handShake=true;
@@ -258,6 +259,7 @@ public class DiscoveryClient {
     }
 
     private static URI getBaseURI(String serverHost) {
+
         return UriBuilder.fromUri("https://"+serverHost+"/").build();
     }
 
@@ -266,7 +268,6 @@ public class DiscoveryClient {
 
 
         try {
-
             URL wsURL = new URL(String.format("http://%s/FileServer", serverHost));
             ServerService service = new ServerService(wsURL);
 
