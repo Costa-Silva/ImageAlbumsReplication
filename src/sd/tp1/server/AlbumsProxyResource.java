@@ -110,7 +110,6 @@ public class AlbumsProxyResource {
     public Response getListPicturesAt(@PathParam("albumName") String albumName, @PathParam("password") String password) {
         List<String> picturesList = new LinkedList<>();
 
-        System.out.println("OROROR");
         if (checkPassword(password)) {
             String albumID;
             if ((albumID = albumName2Id(albumName))!=null){
@@ -119,9 +118,7 @@ public class AlbumsProxyResource {
                     OAuthRequest albumReq = new OAuthRequest(Verb.GET,albumUrl,service);
                     service.signRequest(accessToken,albumReq);
                     final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
-                    System.out.println("Vai entrar");
                     if (albumPRes.getCode() == 200){
-                        System.out.println("ENTROU AQUI");
                         JSONParser parser = new JSONParser();
                         JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
                         JSONArray images = (JSONArray) res.get("data");
@@ -158,25 +155,21 @@ public class AlbumsProxyResource {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
 
-        System.out.println("my pw " + srvpass + " enter pass : " +password);
+
 
         if (checkPassword(password)) {
-            System.out.println(albumsIdName.toString() + " " + albumsIdName.get(albumName) != null);
             String albumID;
             if ((albumID=albumName2Id(albumName)) != null) {
                 ImgurPicture iP;
-                System.out.println(pictures.size() + " " +(iP=getPictureWithName(pictureName))!=null);
                 if ((iP=getPictureWithName(pictureName))!=null) {
                     try {
-                        System.out.println(albumsIdName.toString());
-                        System.out.println("PIC ID " + iP.getId());
+
                         String imageUrl = "https://api.imgur.com/3/album/" + albumID + "/image/" + iP.getId();
 
                         OAuthRequest albumReq = new OAuthRequest(Verb.GET,imageUrl,service);
                         service.signRequest(accessToken,albumReq);
                         final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
 
-                        System.out.println("CODIGO DA RES GETPICTUREDATA " + albumPRes.getCode() );
                         if (albumPRes.getCode() == 200) {
                             JSONParser parser = new JSONParser();
                             JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());

@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ServerREST.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ServerREST.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/Server.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/Server.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/DiscoveryClient.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/DiscoveryClient.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/Server.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/Server.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ServerREST.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ServerREST.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java" />
     </list>
     <ignored path="SD2016-TP1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -65,8 +63,8 @@
       <file leaf-file-name="AlbumsProxyResource.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="146" column="19" selection-start-line="146" selection-start-column="19" selection-end-line="146" selection-end-column="19" />
+            <state relative-caret-position="144">
+              <caret line="166" column="25" selection-start-line="166" selection-start-column="24" selection-end-line="166" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -1074,7 +1072,14 @@
       <option name="project" value="LOCAL" />
       <updated>1463247936272</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Proxy full working">
+      <created>1463272305089</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1463272305089</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -1091,7 +1096,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1101,7 +1106,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21515152" sideWeight="0.503125" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38625205" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34042552" sideWeight="0.496875" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34042552" sideWeight="0.496875" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279483" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1163,7 +1168,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="melhoramento de codigo no server. nova utils cliente" />
     <MESSAGE value="cliente unificado" />
     <MESSAGE value="classes" />
     <MESSAGE value="nada de jeito" />
@@ -1188,14 +1192,15 @@
     <MESSAGE value="delPict 1st try" />
     <MESSAGE value="proxy beta DONE" />
     <MESSAGE value="Proxy done (ImgurPict class created)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Proxy done (ImgurPict class created)" />
+    <MESSAGE value="Proxy full working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Proxy full working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java</url>
-          <line>162</line>
+          <line>159</line>
           <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
@@ -1562,8 +1567,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="146" column="19" selection-start-line="146" selection-start-column="19" selection-end-line="146" selection-end-column="19" />
+        <state relative-caret-position="144">
+          <caret line="166" column="25" selection-start-line="166" selection-start-column="24" selection-end-line="166" selection-end-column="25" />
           <folding />
         </state>
       </provider>
