@@ -10,8 +10,8 @@ import java.util.*;
  * Created by Antonio on 14/05/16.
  */
 public class ReplicationXoXo {
-    public static final String REPLICAID= "replica_id";
-    public static final String TOTALSERVERS= "total_servers";
+    public static final String REPLICAID= "replicaId";
+    public static final String TOTALSERVERS= "totalServers";
     public static final String TIMESTAMP= "timestamps";
     public static final String FILENAME= "metadata.txt";
     public static final String DATA= "data";
@@ -21,68 +21,98 @@ public class ReplicationXoXo {
     public static final int NONEXISTENCE = -1;
 
     public static void main(String[] args) throws Exception {
-        JSONObject file = new JSONObject();
-        JSONObject data = new JSONObject();
+        JSONObject file = createFile();
+        timestampRemove(file,NONEXISTENCE);
+        timestampADD(file,1,new Clock(200,5));
+        replicaIdSet(file,0);
+        replaceServers(file,2);
 
-        createFile(file,data);
-        replaceServers(file,6);
-        replaceOrAddTimestamp(file,9898,new Clock(8,26));
-        replace(file,9898,new Clock(8,26));
-    }
+        //timestampADD(file,4834);
 
-    private static void replaceOrAddTimestamp(JSONObject file,int id ,Clock clock){
-
-        JSONObject data= new JSONObject();
-        JSONArray sharedBy = new JSONArray();
-
-        LinkedHashMap<Object,Object> jSONCONSTRUCTOR  = new LinkedHashMap<>();
-
-        jSONCONSTRUCTOR.put(CLOCK,clock.getClock());
-        jSONCONSTRUCTOR.put(REPLICA,clock.getReplica());
-        sharedBy.add("INES+PAULO <3");
-        jSONCONSTRUCTOR.put(SHAREDBY,sharedBy);
-        JSONObject content = new JSONObject(new JSONObject(jSONCONSTRUCTOR));
-
-        data.put(id,content);
-        ((JSONObject)file.get(DATA)).put(TIMESTAMP,data);
-
+        //Object obj = parser.parse(new FileReader("c:\\test.json")); JSONObject jsonObject = (JSONObject) obj;
         writeToFile(file);
+    }
+
+    private static void timestampRemove(JSONObject file,int id){
+        ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).remove(id);
+    }
+
+    private static void timestampADD(JSONObject file,int id,Clock clock){
+
+        LinkedHashMap<Object,Object> jSONconstructorTimestamp  = new LinkedHashMap<>();
+        jSONconstructorTimestamp.put(CLOCK,clock.getClock());
+        jSONconstructorTimestamp.put(REPLICA,clock.getReplica());
+        jSONconstructorTimestamp.put(SHAREDBY,new JSONArray());
+        JSONObject contentTimestamp = new JSONObject(new JSONObject(jSONconstructorTimestamp));
+        ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).put(id,contentTimestamp);
+
+
+        //(JSONObject) ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).put(id,)
 
     }
 
+    private static JSONObject timestampgetJSONbyID(JSONObject file,int id){
+        return (JSONObject) ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).get(id);
+    }
 
-    private static void replace(JSONObject file,int id ,Clock clock){
+    private static void replicaIdSet(JSONObject file,int newId){
+        ((JSONObject)file.get(DATA)).put(REPLICAID,newId);
+    }
 
-        JSONObject json = (JSONObject) ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).get(id);
+    private static void timestampChangeClock(JSONObject file,int id,Clock clock){
+        JSONObject jsonObject = timestampgetJSONbyID(file, id);
+        jsonObject.put(CLOCK,clock.getClock());
+        jsonObject.put(REPLICA,clock.getReplica());
+    }
 
-        json.put(CLOCK,clock.getClock());
-        json.put(REPLICA,clock.getReplica());
-        ((JSONArray)json.get(SHAREDBY)).add("tutut");
-         writeToFile(file);
-
+    private static Clock timestampGetClock(JSONObject file,int id){
+        JSONObject jsonObject= timestampgetJSONbyID(file, id);
+        return new Clock((int)jsonObject.get(CLOCK),(int)jsonObject.get(REPLICA));
     }
 
 
+    private static void timestampAddSharedBy(JSONObject file,int id,String sharedBy){
+        JSONObject jsonObject = timestampgetJSONbyID(file, id);
+        ((JSONArray)jsonObject.get(SHAREDBY)).add(sharedBy);
+    }
 
+    private static JSONArray timestampGetSharedBy(JSONObject file,int id){
+        JSONObject jsonObject = timestampgetJSONbyID(file, id);
+        return (JSONArray) jsonObject.get(SHAREDBY);
+    }
+
+    private static boolean timestampRemoveSharedBy(JSONObject file,int id,String sharedBy){
+        JSONObject jsonObject = timestampgetJSONbyID(file, id);
+        return ((JSONArray)jsonObject.get(SHAREDBY)).remove(sharedBy);
+    }
 
     private static void replaceServers(JSONObject file, int serverTotals){
-
         ((JSONObject)file.get(DATA)).put(TOTALSERVERS,serverTotals);
-
-        writeToFile(file);
     }
 
     private static int getServers(JSONObject file){
         return (int) ((JSONObject)file.get(DATA)).get(TOTALSERVERS);
     }
 
-    private static void createFile(JSONObject file,JSONObject data){
+    private static JSONObject createFile(){
 
+        JSONObject file = new JSONObject();
+
+
+        LinkedHashMap<Object,Object> jSONconstructorFile  = new LinkedHashMap<>();
+        LinkedHashMap<Object,Object> timeStamp = new LinkedHashMap<>();
+
+        jSONconstructorFile.put(REPLICAID,NONEXISTENCE);
+        jSONconstructorFile.put(TOTALSERVERS,NONEXISTENCE);
+        jSONconstructorFile.put(TIMESTAMP,new JSONObject(timeStamp));
+
+
+        JSONObject data = new JSONObject(new JSONObject(jSONconstructorFile));
         file.put(DATA,data);
-        data.put(REPLICAID,NONEXISTENCE);
-        data.put(TOTALSERVERS,NONEXISTENCE);
-        data.put(TIMESTAMP,new JSONArray());
-        writeToFile(file);
+
+        timestampADD(file,NONEXISTENCE,new Clock(NONEXISTENCE,NONEXISTENCE));
+
+        return file;
     }
 
     private static void writeToFile(JSONObject file){
