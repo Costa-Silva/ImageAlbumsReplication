@@ -123,7 +123,6 @@ public class ReplicationServerUtils {
             ObjectMapper mapper = new ObjectMapper();
             fileWriter.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(file));
             fileWriter.flush();
-
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
