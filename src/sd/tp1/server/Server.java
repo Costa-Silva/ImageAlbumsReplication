@@ -105,7 +105,7 @@ public class Server implements ServerSOAPInterface {
 
         System.err.println("FileServer started");
 
-        ServersUtils.startListening(TYPE);
+        ServersUtils.startListening(TYPE,port);
     }
 
 

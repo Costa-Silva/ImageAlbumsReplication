@@ -48,7 +48,7 @@ public class ServerREST {
         Scanner in = new Scanner(System.in);
 
         boolean success=false;
-        int port = 8080;
+        int port = 8085;
 
         ResourceConfig config = new ResourceConfig();
 
@@ -90,13 +90,14 @@ public class ServerREST {
             try{
                 URI baseUri = UriBuilder.fromUri("https://0.0.0.0/").port(port).build();
                 HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config,sslContext);
+                System.out.println("URI ATRIBUIDO: " + baseUri);
                 success=true;
             }catch (ProcessingException e){
                 port++;
             }
         }
         System.err.println("SSL REST Server ready... ");
-        ServersUtils.startListening(TYPE);
+        ServersUtils.startListening(TYPE,port);
     }
 
 

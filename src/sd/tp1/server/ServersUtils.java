@@ -29,7 +29,7 @@ public class ServersUtils {
     public static File mainDirectory = new File(MAINSOURCE);
 
 
-    public static void startListening(String serverType){
+    public static void startListening(String serverType,int port){
 
         try {
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
@@ -50,14 +50,14 @@ public class ServersUtils {
                 HostInfo hostInfo = new HostInfo(datagramPacket.getAddress(),datagramPacket.getPort());
 
 
-                String mensage = new String(datagramPacket.getData(),datagramPacket.getOffset(),
+                String message = new String(datagramPacket.getData(),datagramPacket.getOffset(),
                         datagramPacket.getLength());
 
 
-                if (mensage.equals(MYIDENTIFIER) || mensage.equals(InetAddress.getLocalHost().getHostAddress()+":8080")){
+                if (message.equals(MYIDENTIFIER) || message.equals(InetAddress.getLocalHost().getHostAddress()+":"+port)){
 
                     System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
-                    String myinfo= InetAddress.getLocalHost().getHostAddress()+":8080"+"-"+serverType ;
+                    String myinfo= InetAddress.getLocalHost().getHostAddress()+":"+port+"-"+serverType ;
 
                     buffer = myinfo.getBytes();
                     datagramPacket = new DatagramPacket(buffer,buffer.length);

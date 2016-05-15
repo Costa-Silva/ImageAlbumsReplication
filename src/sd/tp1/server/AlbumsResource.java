@@ -72,11 +72,13 @@ public class AlbumsResource implements ServerRESTInterface{
     @Path("/{albumName}/{picture}/key/{password}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
+        System.out.println("my pw " + srvpass + " enter pass : " +password);
         if (checkPassword(password)) {
             byte[] array = ServersUtils.getPictureData(albumName, pictureName);
             if (array != null && array.length > 0) {
                 return Response.ok(array).build();
             }
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }

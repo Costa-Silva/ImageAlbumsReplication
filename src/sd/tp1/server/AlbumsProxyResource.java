@@ -31,16 +31,30 @@ public class AlbumsProxyResource {
     private String srvpass;
     private Map<String,String> albumsIdName;
     private List<ImgurPicture> pictures;
+    private Map<String,Long> pictureSize;
+    private long serversize;
     public AlbumsProxyResource(OAuth20Service service, OAuth2AccessToken accessToken,String srvpass){
         this.service = service;
         this.accessToken = accessToken;
         this.srvpass= srvpass;
         albumsIdName = new HashMap<>();
         pictures = new LinkedList<>();
+        pictureSize=new HashMap<>();
+        serversize=0;
     }
 
     private boolean checkPassword(String srvpass){
         return this.srvpass.equals(srvpass);
+    }
+
+    @GET
+    @Path("/serverBytes/key/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getserverSpace(@PathParam("password") String password) {
+        if (checkPassword(password)){
+            return Response.ok(serversize).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @GET
@@ -74,7 +88,9 @@ public class AlbumsProxyResource {
                         albumsIdName.put(albumId,title);
                     }
                 }
+                albumsIdName.toString();
                 if (albumsTitleList.size()>0) {
+
                     return Response.ok(albumsTitleList).build();
                 }
 
@@ -117,19 +133,16 @@ public class AlbumsProxyResource {
 
                             ImgurPicture iP = new ImgurPicture(pictureId,title,albumID);
 
-                            if(!pictures.contains(iP)){
-                                pictures.add(iP);
-                            }
                         }
 
-                        if (picturesList.size()>0) {
                             return Response.ok(picturesList).build();
-                        }
+
                     }
-                    return Response.status(Response.Status.NOT_FOUND).build();
                 }catch (ParseException e){
                     e.printStackTrace();
                 }
+            }else {
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -142,16 +155,21 @@ public class AlbumsProxyResource {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
 
+
+
         if (checkPassword(password)) {
-            if (albumsIdName.get(albumName) != null) {
+            String albumID;
+            if ((albumID=albumName2Id(albumName)) != null) {
                 ImgurPicture iP;
                 if ((iP=getPictureWithName(pictureName))!=null) {
                     try {
-                        String imageUrl = "https://api.imgur.com/3/album/" + albumsIdName.get(albumName) + "/image/" + iP.getId();
+
+                        String imageUrl = "https://api.imgur.com/3/album/" + albumID + "/image/" + iP.getId();
 
                         OAuthRequest albumReq = new OAuthRequest(Verb.GET,imageUrl,service);
                         service.signRequest(accessToken,albumReq);
                         final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
+
                         if (albumPRes.getCode() == 200) {
                             JSONParser parser = new JSONParser();
                             JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
@@ -171,8 +189,6 @@ public class AlbumsProxyResource {
                             out.close();
                             inputStream.close();
                             return Response.ok(out.toByteArray()).build();
-                        }else {
-                            return Response.status(Response.Status.NOT_FOUND).build();
                         }
 
                     } catch (IOException | ParseException e) {
@@ -180,6 +196,7 @@ public class AlbumsProxyResource {
                     }
                 }
             }
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -252,7 +269,8 @@ public class AlbumsProxyResource {
                         String imageID = (String)((JSONObject)res.get("data")).get("id");
 
                         pictures.add(new ImgurPicture(imageID,pictureName,albumID));
-
+                        serversize+=pictureData.length;
+                        pictureSize.put(imageID,(long)pictureData.length);
                         return Response.ok().build();
                     }
                 }
@@ -298,6 +316,7 @@ public class AlbumsProxyResource {
                     if(picture.getPicName().equals(pictureName) && picture.getAlbumId().equals(albumID)){
                         pic = picture.getId();
                         pictures.remove(picture);
+                        serversize-=pictureSize.remove(pic);
                         break;
                     }
                 }
