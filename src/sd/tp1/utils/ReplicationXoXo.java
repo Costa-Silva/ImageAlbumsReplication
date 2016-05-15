@@ -1,19 +1,11 @@
 package sd.tp1.utils;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.util.stream.Collectors;
 /**
  * Created by Antonio on 14/05/16.
  */
@@ -22,7 +14,6 @@ public class ReplicationXoXo {
     public static final String TOTALSERVERS= "total_servers";
     public static final String TIMESTAMP= "timestamps";
     public static final String FILENAME= "metadata.txt";
-    public static final String TIMESTAMPID= "id";
     public static final String DATA= "data";
     public static final String CLOCK= "clock";
     public static final String REPLICA= "replica";
@@ -34,7 +25,7 @@ public class ReplicationXoXo {
         JSONObject data = new JSONObject();
 
         createFile(file,data);
-        replaceServers(file,5);
+        replaceServers(file,6);
         replaceOrAddTimestamp(file,9898,new Clock(8,26));
         replace(file,9898,new Clock(8,26));
     }
