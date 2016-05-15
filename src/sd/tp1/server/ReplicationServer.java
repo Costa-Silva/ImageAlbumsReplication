@@ -25,7 +25,6 @@ public class ReplicationServer {
 
     public void addServer(String newIp){
         serverIps.put(newIp,newIp);
-
         System.out.println(serverIps.toString());
     }
 
