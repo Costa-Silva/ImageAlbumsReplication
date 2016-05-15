@@ -27,8 +27,8 @@ public class ReplicationXoXo {
     public static final String CLOCK= "clock";
     public static final String REPLICA= "replica";
     public static final String SHAREDBY= "sharedBy";
-
     public static final int NONEXISTENCE = -1;
+
     public static void main(String[] args) throws Exception {
         JSONObject file = new JSONObject();
         JSONObject data = new JSONObject();
