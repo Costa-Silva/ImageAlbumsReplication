@@ -1,0 +1,13 @@
+{
+  "data" : {
+    "replica_id" : -1,
+    "timestamps" : {
+      "9898" : {
+        "clock" : 8,
+        "replica" : 26,
+        "sharedBy" : [ "INES+PAULO <3", "tutut" ]
+      }
+    },
+    "total_servers" : 5
+  }
+}
