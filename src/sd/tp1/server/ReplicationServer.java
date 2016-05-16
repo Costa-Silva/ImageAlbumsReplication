@@ -81,6 +81,16 @@ public class ReplicationServer {
                     JSONObject theirMetadata = sharedGalleryClient.getMetaData();
                     JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
 
+                    Iterator iterator = timestamps.iterator();
+
+                    while (iterator.hasNext()){
+
+                        JSONObject timestamp = (JSONObject) iterator.next();
+
+
+
+
+                    }
 
 
                     Thread.sleep(10000);

@@ -21,8 +21,7 @@ public class ReplicationServerUtils {
     public static final String REPLICA= "replica";
     public static final String SHAREDBY= "sharedBy";
     public static final String KNOWNHOSTS= "knownHosts";
-    public static final int NONEXISTENCE = -1;
-
+    public static final String OBJECTID= "id";
 
     public static void main(String[] args) throws Exception {
 
@@ -38,13 +37,12 @@ public class ReplicationServerUtils {
 
     public static void timestampADD(JSONObject file,int id,Clock clock){
         LinkedHashMap<Object,Object> jSONconstructorTimestamp  = new LinkedHashMap<>();
+        jSONconstructorTimestamp.put(OBJECTID,id);
         jSONconstructorTimestamp.put(CLOCK,clock.getClock());
         jSONconstructorTimestamp.put(REPLICA,clock.getReplica());
         jSONconstructorTimestamp.put(SHAREDBY,new JSONArray());
 
-        JSONObject contentTimestamp = new JSONObject();
-        contentTimestamp.put(id,new JSONObject(jSONconstructorTimestamp));
-        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(contentTimestamp);
+        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(jSONconstructorTimestamp));
     }
 
     public static JSONObject timestampgetJSONbyID(JSONObject file,int id){
@@ -110,12 +108,13 @@ public class ReplicationServerUtils {
 
         jSONconstructorFile.put(REPLICAID,UUID.randomUUID());
         jSONconstructorFile.put(KNOWNHOSTS,new JSONArray());
-
         jSONconstructorFile.put(TIMESTAMP,new JSONArray());
 
         JSONObject data = new JSONObject(new JSONObject(jSONconstructorFile));
         file.put(DATA,data);
 
+
+        timestampADD(file,2,new Clock(1,1));
         return file;
     }
 
