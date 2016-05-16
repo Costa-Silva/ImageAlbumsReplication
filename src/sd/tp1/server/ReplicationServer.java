@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import sd.tp1.client.SharedGalleryClient;
 import sd.tp1.client.SharedGalleryClientREST;
 import sd.tp1.client.SharedGalleryClientSOAP;
 import sd.tp1.client.ws.Server;
@@ -52,40 +53,26 @@ public class ReplicationServer {
 
 
     private JSONObject fetch(String ip, String type){
-        JSONObject file;
+        SharedGalleryClient sharedGalleryClient;
         if (type.equals("REST")){
             WebTarget webTarget=  DiscoveryClient.getWebTarget(ip);
-
-            SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(webTarget,random);
-
-
-            sharedGalleryClientREST.getListOfAlbums().forEach(albumName->{
-
-                HashMap<String,byte[]> imageContent = new HashMap<>();
-                sharedGalleryClientREST.getListOfPictures(albumName).forEach(pictureName->{
-                    imageContent.put(pictureName,sharedGalleryClientREST.getPictureData(albumName,
-                            pictureName));
-                });
-                content.put(albumName,imageContent);
-            });
-            file = sharedGalleryClientREST.getMetaData();
-        }else{
+            sharedGalleryClient = new SharedGalleryClientREST(webTarget,random);
+        }else {
             Server server = DiscoveryClient.getWebServiceServer(ip);
-            SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(server);
-
-            sharedGalleryClientSOAP.getListOfAlbums().forEach(albumName->{
-
-                HashMap<String,byte[]> imageContent = new HashMap<>();
-
-                sharedGalleryClientSOAP.getListOfPictures(albumName).forEach(pictureName->{
-
-                    imageContent.put(pictureName,sharedGalleryClientSOAP.getPictureData(albumName,
-                            pictureName));
-                });
-                content.put(albumName,imageContent);
-            });
-            file = sharedGalleryClientSOAP.getMetaData();
+            sharedGalleryClient = new SharedGalleryClientSOAP(server);
         }
-        return file;
+
+
+        sharedGalleryClient.getListOfAlbums().forEach(albumName->{
+
+            HashMap<String,byte[]> imageContent = new HashMap<>();
+            sharedGalleryClient.getListOfPictures(albumName).forEach(pictureName->{
+                imageContent.put(pictureName,sharedGalleryClient.getPictureData(albumName,
+                        pictureName));
+            });
+            content.put(albumName,imageContent);
+        });
+
+        return sharedGalleryClient.getMetaData();
     }
 }
