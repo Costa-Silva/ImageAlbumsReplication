@@ -13,7 +13,6 @@ import java.util.*;
  */
 public class ReplicationServerUtils {
     public static final String REPLICAID= "replicaId";
-    public static final String TOTALSERVERS= "totalServers";
     public static final String TIMESTAMP= "timestamps";
     public static final String FILENAME= "metadata.txt";
     public static final String DATA= "data";
@@ -26,8 +25,6 @@ public class ReplicationServerUtils {
         JSONObject file = createFile();
         timestampRemove(file,NONEXISTENCE);
         timestampADD(file,1,new Clock(200,5));
-        replicaIdSet(file,0);
-        replaceServers(file,2);
 
         //timestampADD(file,4834);
 
@@ -57,10 +54,6 @@ public class ReplicationServerUtils {
         return (JSONObject) ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).get(id);
     }
 
-    private static void replicaIdSet(JSONObject file,int newId){
-        ((JSONObject)file.get(DATA)).put(REPLICAID,newId);
-    }
-
     private static void timestampChangeClock(JSONObject file,int id,Clock clock){
         JSONObject jsonObject = timestampgetJSONbyID(file, id);
         jsonObject.put(CLOCK,clock.getClock());
@@ -88,13 +81,6 @@ public class ReplicationServerUtils {
         return ((JSONArray)jsonObject.get(SHAREDBY)).remove(sharedBy);
     }
 
-    private static void replaceServers(JSONObject file, int serverTotals){
-        ((JSONObject)file.get(DATA)).put(TOTALSERVERS,serverTotals);
-    }
-
-    private static int getServers(JSONObject file){
-        return (int) ((JSONObject)file.get(DATA)).get(TOTALSERVERS);
-    }
 
     private static JSONObject createFile(){
 
@@ -104,8 +90,7 @@ public class ReplicationServerUtils {
         LinkedHashMap<Object,Object> jSONconstructorFile  = new LinkedHashMap<>();
         LinkedHashMap<Object,Object> timeStamp = new LinkedHashMap<>();
 
-        jSONconstructorFile.put(REPLICAID,NONEXISTENCE);
-        jSONconstructorFile.put(TOTALSERVERS,NONEXISTENCE);
+        jSONconstructorFile.put(REPLICAID,UUID.randomUUID());
         jSONconstructorFile.put(TIMESTAMP,new JSONObject(timeStamp));
 
 

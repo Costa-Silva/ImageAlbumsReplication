@@ -1,7 +1,6 @@
 {
   "data" : {
-    "replicaId" : 0,
-    "totalServers" : 2,
+    "replicaId" : "d5354db4-bd7d-477e-ad53-b3e41b24c540",
     "timestamps" : {
       "1" : {
         "clock" : 200,

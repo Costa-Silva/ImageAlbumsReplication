@@ -61,28 +61,19 @@ public class DiscoveryClient {
 
     public void sendMulticast() {
 
-
         try {
             address = InetAddress.getByName(MULTICASTIP);
-
             byte[] input = SVIDENTIFIER.getBytes();
-
             datagramPacket = new DatagramPacket(input, input.length);
-
             datagramPacket.setAddress(address);
             datagramPacket.setPort(PORT);
-
             socket.send(datagramPacket);
-
             System.out.println("Sent Multicast");
-
-
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -262,6 +253,7 @@ public class DiscoveryClient {
 
         return UriBuilder.fromUri("https://"+serverHost+"/").build();
     }
+
 
 
     public static Server getWebServiceServer(String serverHost){

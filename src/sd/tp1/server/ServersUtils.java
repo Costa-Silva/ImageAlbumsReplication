@@ -30,7 +30,7 @@ public class ServersUtils {
     public static void startListening(String serverType,int port){
 
         try {
-            sendingMyInfo(port);
+            sendingMyInfo(port,serverType);
             ReplicationServer replicationServer = new ReplicationServer();
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
@@ -61,8 +61,16 @@ public class ServersUtils {
                 }else if (message.contains(SERVERSIDENTIFIER)){
                     String myip= InetAddress.getLocalHost().getHostAddress()+":"+port ;
                     String ip = message.split("-")[1];
-                    if (!myip.equals(ip))
-                   replicationServer.addServer(ip);
+                    if (myip.equals(ip)){
+                        String type;
+
+                        if (message.contains("REST")){
+                            type= "REST";
+                        }else{
+                            type="SOAP";
+                        }
+                        replicationServer.addServer(ip,type);
+                    }
                 }
 
             }
@@ -73,14 +81,13 @@ public class ServersUtils {
         }
     }
 
-    public static void sendingMyInfo(int port){
-
+    public static void sendingMyInfo(int port,String type){
         new Thread(()->{
             try {
                 InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
                 MulticastSocket socket = new MulticastSocket(); //IOexception
                 socket.joinGroup(address);
-                String myinfo= SERVERSIDENTIFIER+"-"+InetAddress.getLocalHost().getHostAddress()+":"+port ;
+                String myinfo= SERVERSIDENTIFIER+"_"+type+"-"+InetAddress.getLocalHost().getHostAddress()+":"+port ;
                 byte[] buffer = myinfo.getBytes();
                 DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
                 datagramPacket.setAddress(address);
