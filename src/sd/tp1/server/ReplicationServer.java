@@ -1,5 +1,6 @@
 package sd.tp1.server;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sd.tp1.client.DiscoveryClient;
 
@@ -78,8 +79,7 @@ public class ReplicationServer {
 
                     SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                     JSONObject theirMetadata = sharedGalleryClient.getMetaData();
-                    JSONObject timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
-
+                    //JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
 
 
 

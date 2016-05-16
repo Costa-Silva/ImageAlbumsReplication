@@ -23,6 +23,15 @@ public class ReplicationServerUtils {
     public static final String KNOWNHOSTS= "knownHosts";
     public static final int NONEXISTENCE = -1;
 
+
+    public static void main(String[] args) throws Exception {
+
+
+        JSONObject jsonObject = createFile();
+        writeToFile(jsonObject);
+    }
+
+
     public static void timestampRemove(JSONObject file,int id){
         ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).remove(id);
     }
@@ -32,12 +41,21 @@ public class ReplicationServerUtils {
         jSONconstructorTimestamp.put(CLOCK,clock.getClock());
         jSONconstructorTimestamp.put(REPLICA,clock.getReplica());
         jSONconstructorTimestamp.put(SHAREDBY,new JSONArray());
-        JSONObject contentTimestamp = new JSONObject(new JSONObject(jSONconstructorTimestamp));
-        ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).put(id,contentTimestamp);
+
+        JSONObject contentTimestamp = new JSONObject();
+        contentTimestamp.put(id,new JSONObject(jSONconstructorTimestamp));
+        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(contentTimestamp);
     }
 
     public static JSONObject timestampgetJSONbyID(JSONObject file,int id){
-        return (JSONObject) ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).get(id);
+        Iterator iterator= ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).iterator();
+        while (iterator.hasNext()){
+            JSONObject timestamp = (JSONObject) iterator.next();
+            if(timestamp.get(id)!=null){
+                return timestamp;
+            }
+        }
+        return null;
     }
 
     public static void timestampChangeClock(JSONObject file,int id,Clock clock){
@@ -88,19 +106,15 @@ public class ReplicationServerUtils {
 
         JSONObject file = new JSONObject();
 
-
         LinkedHashMap<Object,Object> jSONconstructorFile  = new LinkedHashMap<>();
-        LinkedHashMap<Object,Object> timeStamp = new LinkedHashMap<>();
 
         jSONconstructorFile.put(REPLICAID,UUID.randomUUID());
         jSONconstructorFile.put(KNOWNHOSTS,new JSONArray());
-        jSONconstructorFile.put(TIMESTAMP,new JSONObject(timeStamp));
 
+        jSONconstructorFile.put(TIMESTAMP,new JSONArray());
 
         JSONObject data = new JSONObject(new JSONObject(jSONconstructorFile));
         file.put(DATA,data);
-
-        timestampADD(file,NONEXISTENCE,new Clock(NONEXISTENCE,NONEXISTENCE));
 
         return file;
     }
