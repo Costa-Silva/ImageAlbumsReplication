@@ -21,36 +21,66 @@ import javax.ws.rs.client.WebTarget;
 public class ReplicationServer {
 
     Map<String,String> serverIps;
-    String random= "random";
+    private String random= "random";
     private Map<String,Map<String,byte[]>> content;
-    private boolean first;
+    private JSONObject file;
+
     public ReplicationServer(){
         serverIps = new ConcurrentHashMap<>();
-        first = true;
         content = new HashMap<>();
+        initReplication();
     }
 
-    public void initReplication(String ip, String type){
+    public void initReplication(){
 
         new Thread(()->{
-            JSONObject file = fetch(ip,type);
-            System.out.println("content: " + content);
 
-            JSONObject ourMetadata = ReplicationServerUtils.createFile();
-
-            ReplicationServerUtils.setTimeStamps(ourMetadata,ReplicationServerUtils.getTimeStamps(file));
-
+            try {
+                if (ReplicationServerUtils.metadataExistence()){
+                    //load metadata
+                    //load from disk to memory
+                    file = ServersUtils.getMetaData();
+                    loadContentFromDisk();
+                }else{
+                    System.err.println("Waiting for possible connections");
+                    Thread.sleep(5000); // any server discovered? no? create from scratch
+                    int connectionsSize = serverIps.size();
+                    System.err.println("Time up, got "+ connectionsSize +"connections");
+                    if (connectionsSize>0){
+                        //server discovered
+                        String serverIp="";
+                        for (String ip:serverIps.keySet()) {
+                            serverIp=ip;
+                            break;
+                        }
+                        file= fetch(serverIp,serverIps.get(serverIp));
+                    }else{
+                        //start new
+                        file = ReplicationServerUtils.createFile();
+                    }
+                    ReplicationServerUtils.writeToFile(file);
+                }
+                System.out.println("content: " + content);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }).start();
     }
 
-    public void addServer(String newIp,String type){
-        serverIps.put(newIp,type);
-        if (first){
-            first = false;
-            initReplication(newIp,type);
-        }
+    public void loadContentFromDisk(){
+
+        ServersUtils.getAlbumList().forEach(albumName->{
+            HashMap<String,byte[]> imageContent = new HashMap<>();
+            ServersUtils.getPicturesList(albumName).forEach(pictureName->{
+                imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
+            });
+            content.put(albumName,imageContent);
+        });
     }
 
+    public void addServer(String newIp,String type){
+        serverIps.putIfAbsent(newIp, type);
+    }
 
     private JSONObject fetch(String ip, String type){
         SharedGalleryClient sharedGalleryClient;
@@ -61,7 +91,6 @@ public class ReplicationServer {
             Server server = DiscoveryClient.getWebServiceServer(ip);
             sharedGalleryClient = new SharedGalleryClientSOAP(server);
         }
-
 
         sharedGalleryClient.getListOfAlbums().forEach(albumName->{
 
