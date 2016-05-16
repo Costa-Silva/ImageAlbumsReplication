@@ -1,12 +1,7 @@
 {
   "data" : {
-    "replicaId" : "d5354db4-bd7d-477e-ad53-b3e41b24c540",
-    "timestamps" : {
-      "1" : {
-        "clock" : 200,
-        "replica" : 5,
-        "sharedBy" : [ ]
-      }
-    }
+    "replicaId" : "265b787f-77e4-47f7-9965-c60be99fa84e",
+    "knownHosts" : [ ],
+    "timestamps" : [ ]
   }
 }
