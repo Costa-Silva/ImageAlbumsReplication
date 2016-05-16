@@ -25,23 +25,26 @@ public class ReplicationServer {
     public ReplicationServer(){
         serverIps = new ConcurrentHashMap<>();
         first = true;
+        content = new HashMap<>();
     }
 
     public void initReplication(String ip, String type){
 
         new Thread(()->{
-            System.out.println("vou replicar boyy");
             if (type.equals("REST")){
                 WebTarget webTarget=  DiscoveryClient.getWebTarget(ip);
 
                 SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(webTarget,random);
 
-                sharedGalleryClientREST.getListOfAlbums().forEach(albumName->{
+                    List<String> listofalbums = sharedGalleryClientREST.getListOfAlbums();
+
+
+
+                listofalbums.forEach(albumName->{
 
                     HashMap<String,byte[]> imageContent = new HashMap<>();
-
-                    sharedGalleryClientREST.getListOfPictures(albumName).forEach(pictureName->{
-
+                    List<String> listOfPictures = sharedGalleryClientREST.getListOfPictures(albumName);
+                    listOfPictures.forEach(pictureName->{
                         imageContent.put(pictureName,sharedGalleryClientREST.getPictureData(albumName,
                                                                                                     pictureName));
                     });
