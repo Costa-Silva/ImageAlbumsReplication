@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import sd.tp1.client.SharedGalleryClient;
 import sd.tp1.client.SharedGalleryClientREST;
 import sd.tp1.client.SharedGalleryClientSOAP;
 import sd.tp1.client.ws.Server;
@@ -20,72 +21,87 @@ import javax.ws.rs.client.WebTarget;
 public class ReplicationServer {
 
     Map<String,String> serverIps;
-    String random= "random";
+    private String random= "random";
     private Map<String,Map<String,byte[]>> content;
-    private boolean first;
+    private JSONObject file;
+
     public ReplicationServer(){
         serverIps = new ConcurrentHashMap<>();
-        first = true;
         content = new HashMap<>();
+        initReplication();
     }
 
-    public void initReplication(String ip, String type){
+    public void initReplication(){
 
         new Thread(()->{
-            JSONObject file = fetch(ip,type);
-            System.out.println("content: " + content);
 
-            JSONObject ourMetadata = ReplicationServerUtils.createFile();
-
-            ReplicationServerUtils.setTimeStamps(ourMetadata,ReplicationServerUtils.getTimeStamps(file));
-
+            try {
+                if (ReplicationServerUtils.metadataExistence()){
+                    //load metadata
+                    //load from disk to memory
+                    file = ServersUtils.getMetaData();
+                    loadContentFromDisk();
+                }else{
+                    System.err.println("Waiting for possible connections");
+                    Thread.sleep(5000); // any server discovered? no? create from scratch
+                    int connectionsSize = serverIps.size();
+                    System.err.println("Time up, got "+ connectionsSize +"connections");
+                    if (connectionsSize>0){
+                        //server discovered
+                        String serverIp="";
+                        for (String ip:serverIps.keySet()) {
+                            serverIp=ip;
+                            break;
+                        }
+                        file= fetch(serverIp,serverIps.get(serverIp));
+                    }else{
+                        //start new
+                        file = ReplicationServerUtils.createFile();
+                    }
+                    ReplicationServerUtils.writeToFile(file);
+                }
+                System.out.println("content: " + content);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }).start();
     }
 
-    public void addServer(String newIp,String type){
-        serverIps.put(newIp,type);
-        if (first){
-            first = false;
-            initReplication(newIp,type);
-        }
+    public void loadContentFromDisk(){
+
+        ServersUtils.getAlbumList().forEach(albumName->{
+            HashMap<String,byte[]> imageContent = new HashMap<>();
+            ServersUtils.getPicturesList(albumName).forEach(pictureName->{
+                imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
+            });
+            content.put(albumName,imageContent);
+        });
     }
 
+    public void addServer(String newIp,String type){
+        serverIps.putIfAbsent(newIp, type);
+    }
 
     private JSONObject fetch(String ip, String type){
-        JSONObject file;
+        SharedGalleryClient sharedGalleryClient;
         if (type.equals("REST")){
             WebTarget webTarget=  DiscoveryClient.getWebTarget(ip);
-
-            SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(webTarget,random);
-
-
-            sharedGalleryClientREST.getListOfAlbums().forEach(albumName->{
-
-                HashMap<String,byte[]> imageContent = new HashMap<>();
-                sharedGalleryClientREST.getListOfPictures(albumName).forEach(pictureName->{
-                    imageContent.put(pictureName,sharedGalleryClientREST.getPictureData(albumName,
-                            pictureName));
-                });
-                content.put(albumName,imageContent);
-            });
-            file = sharedGalleryClientREST.getMetaData();
-        }else{
+            sharedGalleryClient = new SharedGalleryClientREST(webTarget,random);
+        }else {
             Server server = DiscoveryClient.getWebServiceServer(ip);
-            SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(server);
-
-            sharedGalleryClientSOAP.getListOfAlbums().forEach(albumName->{
-
-                HashMap<String,byte[]> imageContent = new HashMap<>();
-
-                sharedGalleryClientSOAP.getListOfPictures(albumName).forEach(pictureName->{
-
-                    imageContent.put(pictureName,sharedGalleryClientSOAP.getPictureData(albumName,
-                            pictureName));
-                });
-                content.put(albumName,imageContent);
-            });
-            file = sharedGalleryClientSOAP.getMetaData();
+            sharedGalleryClient = new SharedGalleryClientSOAP(server);
         }
-        return file;
+
+        sharedGalleryClient.getListOfAlbums().forEach(albumName->{
+
+            HashMap<String,byte[]> imageContent = new HashMap<>();
+            sharedGalleryClient.getListOfPictures(albumName).forEach(pictureName->{
+                imageContent.put(pictureName,sharedGalleryClient.getPictureData(albumName,
+                        pictureName));
+            });
+            content.put(albumName,imageContent);
+        });
+
+        return sharedGalleryClient.getMetaData();
     }
 }

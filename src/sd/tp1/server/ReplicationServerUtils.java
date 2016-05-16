@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sd.tp1.utils.Clock;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -19,6 +20,7 @@ public class ReplicationServerUtils {
     public static final String CLOCK= "clock";
     public static final String REPLICA= "replica";
     public static final String SHAREDBY= "sharedBy";
+    public static final String KNOWNHOSTS= "knownHosts";
     public static final int NONEXISTENCE = -1;
 
     public static void timestampRemove(JSONObject file,int id){
@@ -45,7 +47,7 @@ public class ReplicationServerUtils {
     }
 
     public static JSONObject getTimeStamps(JSONObject file){
-       return ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP));
+        return ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP));
     }
 
     public static void setTimeStamps(JSONObject file,JSONObject timestamp){
@@ -73,6 +75,14 @@ public class ReplicationServerUtils {
         return ((JSONArray)jsonObject.get(SHAREDBY)).remove(sharedBy);
     }
 
+    public static void addHost(JSONObject file, String ip){
+        ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).add(ip);
+    }
+
+    public static void removeHost(JSONObject file, String ip){
+        ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).remove(ip);
+    }
+
 
     public static JSONObject createFile(){
 
@@ -83,6 +93,7 @@ public class ReplicationServerUtils {
         LinkedHashMap<Object,Object> timeStamp = new LinkedHashMap<>();
 
         jSONconstructorFile.put(REPLICAID,UUID.randomUUID());
+        jSONconstructorFile.put(KNOWNHOSTS,new JSONArray());
         jSONconstructorFile.put(TIMESTAMP,new JSONObject(timeStamp));
 
 
@@ -104,6 +115,10 @@ public class ReplicationServerUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean metadataExistence(){
+        return new File(FILENAME).exists();
     }
 
 }
