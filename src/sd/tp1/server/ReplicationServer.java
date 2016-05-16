@@ -36,15 +36,13 @@ public class ReplicationServer {
 
                 SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(webTarget,random);
 
-                    List<String> listofalbums = sharedGalleryClientREST.getListOfAlbums();
 
-                listofalbums.forEach(albumName->{
+                sharedGalleryClientREST.getListOfAlbums().forEach(albumName->{
 
                     HashMap<String,byte[]> imageContent = new HashMap<>();
-                    List<String> listOfPictures = sharedGalleryClientREST.getListOfPictures(albumName);
-                    listOfPictures.forEach(pictureName->{
+                    sharedGalleryClientREST.getListOfPictures(albumName).forEach(pictureName->{
                         imageContent.put(pictureName,sharedGalleryClientREST.getPictureData(albumName,
-                                                                                                    pictureName));
+                                pictureName));
                     });
                     content.put(albumName,imageContent);
                 });
@@ -66,8 +64,6 @@ public class ReplicationServer {
                 });
 
             }
-            System.out.println(content);
-
         }).start();
     }
 

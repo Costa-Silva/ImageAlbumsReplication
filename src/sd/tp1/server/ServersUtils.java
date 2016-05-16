@@ -61,7 +61,7 @@ public class ServersUtils {
                 }else if (message.contains(SERVERSIDENTIFIER)){
                     String myip= InetAddress.getLocalHost().getHostAddress()+":"+port ;
                     String ip = message.split("-")[1];
-                    if (myip.equals(ip)){
+                    if (!myip.equals(ip)){
                         String type;
 
                         if (message.contains("REST")){
