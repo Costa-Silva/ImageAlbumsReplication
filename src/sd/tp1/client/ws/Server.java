@@ -27,45 +27,6 @@ public interface Server {
 
     /**
      * 
-     * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getAlbumList", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumList")
-    @ResponseWrapper(localName = "getAlbumListResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumListResponse")
-    @Action(input = "http://server.tp1.sd/Server/getAlbumListRequest", output = "http://server.tp1.sd/Server/getAlbumListResponse")
-    public List<String> getAlbumList();
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "createAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbum")
-    @ResponseWrapper(localName = "createAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbumResponse")
-    @Action(input = "http://server.tp1.sd/Server/createAlbumRequest", output = "http://server.tp1.sd/Server/createAlbumResponse")
-    public String createAlbum(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @return
-     *     returns long
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getserverSpace", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetserverSpace")
-    @ResponseWrapper(localName = "getserverSpaceResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetserverSpaceResponse")
-    @Action(input = "http://server.tp1.sd/Server/getserverSpaceRequest", output = "http://server.tp1.sd/Server/getserverSpaceResponse")
-    public long getserverSpace();
-
-    /**
-     * 
      * @param arg1
      * @param arg0
      * @return
@@ -81,42 +42,6 @@ public interface Server {
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "uploadPicture", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.UploadPicture")
-    @ResponseWrapper(localName = "uploadPictureResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.UploadPictureResponse")
-    @Action(input = "http://server.tp1.sd/Server/uploadPictureRequest", output = "http://server.tp1.sd/Server/uploadPictureResponse")
-    public boolean uploadPicture(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        byte[] arg2);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "deleteAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbum")
-    @ResponseWrapper(localName = "deleteAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbumResponse")
-    @Action(input = "http://server.tp1.sd/Server/deleteAlbumRequest", output = "http://server.tp1.sd/Server/deleteAlbumResponse")
-    public boolean deleteAlbum(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
 
     /**
      * 
@@ -140,6 +65,72 @@ public interface Server {
      * 
      * @param arg0
      * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "createAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbum")
+    @ResponseWrapper(localName = "createAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbumResponse")
+    @Action(input = "http://server.tp1.sd/Server/createAlbumRequest", output = "http://server.tp1.sd/Server/createAlbumResponse")
+    public String createAlbum(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "deleteAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbum")
+    @ResponseWrapper(localName = "deleteAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeleteAlbumResponse")
+    @Action(input = "http://server.tp1.sd/Server/deleteAlbumRequest", output = "http://server.tp1.sd/Server/deleteAlbumResponse")
+    public boolean deleteAlbum(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @return
+     *     returns long
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getserverSpace", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetserverSpace")
+    @ResponseWrapper(localName = "getserverSpaceResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetserverSpaceResponse")
+    @Action(input = "http://server.tp1.sd/Server/getserverSpaceRequest", output = "http://server.tp1.sd/Server/getserverSpaceResponse")
+    public long getserverSpace();
+
+    /**
+     * 
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getMetaData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaData")
+    @ResponseWrapper(localName = "getMetaDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaDataResponse")
+    @Action(input = "http://server.tp1.sd/Server/getMetaDataRequest", output = "http://server.tp1.sd/Server/getMetaDataResponse")
+    public String getMetaData();
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getAlbumList", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumList")
+    @ResponseWrapper(localName = "getAlbumListResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumListResponse")
+    @Action(input = "http://server.tp1.sd/Server/getAlbumListRequest", output = "http://server.tp1.sd/Server/getAlbumListResponse")
+    public List<String> getAlbumList();
+
+    /**
+     * 
+     * @param arg0
+     * @return
      *     returns java.util.List<java.lang.String>
      */
     @WebMethod
@@ -150,5 +141,26 @@ public interface Server {
     public List<String> getPicturesList(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "uploadPicture", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.UploadPicture")
+    @ResponseWrapper(localName = "uploadPictureResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.UploadPictureResponse")
+    @Action(input = "http://server.tp1.sd/Server/uploadPictureRequest", output = "http://server.tp1.sd/Server/uploadPictureResponse")
+    public boolean uploadPicture(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        byte[] arg2);
 
 }

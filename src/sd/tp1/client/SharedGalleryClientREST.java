@@ -1,5 +1,6 @@
 package sd.tp1.client;
 
+import org.json.simple.JSONObject;
 import sd.tp1.gui.GalleryContentProvider;
 
 import javax.ws.rs.client.WebTarget;
@@ -65,4 +66,11 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
     public String getType() {
         return TYPE;
     }
+
+    @Override
+    public JSONObject getMetaData() {
+        return GetMetaDataRest.getMetaData(target,password);
+    }
+
+
 }

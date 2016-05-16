@@ -31,17 +31,19 @@ public class ObjectFactory {
     private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
     private final static QName _DeleteAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "deleteAlbumResponse");
     private final static QName _CreateAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "createAlbumResponse");
+    private final static QName _GetMetaDataResponse_QNAME = new QName("http://server.tp1.sd/", "getMetaDataResponse");
     private final static QName _DeletePicture_QNAME = new QName("http://server.tp1.sd/", "deletePicture");
     private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
     private final static QName _UploadPictureResponse_QNAME = new QName("http://server.tp1.sd/", "uploadPictureResponse");
     private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
     private final static QName _GetserverSpaceResponse_QNAME = new QName("http://server.tp1.sd/", "getserverSpaceResponse");
+    private final static QName _GetMetaData_QNAME = new QName("http://server.tp1.sd/", "getMetaData");
     private final static QName _GetPicturesListResponse_QNAME = new QName("http://server.tp1.sd/", "getPicturesListResponse");
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
     private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
     private final static QName _DeletePictureResponse_QNAME = new QName("http://server.tp1.sd/", "deletePictureResponse");
-    private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
     private final static QName _UploadPictureArg2_QNAME = new QName("", "arg2");
+    private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: sd.tp1.client.ws
@@ -123,6 +125,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetMetaDataResponse }
+     * 
+     */
+    public GetMetaDataResponse createGetMetaDataResponse() {
+        return new GetMetaDataResponse();
+    }
+
+    /**
      * Create an instance of {@link UploadPictureResponse }
      * 
      */
@@ -160,6 +170,14 @@ public class ObjectFactory {
      */
     public CreateAlbum createCreateAlbum() {
         return new CreateAlbum();
+    }
+
+    /**
+     * Create an instance of {@link GetMetaData }
+     * 
+     */
+    public GetMetaData createGetMetaData() {
+        return new GetMetaData();
     }
 
     /**
@@ -242,6 +260,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetMetaDataResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getMetaDataResponse")
+    public JAXBElement<GetMetaDataResponse> createGetMetaDataResponse(GetMetaDataResponse value) {
+        return new JAXBElement<GetMetaDataResponse>(_GetMetaDataResponse_QNAME, GetMetaDataResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DeletePicture }{@code >}}
      * 
      */
@@ -287,6 +314,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetMetaData }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getMetaData")
+    public JAXBElement<GetMetaData> createGetMetaData(GetMetaData value) {
+        return new JAXBElement<GetMetaData>(_GetMetaData_QNAME, GetMetaData.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetPicturesListResponse }{@code >}}
      * 
      */
@@ -326,18 +362,18 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "return", scope = GetPictureDataResponse.class)
-    public JAXBElement<byte[]> createGetPictureDataResponseReturn(byte[] value) {
-        return new JAXBElement<byte[]>(_GetPictureDataResponseReturn_QNAME, byte[].class, GetPictureDataResponse.class, ((byte[]) value));
+    @XmlElementDecl(namespace = "", name = "arg2", scope = UploadPicture.class)
+    public JAXBElement<byte[]> createUploadPictureArg2(byte[] value) {
+        return new JAXBElement<byte[]>(_UploadPictureArg2_QNAME, byte[].class, UploadPicture.class, ((byte[]) value));
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "arg2", scope = UploadPicture.class)
-    public JAXBElement<byte[]> createUploadPictureArg2(byte[] value) {
-        return new JAXBElement<byte[]>(_UploadPictureArg2_QNAME, byte[].class, UploadPicture.class, ((byte[]) value));
+    @XmlElementDecl(namespace = "", name = "return", scope = GetPictureDataResponse.class)
+    public JAXBElement<byte[]> createGetPictureDataResponseReturn(byte[] value) {
+        return new JAXBElement<byte[]>(_GetPictureDataResponseReturn_QNAME, byte[].class, GetPictureDataResponse.class, ((byte[]) value));
     }
 
 }

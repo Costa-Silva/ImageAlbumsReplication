@@ -1,6 +1,8 @@
 package sd.tp1.client;
 
+import org.json.simple.JSONObject;
 import sd.tp1.client.ws.*;
+import sd.tp1.client.ws.GetMetaData;
 
 
 import java.util.List;
@@ -59,5 +61,10 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    @Override
+    public JSONObject getMetaData() {
+        return sd.tp1.client.GetMetaData.getMetaData(server);
     }
 }

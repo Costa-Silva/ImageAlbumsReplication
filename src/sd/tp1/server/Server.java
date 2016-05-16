@@ -1,6 +1,7 @@
 package sd.tp1.server;
 
 import com.sun.xml.internal.ws.server.ServerRtException;
+import org.json.simple.JSONObject;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.utils.HostInfo;
 
@@ -33,6 +34,12 @@ public class Server implements ServerSOAPInterface {
         super();
         this.mainDirectory= new File(MAINPATH);
 
+    }
+
+
+    @WebMethod
+    public String getMetaData(){
+        return ServersUtils.getMetaData().toJSONString();
     }
 
     @WebMethod

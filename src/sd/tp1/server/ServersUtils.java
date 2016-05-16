@@ -1,9 +1,13 @@
 package sd.tp1.server;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import sd.tp1.utils.HostInfo;
 
 import javax.ws.rs.core.Response;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.*;
@@ -24,7 +28,8 @@ public class ServersUtils {
     public static final String MYIDENTIFIER = "OPENBAR";
     public static final String SERVERSIDENTIFIER = "OPENBARSV";
     public static final String MAINSOURCE = "."+File.separator+"src"+File.separator;
-    public static File mainDirectory = new File(MAINSOURCE);
+    public static final File mainDirectory = new File(MAINSOURCE);
+    public static final String METADATAPATH = "metadata.txt";
 
 
     public static void startListening(String serverType,int port){
@@ -61,7 +66,7 @@ public class ServersUtils {
                 }else if (message.contains(SERVERSIDENTIFIER)){
                     String myip= InetAddress.getLocalHost().getHostAddress()+":"+port ;
                     String ip = message.split("-")[1];
-                    if (!myip.equals(ip)){
+                    if (myip.equals(ip)){
                         String type;
 
                         if (message.contains("REST")){
@@ -270,6 +275,17 @@ public class ServersUtils {
         int i = filename.lastIndexOf('.');
         String ext = i < 0 ? "" : filename.substring(i + 1).toLowerCase();
         return f.isFile() && !filename.startsWith(".") && EXTENSIONS.contains(ext);
+    }
+
+
+    public static JSONObject getMetaData(){
+        try {
+            JSONParser parser = new JSONParser();
+            return (JSONObject) parser.parse(new FileReader(METADATAPATH));
+        } catch (ParseException |IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

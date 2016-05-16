@@ -1,5 +1,7 @@
 package sd.tp1.client;
 
+import org.json.simple.JSONObject;
+
 import java.util.List;
 
 /**
@@ -16,4 +18,5 @@ public interface SharedGalleryClient {
     boolean deletePicture(String albumName,String pictureName);
     long getServerSize();
     String getType();
+    JSONObject getMetaData();
 }

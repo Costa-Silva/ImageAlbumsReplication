@@ -58,6 +58,18 @@ public class AlbumsProxyResource {
     }
 
     @GET
+    @Path("/metadata/key/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMetaData(@PathParam("password") String password){
+        if (checkPassword(password)) {
+            return  Response.ok(ServersUtils.getMetaData()).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+
+
+    @GET
     @Path("/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList(@PathParam("password") String password) {
