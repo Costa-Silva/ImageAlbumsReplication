@@ -54,7 +54,7 @@ public class ReplicationServer {
                             break;
                         }
                         file= fetch(serverIp,serverIps.get(serverIp));
-                    }else{
+                    } else{
                         //start new
                         file = ReplicationServerUtils.createFile();
                     }
@@ -106,7 +106,7 @@ public class ReplicationServer {
     }
 
     public void addServer(String newIp,String type){
-        serverIps.putIfAbsent(newIp, type);
+        serverIps.putIfAbsent(newIp,type);
     }
 
     private JSONObject fetch(String ip, String type){
