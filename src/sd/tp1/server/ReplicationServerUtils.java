@@ -64,8 +64,8 @@ public class ReplicationServerUtils {
         jsonObject.put(REPLICA,clock.getReplica());
     }
 
-    public static JSONObject getTimeStamps(JSONObject file){
-        return ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP));
+    public static JSONArray getTimeStamps(JSONObject file){
+        return ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP));
     }
 
     public static void setTimeStamps(JSONObject file,JSONObject timestamp){

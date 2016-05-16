@@ -79,7 +79,7 @@ public class ReplicationServer {
 
                     SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                     JSONObject theirMetadata = sharedGalleryClient.getMetaData();
-                    //JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
+                    JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
 
 
 
