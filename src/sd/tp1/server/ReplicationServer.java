@@ -38,8 +38,6 @@ public class ReplicationServer {
 
                     List<String> listofalbums = sharedGalleryClientREST.getListOfAlbums();
 
-
-
                 listofalbums.forEach(albumName->{
 
                     HashMap<String,byte[]> imageContent = new HashMap<>();
