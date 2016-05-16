@@ -3,9 +3,7 @@ package sd.tp1.server;
 import org.json.simple.JSONObject;
 import sd.tp1.client.DiscoveryClient;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import sd.tp1.client.SharedGalleryClient;
@@ -23,6 +21,8 @@ public class ReplicationServer {
     Map<String,String> serverIps;
     private String random= "random";
     private Map<String,Map<String,byte[]>> content;
+
+
     private JSONObject file;
 
     public ReplicationServer(){
@@ -67,6 +67,33 @@ public class ReplicationServer {
         }).start();
     }
 
+    public void startReplicationTask(){
+
+        new Thread(()->{
+
+            while(true){
+                try {
+                    List<String> keys = new ArrayList<>(serverIps.size());
+                    String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
+
+                    SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
+                    JSONObject theirMetadata = sharedGalleryClient.getMetaData();
+                    JSONObject timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
+
+
+
+
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        });
+    }
+
+
     public void loadContentFromDisk(){
 
         ServersUtils.getAlbumList().forEach(albumName->{
@@ -83,15 +110,8 @@ public class ReplicationServer {
     }
 
     private JSONObject fetch(String ip, String type){
-        SharedGalleryClient sharedGalleryClient;
-        if (type.equals("REST")){
-            WebTarget webTarget=  DiscoveryClient.getWebTarget(ip);
-            sharedGalleryClient = new SharedGalleryClientREST(webTarget,random);
-        }else {
-            Server server = DiscoveryClient.getWebServiceServer(ip);
-            sharedGalleryClient = new SharedGalleryClientSOAP(server);
-        }
 
+        SharedGalleryClient sharedGalleryClient = getClient(ip, type);
         sharedGalleryClient.getListOfAlbums().forEach(albumName->{
 
             HashMap<String,byte[]> imageContent = new HashMap<>();
@@ -104,4 +124,18 @@ public class ReplicationServer {
 
         return sharedGalleryClient.getMetaData();
     }
+
+
+
+    private SharedGalleryClient getClient(String ip, String type){
+        if (type.equals("REST")){
+            WebTarget webTarget=  DiscoveryClient.getWebTarget(ip);
+            return new SharedGalleryClientREST(webTarget,random);
+        }else {
+            Server server = DiscoveryClient.getWebServiceServer(ip);
+            return new SharedGalleryClientSOAP(server);
+        }
+    }
+
+
 }
