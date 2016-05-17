@@ -29,6 +29,9 @@ public class ReplicationServerUtils {
 
 
         JSONObject jsonObject = createFile();
+        timestampADD(jsonObject,"alu",new Clock(1,"ss"),OPERATION);
+        System.out.println(getTimeStamps(jsonObject));
+
         writeToFile(jsonObject);
     }
 
@@ -85,8 +88,15 @@ public class ReplicationServerUtils {
     }
 
     public static JSONArray getTimeStamps(JSONObject file){
-        return ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP));
+
+        System.out.println("Entrou: "+file);
+        return (JSONArray)((JSONObject)(file.get(DATA))).get(TIMESTAMP);
     }
+
+    public static void addHost(JSONObject file, String ip){
+        ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).add(ip);
+    }
+
 
     public static void setTimeStamps(JSONObject file,JSONArray timestamps){
         ((JSONObject)file.get(DATA)).put(TIMESTAMP,timestamps);
@@ -120,10 +130,9 @@ public class ReplicationServerUtils {
         return ((JSONArray)jsonObject.get(SHAREDBY)).remove(sharedBy);
     }
 
-    public static void addHost(JSONObject file, String ip){
-        ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).add(ip);
+    public static JSONArray getKnownHosts(JSONObject file){
+        return ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS));
     }
-
     public static void removeHost(JSONObject file, String ip){
         ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).remove(ip);
     }
@@ -137,14 +146,13 @@ public class ReplicationServerUtils {
     }
 
     public static JSONObject createFile(){
-
         JSONObject file = new JSONObject();
-        LinkedHashMap<Object,Object> jSONconstructorFile  = new LinkedHashMap<>();
+        Map<Object,Object> jSONconstructorFile  = new LinkedHashMap<>();
         jSONconstructorFile.put(REPLICAID,UUID.randomUUID());
         jSONconstructorFile.put(KNOWNHOSTS,new JSONArray());
         jSONconstructorFile.put(TIMESTAMP,new JSONArray());
-
-        JSONObject data = new JSONObject(new JSONObject(jSONconstructorFile));
+        JSONObject json = new JSONObject(jSONconstructorFile);
+        JSONObject data = new JSONObject(json);
         file.put(DATA,data);
 
         return file;

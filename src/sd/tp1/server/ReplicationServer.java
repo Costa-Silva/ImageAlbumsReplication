@@ -31,6 +31,8 @@ public class ReplicationServer {
     public static final String REMOVEOP= "REMOVED";
     public static final String CREATEOP= "CREATED";
     public static final String OPERATION ="operation";
+    public static final String REST ="REST";
+    public static final String SOAP ="SOAP";
     private JSONObject file;
     private Set<String> mytimeStampsSet;
 
@@ -52,7 +54,6 @@ public class ReplicationServer {
                     file = ServersUtils.getMetaData();
                     JSONArray array = ReplicationServerUtils.getTimeStamps(file);
                     Iterator it = array.iterator();
-
                     while (it.hasNext()){
                         mytimeStampsSet.add(((JSONObject) it.next()).toJSONString());
                     }
@@ -61,7 +62,7 @@ public class ReplicationServer {
                     System.err.println("Waiting for possible connections");
                     Thread.sleep(5000); // any server discovered? no? create from scratch
                     int connectionsSize = serverIps.size();
-                    System.err.println("Time up, got "+ connectionsSize +"connections");
+                    System.err.println("Time up, got "+ connectionsSize +" connections.");
                     if (connectionsSize>0){
                         //server discovered
                         String serverIp="";
@@ -84,67 +85,76 @@ public class ReplicationServer {
     }
 
     public void startReplicationTask(){
-
+        keepAlive();
         new Thread(()->{
-
             while(true){
                 try {
+                    if (serverIps.size()>0){
+                        System.out.println("STARTING REPLICATION TASK");
+                        List<String> keys = new ArrayList<>(serverIps.keySet());
+                        String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
 
-                    System.out.println("STARTING REPLICATION TASK");
+                        SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
+                        JSONObject theirMetadata = sharedGalleryClient.getMetaData();
+                        String theirReplica = "";
+                        JSONObject myfile = ServersUtils.getMetaData();
 
-                    List<String> keys = new ArrayList<>(serverIps.size());
-                    String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
+                        System.out.println("MY FILE: "+myfile);
 
-                    SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
-                    JSONObject theirMetadata = sharedGalleryClient.getMetaData();
-                    String theirReplica = "";
+                        ReplicationServerUtils.addHost(myfile,buildIP(serverIp,serverIps.get(serverIp)));
 
-                    JSONObject myfile = ServersUtils.getMetaData();
-                    ReplicationServerUtils.addHost(myfile,serverIp);
-                    JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
-                    Iterator iteratorTheirTimestamps = timestamps.iterator();
+                        JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
+                        Iterator iteratorTheirTimestamps = timestamps.iterator();
 
-                    while (iteratorTheirTimestamps.hasNext()){
+                        while (iteratorTheirTimestamps.hasNext()){
 
-                        JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
-                        String timestampStringID = timestamp.get(OBJECTID).toString();
-                        String operation = ((JSONObject)timestamp.get(OPERATION)).toJSONString();
-                        int clock = (int)timestamp.get(CLOCK);
-                        String replica = timestamp.get(REPLICA).toString();
-                        Clock clockObj = new Clock(clock,replica);
-                        JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
-                        if (mytimeStampsSet.contains(timestampStringID)){
-                            JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,timestampStringID);
-                            String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
+                            JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
+                            String timestampStringID = timestamp.get(OBJECTID).toString();
+                            String operation = ((JSONObject)timestamp.get(OPERATION)).toJSONString();
+                            int clock = (int)timestamp.get(CLOCK);
+                            String replica = timestamp.get(REPLICA).toString();
+                            Clock clockObj = new Clock(clock,replica);
+                            JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
+                            if (mytimeStampsSet.contains(timestampStringID)){
+                                JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,timestampStringID);
+                                String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
 
-                            if (timestampStringID.equals(mytimestampStringID)){
-                                if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
-                                    int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
-                                    //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
-                                    if (result<0){
+                                if (timestampStringID.equals(mytimestampStringID)){
+                                    if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
+                                        int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
+                                        //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
+                                        if (result<0){
+                                            update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
+                                        }
+
+                                    }else if ((int)timestamp.get(CLOCK) > (int) myTimestamp.get(CLOCK)){
                                         update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
                                     }
-
-                                }else if ((int)timestamp.get(CLOCK) > (int) myTimestamp.get(CLOCK)){
+                                }
+                            }else{
+                                if (operation.equals(CREATEOP)){
                                     update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
+                                }else if (operation.equals(REMOVEOP)){
+                                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,theirReplica);
                                 }
                             }
-                        }else{
-                            if (operation.equals(CREATEOP)){
-                                update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
-                            }else if (operation.equals(REMOVEOP)){
-                                writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,theirReplica);
-                            }
                         }
+                    }else {
+                        System.out.println("No servers found to replicate");
                     }
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        }).start();
     }
 
+
+    public  String buildIP(String ip,String type){
+
+        return type.equals(REST) ? ip+"-"+REST  : ip+"-"+SOAP;
+    }
 
     public void update(JSONObject myfile, JSONArray sharedBy, String timestampStringID,String operation,
                        SharedGalleryClient sharedGalleryClient,String theirReplica,Clock clockObj){
@@ -197,6 +207,13 @@ public class ReplicationServer {
             ServersUtils.getPicturesList(albumName).forEach(pictureName->{
                 imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
             });
+
+            Iterator hostsIterator = ReplicationServerUtils.getKnownHosts(file).iterator();
+            while (hostsIterator.hasNext()){
+                String[] identifiers = ((String)hostsIterator.next()).split("-");
+                serverIps.put(identifiers[0],identifiers[1]);
+            }
+            System.out.println("LOAD CONTENT FROM DISK: server ips "+serverIps);
             content.put(albumName,imageContent);
         });
     }
@@ -222,7 +239,7 @@ public class ReplicationServer {
     }
 
     private SharedGalleryClient getClient(String ip, String type){
-        if (type.equals("REST")){
+        if (type.equals(REST)){
             WebTarget webTarget=  DiscoveryClient.getWebTarget(ip);
             return new SharedGalleryClientREST(webTarget,random);
         }else {
@@ -231,5 +248,24 @@ public class ReplicationServer {
         }
     }
 
+    private void keepAlive(){
+        int timeout = 6000;
+        new Thread(()->{
+            while (true){
+                try {
+                    for (String ipToCheck :serverIps.keySet()) {
+                        //you there?
+                        //checking if return any info
+                        if(!(getClient(ipToCheck,serverIps.get(ipToCheck)).getServerSize()>=0)){
+                            serverIps.remove(ipToCheck);
+                        }
+                    }
+                    Thread.sleep(timeout);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
 }

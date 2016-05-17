@@ -70,7 +70,6 @@ public class ServersUtils {
                     String ip = message.split("-")[1];
                     if (!myip.equals(ip)){
                         String type;
-
                         if (message.contains("REST")){
                             type= "REST";
                         }else{
@@ -79,7 +78,6 @@ public class ServersUtils {
                         replicationServer.addServer(ip,type);
                     }
                 }
-
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -94,7 +92,7 @@ public class ServersUtils {
                 InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
                 MulticastSocket socket = new MulticastSocket(); //IOexception
                 socket.joinGroup(address);
-                String myinfo= SERVERSIDENTIFIER+"_"+type+"-"+InetAddress.getLocalHost().getHostAddress()+":"+port ;
+                String myinfo= SERVERSIDENTIFIER+"_"+type+"-"+InetAddress.getLocalHost().getHostAddress()+":"+port;
                 byte[] buffer = myinfo.getBytes();
                 DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
                 datagramPacket.setAddress(address);
