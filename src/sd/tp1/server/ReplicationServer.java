@@ -75,6 +75,7 @@ public class ReplicationServer {
                         //start new
                         file = ReplicationServerUtils.createFile();
                     }
+                    System.out.println("ESCREVI:  " +file);
                     ReplicationServerUtils.writeToFile(file);
                 }
                 startReplicationTask();

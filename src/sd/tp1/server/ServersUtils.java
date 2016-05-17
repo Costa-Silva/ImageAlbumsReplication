@@ -280,7 +280,10 @@ public class ServersUtils {
     public static JSONObject getMetaData(){
         try {
             JSONParser parser = new JSONParser();
-            return (JSONObject) parser.parse(new FileReader(METADATAPATH));
+
+          Object object =  parser.parse(new FileReader(METADATAPATH));
+
+            return (JSONObject) object ;
         } catch (ParseException |IOException e) {
             e.printStackTrace();
         }

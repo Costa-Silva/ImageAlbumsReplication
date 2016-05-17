@@ -88,8 +88,6 @@ public class ReplicationServerUtils {
     }
 
     public static JSONArray getTimeStamps(JSONObject file){
-
-        System.out.println("Entrou: "+file);
         return (JSONArray)((JSONObject)(file.get(DATA))).get(TIMESTAMP);
     }
 
