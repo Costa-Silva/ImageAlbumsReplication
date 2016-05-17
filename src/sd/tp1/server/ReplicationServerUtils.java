@@ -28,11 +28,12 @@ public class ReplicationServerUtils {
     public static void main(String[] args) throws Exception {
 
 
-        JSONObject jsonObject = createFile();
-        timestampADD(jsonObject,"alu",new Clock(1,"ss"),OPERATION);
-        System.out.println(getTimeStamps(jsonObject));
+       // JSONObject jsonObject = createFile();
+        //timestampADD(jsonObject,"alu",new Clock(1,"ss"),OPERATION);
+        System.out.println(getTimeStamps(ServersUtils.getMetaData()));
+        //System.out.println(getTimeStamps(jsonObject));
 
-        writeToFile(jsonObject);
+       // writeToFile(jsonObject);
     }
 
     public static void timestampRemove(JSONObject file,String id){
@@ -88,7 +89,7 @@ public class ReplicationServerUtils {
     }
 
     public static JSONArray getTimeStamps(JSONObject file){
-        return (JSONArray)((JSONObject)(file.get(DATA))).get(TIMESTAMP);
+        return (JSONArray) ((JSONObject)file.get(DATA)).get(TIMESTAMP);
     }
 
     public static void addHost(JSONObject file, String ip){
