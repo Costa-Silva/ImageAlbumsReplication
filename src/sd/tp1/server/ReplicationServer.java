@@ -100,17 +100,38 @@ public class ReplicationServer {
                         while (iteratorMyTimestamps.hasNext()){
                             JSONObject myTimestamp = (JSONObject) iteratorMyTimestamps.next();
                             boolean exist = false;
-                            if (timestamp.get(OBJECTID).equals(myTimestamp.get(OBJECTID))){
-                                    exist=true;
+
+                            String timestampStringID = timestamp.get(OBJECTID).toString();
+                            String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
+
+                            if (timestampStringID.equals(mytimestampStringID)){
+                                exist=true;
                                 if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
 
-                                  int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
+                                    int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
+
+                                    // lexicographically order have priority
 
                                     if (result<0){
                                         //pede content
                                         //atualiza dados
+                                        String[] nameid = getId(timestampStringID);
+                                        if (nameid.length>1){
+                                            if ("operation create".isEmpty()){
+                                                byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
+                                                content.get(nameid[0]).put(nameid[1],aux);
+                                            }else if ("operation remove".isEmpty()){
+                                                content.get(nameid[0]).remove(nameid[1]);
+                                            }
+                                        }else{
+                                            if ("operation create".isEmpty()){
+                                                if (sharedGalleryClient.createAlbum(nameid[0]).equals(nameid[0]))
+                                                content.put(nameid[0],new HashMap<>());
+                                            }else if ("operation remove".isEmpty()){
+                                                content.remove(nameid[0]);
+                                            }
+                                        }
                                     }
-
 
                                 }else if ( (int)timestamp.get(CLOCK) > (int) myTimestamp.get(CLOCK) ){
                                     //pede content
@@ -129,9 +150,22 @@ public class ReplicationServer {
                     e.printStackTrace();
                 }
             }
-
-
         });
+    }
+
+    public String buildNewId(String albumName,String pictureName){
+
+        String defaultAlbum = "Album:"+albumName;
+        String defaultPicture = "Picture:";
+        return pictureName.equals("") ? defaultAlbum : defaultAlbum+"|"+defaultPicture+pictureName;
+    }
+
+    public String[] getId(String id){
+        if (id.contains("Picture:")){
+            return id.split("Album:")[0].split("Picture:") ;
+        }else{
+            return id.split("Album:");
+        }
     }
 
 
@@ -165,8 +199,6 @@ public class ReplicationServer {
 
         return sharedGalleryClient.getMetaData();
     }
-
-
 
     private SharedGalleryClient getClient(String ip, String type){
         if (type.equals("REST")){
