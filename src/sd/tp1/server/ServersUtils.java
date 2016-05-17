@@ -189,15 +189,12 @@ public class ServersUtils {
 
         boolean success=false;
         if (correctMainDirectory()){
-
             File album = new File(MAINSOURCE+albumName);
             if (album.exists() && album.isDirectory()) {
                 File newPicture = new File(album.getAbsolutePath()+ File.separator + pictureName);
-
                 try {
                     Files.write(newPicture.toPath(),pictureData, StandardOpenOption.CREATE_NEW);
                     success = newPicture.exists();
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -213,10 +210,8 @@ public class ServersUtils {
             File album = new File(MAINSOURCE + albumName);
             byte[] array;
             if (album.exists() && album.isDirectory()) {
-
                 File albumDir = new File(album.getAbsolutePath());
                 File[] files = albumDir.listFiles();
-
                 for (File file : files) {
                     if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.getName().equals(picture) && checkExtension(file)) {
 
@@ -241,17 +236,11 @@ public class ServersUtils {
 
         List<String> list = new ArrayList<>();
         if (correctMainDirectory()){
-
             File album = new File(MAINSOURCE+albumName);
-
             if (album.exists() && album.isDirectory()) {
-
                 File albumDir = new File(album.getAbsolutePath());
-
                 File[] files = albumDir.listFiles();
-
                 for (File file : files) {
-
                     if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && !file.isDirectory() && checkExtension(file)) {
                         list.add(file.getName());
                     }
@@ -267,16 +256,11 @@ public class ServersUtils {
 
         List<String> albums = new ArrayList<>();
         if (correctMainDirectory()){
-
             File[] files = mainDirectory.listFiles();
-
             for (File file: files) {
-
                 if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.isDirectory()  ){
-
                     albums.add(file.getName());
                 }
-
             }
         }
         return albums;

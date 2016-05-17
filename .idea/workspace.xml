@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java" />
     </list>
     <ignored path="SD2016-TP1.iws" />
@@ -32,8 +29,8 @@
       <file leaf-file-name="ServersUtils.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="184" column="49" selection-start-line="184" selection-start-column="49" selection-end-line="184" selection-end-column="49" />
+            <state relative-caret-position="454">
+              <caret line="190" column="36" selection-start-line="190" selection-start-column="36" selection-end-line="190" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -44,7 +41,7 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
+            <state relative-caret-position="285">
               <caret line="157" column="64" selection-start-line="157" selection-start-column="64" selection-end-line="157" selection-end-column="64" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -56,8 +53,8 @@
       <file leaf-file-name="ReplicationServerUtils.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="69" column="29" selection-start-line="69" selection-start-column="29" selection-end-line="69" selection-end-column="29" />
+            <state relative-caret-position="242">
+              <caret line="134" column="30" selection-start-line="134" selection-start-column="30" selection-end-line="134" selection-end-column="30" />
               <folding>
                 <element signature="e#4916#4917#0" expanded="true" />
                 <element signature="e#4989#4990#0" expanded="true" />
@@ -912,14 +909,7 @@
       <workItem from="1463416225345" duration="12599000" />
       <workItem from="1463444354325" duration="547000" />
       <workItem from="1463460303506" duration="4703000" />
-      <workItem from="1463499548328" duration="2997000" />
-    </task>
-    <task id="LOCAL-00017" summary="server modifications">
-      <created>1459870448732</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1459870448732</updated>
+      <workItem from="1463499548328" duration="3140000" />
     </task>
     <task id="LOCAL-00018" summary="server modifications">
       <created>1459871110336</created>
@@ -1257,11 +1247,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463465024724</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="aula replicação">
+      <created>1463502589556</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1463502589559</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="154777000" />
+    <option name="totallyTimeSpent" value="154920000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1317,7 +1314,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Proxy full working" />
     <MESSAGE value="fix" />
     <MESSAGE value="noo" />
     <MESSAGE value="metadata finished" />
@@ -1342,7 +1338,8 @@
     <MESSAGE value="edited1.1.2" />
     <MESSAGE value="mute replication" />
     <MESSAGE value="mute replication v1" />
-    <option name="LAST_COMMIT_MESSAGE" value="mute replication v1" />
+    <MESSAGE value="aula replicação" />
+    <option name="LAST_COMMIT_MESSAGE" value="aula replicação" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1628,6 +1625,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1657,8 +1655,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="69" column="29" selection-start-line="69" selection-start-column="29" selection-end-line="69" selection-end-column="29" />
+        <state relative-caret-position="242">
+          <caret line="134" column="30" selection-start-line="134" selection-start-column="30" selection-end-line="134" selection-end-column="30" />
           <folding>
             <element signature="e#4916#4917#0" expanded="true" />
             <element signature="e#4989#4990#0" expanded="true" />
@@ -1668,7 +1666,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
+        <state relative-caret-position="285">
           <caret line="157" column="64" selection-start-line="157" selection-start-column="64" selection-end-line="157" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1678,8 +1676,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="184" column="49" selection-start-line="184" selection-start-column="49" selection-end-line="184" selection-end-column="49" />
+        <state relative-caret-position="454">
+          <caret line="190" column="36" selection-start-line="190" selection-start-column="36" selection-end-line="190" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
