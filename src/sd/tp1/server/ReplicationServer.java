@@ -102,7 +102,7 @@ public class ReplicationServer {
 
                             if (timestamp.get(OBJECTID).equals(myTimestamp.get(OBJECTID))){
 
-                                if (timestamp.get(CLOCK)==myTimestamp.get(CLOCK)){
+                                if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
 
                                 }else if ( (int)timestamp.get(CLOCK) > (int) myTimestamp.get(CLOCK) ){
 
