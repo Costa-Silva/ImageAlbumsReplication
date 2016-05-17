@@ -29,7 +29,7 @@ public class ReplicationServerUtils {
 
 
         JSONObject jsonObject = createFile();
-        writeToFile(jsonObject);
+       writeToFile(jsonObject);
     }
 
     public static void timestampRemove(JSONObject file,String id){
@@ -128,6 +128,13 @@ public class ReplicationServerUtils {
         ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).remove(ip);
     }
 
+    public static UUID getReplicaid(JSONObject file){
+      return (UUID) ((JSONObject)file.get(DATA)).get(REPLICAID);
+    }
+
+    public static void setReplicaid(JSONObject file, UUID replica){
+        ((JSONObject)file.get(DATA)).put(REPLICAID,replica);
+    }
 
     public static JSONObject createFile(){
 
