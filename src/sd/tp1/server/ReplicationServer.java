@@ -258,6 +258,8 @@ public class ReplicationServer {
                         //checking if return any info
                         if(!(getClient(ipToCheck,serverIps.get(ipToCheck)).getServerSize()>=0)){
                             serverIps.remove(ipToCheck);
+                            ReplicationServerUtils.removeHost(file,ipToCheck);
+                            ReplicationServerUtils.writeToFile(file);
                         }
                     }
                     Thread.sleep(timeout);
