@@ -44,14 +44,27 @@ public class ReplicationServerUtils {
         timestamp.put(OPERATION,op);
     }
 
-    public static void timestampADD(JSONObject file,int id,Clock clock,String operation){
-        LinkedHashMap<Object,Object> jSONconstructorTimestamp  = new LinkedHashMap<>();
+    private static Map<Object,Object> timestampConstrutor(int id, Clock clock,String operation){
+        Map<Object,Object> jSONconstructorTimestamp  = new LinkedHashMap<>();
         jSONconstructorTimestamp.put(OBJECTID,id);
         jSONconstructorTimestamp.put(CLOCK,clock.getClock());
         jSONconstructorTimestamp.put(REPLICA,clock.getReplica());
         jSONconstructorTimestamp.put(OPERATION,operation);
         jSONconstructorTimestamp.put(SHAREDBY,new JSONArray());
-        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(jSONconstructorTimestamp));
+        return jSONconstructorTimestamp;
+    }
+
+    public static void timestampADD(JSONObject file,int id,Clock clock,String operation){
+        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(timestampConstrutor(id,clock,operation)));
+    }
+
+    public static void timestampSet(JSONObject file, int id,Clock clock,String operation){
+
+        JSONArray array = new JSONArray();
+
+        array.add(timestampConstrutor(id,clock,operation));
+
+        ((JSONObject)file.get(DATA)).put(TIMESTAMP,array);
     }
 
     public static JSONObject timestampgetJSONbyID(JSONObject file,int id){
