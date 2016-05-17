@@ -95,12 +95,11 @@ public class ReplicationServer {
 
                     SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                     JSONObject theirMetadata = sharedGalleryClient.getMetaData();
+                    JSONObject myfile = ServersUtils.getMetaData();
                     JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
                     Iterator iteratorTheirTimestamps = timestamps.iterator();
 
-                    JSONObject myfile = ServersUtils.getMetaData();
-                    JSONArray myTimestamps = ReplicationServerUtils.getTimeStamps(myfile);
-                    String myReplica ="";// GET REPLICA
+
 
                     while (iteratorTheirTimestamps.hasNext()){
 
