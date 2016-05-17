@@ -71,6 +71,7 @@ public class ReplicationServer {
                             break;
                         }
                         file = ReplicationServerUtils.createFile();
+                        ReplicationServerUtils.writeToFile(file);
 
                         JSONObject theirMetadata = fetch(serverIp,serverIps.get(serverIp));
 
