@@ -110,7 +110,7 @@ public class ReplicationServer {
                         if (mytimeStampsSet.contains(timestampStringID)){
                             JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,timestampStringID);
                             String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
-                            String operation = ReplicationServerUtils.timestampGetOperation(timestamp,timestampStringID);
+                            String operation = ((JSONObject)timestamp.get(OPERATION)).toJSONString() ;
 
                             if (timestampStringID.equals(mytimestampStringID)){
                                 if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
