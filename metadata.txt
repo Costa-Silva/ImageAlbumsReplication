@@ -1,13 +1,13 @@
 {
   "data" : {
-    "replicaId" : "9c3a25b4-9135-4747-bf07-33ed1124b471",
+    "replicaId" : "5f7714b1-83bb-4b48-b089-7ce45cca9f3e",
     "knownHosts" : [ ],
     "timestamps" : [ {
-      "id" : 70,
-      "clock" : 9,
-      "replica" : 10,
-      "operation" : "remove",
-      "sharedBy" : [ ]
+      "id" : 2,
+      "clock" : 1,
+      "replica" : 1,
+      "operation" : "no operation",
+      "sharedBy" : [ "lol" ]
     } ]
   }
 }

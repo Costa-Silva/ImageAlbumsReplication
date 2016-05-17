@@ -24,7 +24,6 @@ public class ReplicationServerUtils {
     public static final String KNOWNHOSTS= "knownHosts";
     public static final String OBJECTID= "id";
     public static final String OPERATION ="operation";
-    private static final String NOOPERATION = "no operation" ;
 
     public static void main(String[] args) throws Exception {
 
@@ -135,9 +134,6 @@ public class ReplicationServerUtils {
 
         JSONObject data = new JSONObject(new JSONObject(jSONconstructorFile));
         file.put(DATA,data);
-
-
-        timestampADD(file,2,new Clock(1,1),NOOPERATION);
 
         return file;
     }
