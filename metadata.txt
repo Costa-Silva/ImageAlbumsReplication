@@ -1,6 +1,6 @@
 {
   "data" : {
-    "replicaId" : "1054fbe9-fab7-4528-93d1-f6cf291a54af",
+    "replicaId" : "96ae6925-d089-4858-8dcc-b2ceefc5aa33",
     "knownHosts" : [ ],
     "timestamps" : [ ]
   }

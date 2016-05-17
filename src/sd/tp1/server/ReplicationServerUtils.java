@@ -29,7 +29,7 @@ public class ReplicationServerUtils {
 
 
         JSONObject jsonObject = createFile();
-       writeToFile(jsonObject);
+        writeToFile(jsonObject);
     }
 
     public static void timestampRemove(JSONObject file,String id){
@@ -38,7 +38,7 @@ public class ReplicationServerUtils {
     }
 
     public static void timestampChangeOperation(JSONObject file, String id, String op){
-       JSONObject timestamp =  timestampgetJSONbyID(file,id);
+        JSONObject timestamp =  timestampgetJSONbyID(file,id);
 
         timestamp.put(OPERATION,op);
     }
@@ -129,7 +129,7 @@ public class ReplicationServerUtils {
     }
 
     public static String getReplicaid(JSONObject file){
-      return (String) ((JSONObject)file.get(DATA)).get(REPLICAID);
+        return (String) ((JSONObject)file.get(DATA)).get(REPLICAID);
     }
 
     public static void setReplicaid(JSONObject file, UUID replica){
@@ -139,10 +139,7 @@ public class ReplicationServerUtils {
     public static JSONObject createFile(){
 
         JSONObject file = new JSONObject();
-
         LinkedHashMap<Object,Object> jSONconstructorFile  = new LinkedHashMap<>();
-
-
         jSONconstructorFile.put(REPLICAID,UUID.randomUUID());
         jSONconstructorFile.put(KNOWNHOSTS,new JSONArray());
         jSONconstructorFile.put(TIMESTAMP,new JSONArray());

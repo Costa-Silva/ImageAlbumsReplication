@@ -76,7 +76,7 @@ public class ReplicationServer {
                     }
                     ReplicationServerUtils.writeToFile(file);
                 }
-                System.out.println("content: " + content);
+                startReplicationTask();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -89,6 +89,9 @@ public class ReplicationServer {
 
             while(true){
                 try {
+
+                    System.out.println("STARTING REPLICATION TASK");
+
                     List<String> keys = new ArrayList<>(serverIps.size());
                     String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
 
