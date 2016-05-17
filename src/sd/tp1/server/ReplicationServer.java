@@ -22,7 +22,12 @@ public class ReplicationServer {
     Map<String,String> serverIps;
     private String random= "random";
     private Map<String,Map<String,byte[]>> content;
-
+    public static final String DATA= "data";
+    public static final String CLOCK= "clock";
+    public static final String REPLICA= "replica";
+    public static final String SHAREDBY= "sharedBy";
+    public static final String KNOWNHOSTS= "knownHosts";
+    public static final String OBJECTID= "id";
 
     private JSONObject file;
 
@@ -80,19 +85,34 @@ public class ReplicationServer {
                     SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                     JSONObject theirMetadata = sharedGalleryClient.getMetaData();
                     JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
+                    Iterator iteratorTheirTimestamps = timestamps.iterator();
 
-                    Iterator iterator = timestamps.iterator();
+                    JSONObject myfile = ServersUtils.getMetaData();
+                    JSONArray myTimestamps = ReplicationServerUtils.getTimeStamps(myfile);
+                    String myReplica ="";// GET REPLICA
 
-                    while (iterator.hasNext()){
+                    while (iteratorTheirTimestamps.hasNext()){
 
-                        JSONObject timestamp = (JSONObject) iterator.next();
+                        JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
+
+                        Iterator iteratorMyTimestamps = myTimestamps.iterator();
+
+                        while (iteratorMyTimestamps.hasNext()){
+                            JSONObject myTimestamp = (JSONObject) iteratorMyTimestamps.next();
+
+                            if (timestamp.get(OBJECTID).equals(myTimestamp.get(OBJECTID))){
+
+                                if (timestamp.get(CLOCK)==myTimestamp.get(CLOCK)){
+
+                                }else if ( (int)timestamp.get(CLOCK) > (int) myTimestamp.get(CLOCK) ){
+
+                                }
 
 
-
-
+                            }
+                        }
+                        //cria
                     }
-
-
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
