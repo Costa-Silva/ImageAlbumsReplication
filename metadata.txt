@@ -1,11 +1,12 @@
 {
   "data" : {
-    "replicaId" : "0d100e2a-3ae2-46a3-aec1-3d31e8ae555a",
-    "knownHosts" : [ "lol", "lol2" ],
+    "replicaId" : "65a6f630-f283-4505-9ac8-50a7fbeb9ed0",
+    "knownHosts" : [ ],
     "timestamps" : [ {
       "id" : 2,
       "clock" : 1,
       "replica" : 1,
+      "operation" : "CREATE",
       "sharedBy" : [ ]
     } ]
   }
