@@ -99,19 +99,30 @@ public class ReplicationServer {
 
                         while (iteratorMyTimestamps.hasNext()){
                             JSONObject myTimestamp = (JSONObject) iteratorMyTimestamps.next();
-
+                            boolean exist = false;
                             if (timestamp.get(OBJECTID).equals(myTimestamp.get(OBJECTID))){
-
+                                    exist=true;
                                 if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
 
+                                  int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
+
+                                    if (result<0){
+                                        //pede content
+                                        //atualiza dados
+                                    }
+
+
                                 }else if ( (int)timestamp.get(CLOCK) > (int) myTimestamp.get(CLOCK) ){
-
+                                    //pede content
+                                    //atualiza dados
                                 }
+                            }
 
-
+                            if (!exist){
+                                //pede content
+                                //cria dados
                             }
                         }
-                        //cria
                     }
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
