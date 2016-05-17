@@ -152,7 +152,7 @@ public class ReplicationServer {
                     }else {
                         System.out.println("No servers found to replicate");
                     }
-                    Thread.sleep(20000);
+                    Thread.sleep(15000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

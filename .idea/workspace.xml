@@ -51,8 +51,8 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+            <state relative-caret-position="298">
+              <caret line="154" column="35" selection-start-line="154" selection-start-column="35" selection-end-line="154" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -864,13 +864,6 @@
       <workItem from="1463460303506" duration="4703000" />
       <workItem from="1463499548328" duration="15226000" />
     </task>
-    <task id="LOCAL-00027" summary="aula atualizacao">
-      <created>1462290682827</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1462290682827</updated>
-    </task>
     <task id="LOCAL-00028" summary="proxy class method">
       <created>1462891186742</created>
       <option name="number" value="00028" />
@@ -1207,11 +1200,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463527613655</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="changes">
+      <created>1463528517163</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1463528517163</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="169359000" />
+    <option name="totallyTimeSpent" value="169481000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1618,14 +1618,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/metadata.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
@@ -1644,10 +1636,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/metadata.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+        <state relative-caret-position="298">
+          <caret line="154" column="35" selection-start-line="154" selection-start-column="35" selection-end-line="154" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
