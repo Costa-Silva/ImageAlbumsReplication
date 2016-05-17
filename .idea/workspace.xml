@@ -5,8 +5,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/teste.txt" afterPath="$PROJECT_DIR$/bin/teste.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/teste.txt" afterPath="$PROJECT_DIR$/src/teste.txt" />
     </list>
     <ignored path="SD2016-TP1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -867,13 +865,6 @@
       <workItem from="1463460303506" duration="4703000" />
       <workItem from="1463499548328" duration="15226000" />
     </task>
-    <task id="LOCAL-00023" summary="servers error">
-      <created>1459876308169</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1459876308169</updated>
-    </task>
     <task id="LOCAL-00024" summary="bugfix">
       <created>1459876396508</created>
       <option name="number" value="00024" />
@@ -1210,11 +1201,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463524200447</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="test">
+      <created>1463526741606</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1463526741606</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="167596000" />
+    <option name="totallyTimeSpent" value="167651000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1270,7 +1268,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix you" />
     <MESSAGE value="fix all" />
     <MESSAGE value="codigo erro" />
     <MESSAGE value="ddd&#10;" />
@@ -1295,7 +1292,8 @@
     <MESSAGE value="replication test" />
     <MESSAGE value="added keep-alive" />
     <MESSAGE value="added keep-alive recheck" />
-    <option name="LAST_COMMIT_MESSAGE" value="added keep-alive recheck" />
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
