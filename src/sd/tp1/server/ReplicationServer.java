@@ -53,6 +53,8 @@ public class ReplicationServer {
                     //load from disk to memory
                     file = ServersUtils.getMetaData();
                     JSONArray array = ReplicationServerUtils.getTimeStamps(file);
+                    System.out.println("O MEU GETTIMESTAMPS " + array.toJSONString() );
+
                     Iterator it = array.iterator();
                     while (it.hasNext()){
                         mytimeStampsSet.add(((JSONObject) it.next()).toJSONString());
@@ -75,7 +77,12 @@ public class ReplicationServer {
 
                         JSONObject theirMetadata = fetch(serverIp,serverIps.get(serverIp));
 
+                        System.out.println("They metadata : " +theirMetadata.toJSONString());
+
                         JSONArray timeStamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
+
+                        System.out.println("THEIR TIMESTAMPS " + timeStamps.toJSONString());
+
                         Iterator iterator = timeStamps.iterator();
                         while (iterator.hasNext()){
                             ReplicationServerUtils.timestampADDJSON(file,(JSONObject) iterator.next());
@@ -223,9 +230,9 @@ public class ReplicationServer {
                 String[] identifiers = ((String)hostsIterator.next()).split("-");
                 serverIps.put(identifiers[0],identifiers[1]);
             }
-            System.out.println("LOAD CONTENT FROM DISK: server ips "+serverIps);
             content.put(albumName,imageContent);
         });
+        System.out.println("Load Content size " +content.size());
     }
 
     public void addServer(String newIp,String type){
