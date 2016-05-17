@@ -256,10 +256,11 @@ public class ReplicationServer {
                     for (String ipToCheck :serverIps.keySet()) {
                         //you there?
                         //checking if return any info
-                        if(!(getClient(ipToCheck,serverIps.get(ipToCheck)).getServerSize()>=0)){
+                        String type = serverIps.get(ipToCheck);
+                        SharedGalleryClient sharedGalleryClient = getClient(ipToCheck,type);
+                        if(!(sharedGalleryClient.getServerSize()>=0)){
                             serverIps.remove(ipToCheck);
-                            ReplicationServerUtils.removeHost(file,ipToCheck);
-                            ReplicationServerUtils.writeToFile(file);
+                            keepAliveRecheck(ipToCheck,sharedGalleryClient);
                         }
                     }
                     Thread.sleep(timeout);
@@ -269,5 +270,26 @@ public class ReplicationServer {
             }
         }).start();
     }
+
+    private void keepAliveRecheck(String ipToCheck,SharedGalleryClient sharedGalleryClient){
+
+
+        new Thread(()->{
+            int maxRetrys = 2;
+            for (int i = 0; i < maxRetrys ; i++) {
+                if(sharedGalleryClient.getServerSize()>=0){
+                    String type = sharedGalleryClient.getType().equals(REST) ? REST : SOAP;
+                    serverIps.put(ipToCheck,type);
+                    break;
+                }
+            }
+            ReplicationServerUtils.removeHost(file,ipToCheck);
+            ReplicationServerUtils.writeToFile(file);
+        }).start();
+
+
+
+    }
+
 
 }
