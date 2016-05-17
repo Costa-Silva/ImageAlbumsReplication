@@ -89,6 +89,9 @@ public class AlbumsProxyResource {
                     JSONArray images = (JSONArray) res.get("data");
 
                     Iterator albumsIt = images.iterator();
+                    Map<String,String> mapHelper = new HashMap<>();
+                    mapHelper.putAll(albumsIdName);
+
                     albumsIdName.clear();
 
                     while(albumsIt.hasNext()){
@@ -96,11 +99,12 @@ public class AlbumsProxyResource {
                         JSONObject objects = (JSONObject) albumsIt.next();
                         String title = objects.get("title").toString();
                         String albumId= objects.get("id").toString();
-                        albumsTitleList.add(title);
-                        albumsIdName.put(albumId,title);
+                        if(!mapHelper.containsKey(albumId+".deleted")) {
+                            albumsTitleList.add(title);
+                            albumsIdName.put(albumId,title);
+                        }
                     }
                 }
-                albumsIdName.toString();
                 if (albumsTitleList.size()>0) {
 
                     return Response.ok(albumsTitleList).build();
@@ -124,12 +128,17 @@ public class AlbumsProxyResource {
 
         if (checkPassword(password)) {
             String albumID;
+            System.out.println("o album name e " + albumName);
             if ((albumID = albumName2Id(albumName))!=null){
+                System.out.println("entrei com id "+albumID);
                 String albumUrl = "https://api.imgur.com/3/album/"+albumID+"/images";
                 try{
                     OAuthRequest albumReq = new OAuthRequest(Verb.GET,albumUrl,service);
                     service.signRequest(accessToken,albumReq);
                     final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
+
+                    System.out.println("CODIGO " +albumPRes.getCode());
+
                     if (albumPRes.getCode() == 200){
                         JSONParser parser = new JSONParser();
                         JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
@@ -145,6 +154,7 @@ public class AlbumsProxyResource {
 
                             ImgurPicture iP = new ImgurPicture(pictureId,title,albumID);
 
+                            pictures.add(iP);
                         }
 
                             return Response.ok(picturesList).build();
@@ -171,22 +181,26 @@ public class AlbumsProxyResource {
 
         if (checkPassword(password)) {
             String albumID;
+            System.out.println("O album name " + albumName);
             if ((albumID=albumName2Id(albumName)) != null) {
+                System.out.println("ENTREI1");
                 ImgurPicture iP;
-                if ((iP=getPictureWithName(pictureName))!=null) {
+                System.out.println("O picture name " + pictureName);
+                if ((iP = getPictureWithName(pictureName)) != null) {
+                    System.out.println("ENTREI2");
                     try {
 
                         String imageUrl = "https://api.imgur.com/3/album/" + albumID + "/image/" + iP.getId();
 
-                        OAuthRequest albumReq = new OAuthRequest(Verb.GET,imageUrl,service);
-                        service.signRequest(accessToken,albumReq);
+                        OAuthRequest albumReq = new OAuthRequest(Verb.GET, imageUrl, service);
+                        service.signRequest(accessToken, albumReq);
                         final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
 
                         if (albumPRes.getCode() == 200) {
                             JSONParser parser = new JSONParser();
                             JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
 
-                            String downloadlink = (String)((JSONObject)res.get("data")).get("link");
+                            String downloadlink = (String) ((JSONObject) res.get("data")).get("link");
 
                             URL url = new URL(downloadlink);
 
@@ -207,8 +221,8 @@ public class AlbumsProxyResource {
                         e.printStackTrace();
                     }
                 }
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -306,7 +320,9 @@ public class AlbumsProxyResource {
 
                 final com.github.scribejava.core.model.Response dAlbRes = dAlbReq.send();
 
-                albumsIdName.remove(albumID);
+                String val = albumsIdName.remove(albumID);
+
+                albumsIdName.put(albumName+".deleted",val);
 
                 return  Response.status(dAlbRes.getCode()).build();
             }else return Response.status(Response.Status.NOT_FOUND).build();
@@ -360,7 +376,7 @@ public class AlbumsProxyResource {
 
 
     private ImgurPicture getPictureWithName(String name){
-
+        System.out.println("O pictures tem size " + pictures.size());
         for (ImgurPicture iP: pictures) {
             if(iP.getPicName().equals(name)){
                 return iP;

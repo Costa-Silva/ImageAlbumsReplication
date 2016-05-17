@@ -23,12 +23,13 @@ public class ReplicationServerUtils {
     public static final String SHAREDBY= "sharedBy";
     public static final String KNOWNHOSTS= "knownHosts";
     public static final String OBJECTID= "id";
+    public static final String OPERATION ="operation";
+    private static final String NOOPERATION = "no operation" ;
 
     public static void main(String[] args) throws Exception {
 
 
         JSONObject jsonObject = createFile();
-
         writeToFile(jsonObject);
     }
 
@@ -37,11 +38,18 @@ public class ReplicationServerUtils {
         ((JSONArray) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).remove(timestampgetJSONbyID(file,id));
     }
 
-    public static void timestampADD(JSONObject file,int id,Clock clock){
+    public static void timestampChangeOperation(JSONObject file, int id, String op){
+       JSONObject timestamp =  timestampgetJSONbyID(file,id);
+
+        timestamp.put(OPERATION,op);
+    }
+
+    public static void timestampADD(JSONObject file,int id,Clock clock,String operation){
         LinkedHashMap<Object,Object> jSONconstructorTimestamp  = new LinkedHashMap<>();
         jSONconstructorTimestamp.put(OBJECTID,id);
         jSONconstructorTimestamp.put(CLOCK,clock.getClock());
         jSONconstructorTimestamp.put(REPLICA,clock.getReplica());
+        jSONconstructorTimestamp.put(OPERATION,operation);
         jSONconstructorTimestamp.put(SHAREDBY,new JSONArray());
 
         ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(jSONconstructorTimestamp));
@@ -108,6 +116,7 @@ public class ReplicationServerUtils {
 
         LinkedHashMap<Object,Object> jSONconstructorFile  = new LinkedHashMap<>();
 
+
         jSONconstructorFile.put(REPLICAID,UUID.randomUUID());
         jSONconstructorFile.put(KNOWNHOSTS,new JSONArray());
         jSONconstructorFile.put(TIMESTAMP,new JSONArray());
@@ -116,7 +125,8 @@ public class ReplicationServerUtils {
         file.put(DATA,data);
 
 
-        timestampADD(file,2,new Clock(1,1));
+        timestampADD(file,2,new Clock(1,1),NOOPERATION);
+
         return file;
     }
 
