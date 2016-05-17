@@ -66,6 +66,7 @@ public class ReplicationServerUtils {
         ((JSONObject)file.get(DATA)).put(TIMESTAMP,array);
     }
 
+
     public static JSONObject timestampgetJSONbyID(JSONObject file,String id){
         Iterator iterator= ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).iterator();
         while (iterator.hasNext()){
@@ -105,6 +106,13 @@ public class ReplicationServerUtils {
     public static JSONArray timestampGetSharedBy(JSONObject file,String id){
         JSONObject jsonObject = timestampgetJSONbyID(file, id);
         return (JSONArray) jsonObject.get(SHAREDBY);
+    }
+
+
+    public static void timestampSetSharedBy(JSONObject file, String id, JSONArray array, String myIP){
+        JSONObject jsonObject = timestampgetJSONbyID(file, id);
+        jsonObject.put(SHAREDBY,array);
+        timestampRemoveSharedBy(file,id,myIP);
     }
 
     public static boolean timestampRemoveSharedBy(JSONObject file,String id,String sharedBy){

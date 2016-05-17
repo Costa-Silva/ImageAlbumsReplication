@@ -1,13 +1,13 @@
 {
   "data" : {
-    "replicaId" : "5f7714b1-83bb-4b48-b089-7ce45cca9f3e",
+    "replicaId" : "83ccb4ad-0090-4491-95a2-568b2de34adc",
     "knownHosts" : [ ],
     "timestamps" : [ {
-      "id" : 2,
+      "id" : "A",
       "clock" : 1,
-      "replica" : 1,
-      "operation" : "no operation",
-      "sharedBy" : [ "lol" ]
+      "replica" : "lols",
+      "operation" : "CREATE",
+      "sharedBy" : [ "VELHO", "OKOK" ]
     } ]
   }
 }
