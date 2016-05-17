@@ -128,8 +128,8 @@ public class ReplicationServerUtils {
         ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).remove(ip);
     }
 
-    public static UUID getReplicaid(JSONObject file){
-      return (UUID) ((JSONObject)file.get(DATA)).get(REPLICAID);
+    public static String getReplicaid(JSONObject file){
+      return (String) ((JSONObject)file.get(DATA)).get(REPLICAID);
     }
 
     public static void setReplicaid(JSONObject file, UUID replica){

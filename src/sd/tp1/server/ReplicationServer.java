@@ -33,14 +33,12 @@ public class ReplicationServer {
     public static final String OPERATION ="operation";
     private JSONObject file;
     private Set<String> mytimeStampsSet;
-    private String myReplica;
 
     public ReplicationServer(){
         serverIps = new ConcurrentHashMap<>();
         content = new HashMap<>();
         mytimeStampsSet =new HashSet<>();
         initReplication();
-        myReplica="";
     }
 
     public void initReplication(){
@@ -143,7 +141,7 @@ public class ReplicationServer {
 
 
     public void update(JSONObject myfile, JSONObject timestamp, String timestampStringID,String operation,
-                                                            SharedGalleryClient sharedGalleryClient,String theirReplica ){
+                       SharedGalleryClient sharedGalleryClient,String theirReplica ){
         int clock = (int)timestamp.get(CLOCK);
         String replica = timestamp.get(REPLICA).toString();
         Clock clockObj = new Clock(clock,replica);
@@ -178,10 +176,11 @@ public class ReplicationServer {
 
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,String operation,String theirReplica){
         ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
-        ReplicationServerUtils.timestampSetSharedBy(myfile,timestampStringID,sharedBy,myReplica);
+
+        ReplicationServerUtils.timestampSetSharedBy(myfile,timestampStringID,sharedBy,
+                ReplicationServerUtils.getReplicaid(myfile).toString());
         ReplicationServerUtils.timestampAddSharedBy(myfile,timestampStringID,theirReplica);
         ReplicationServerUtils.writeToFile(myfile);
-
     }
 
     public String buildNewId(String albumName,String pictureName){
