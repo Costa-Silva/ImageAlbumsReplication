@@ -51,7 +51,6 @@ public class ReplicationServerUtils {
         jSONconstructorTimestamp.put(REPLICA,clock.getReplica());
         jSONconstructorTimestamp.put(OPERATION,operation);
         jSONconstructorTimestamp.put(SHAREDBY,new JSONArray());
-
         ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(jSONconstructorTimestamp));
     }
 
