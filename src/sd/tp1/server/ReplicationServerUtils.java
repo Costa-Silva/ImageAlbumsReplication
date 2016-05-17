@@ -95,6 +95,10 @@ public class ReplicationServerUtils {
         ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).add(ip);
     }
 
+    public static void timestampADDJSON(JSONObject file, JSONObject newtimestamp){
+        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(newtimestamp);
+    }
+
 
     public static void setTimeStamps(JSONObject file,JSONArray timestamps){
         ((JSONObject)file.get(DATA)).put(TIMESTAMP,timestamps);

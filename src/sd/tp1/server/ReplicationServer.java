@@ -70,7 +70,15 @@ public class ReplicationServer {
                             serverIp=ip;
                             break;
                         }
-                        file= fetch(serverIp,serverIps.get(serverIp));
+                        file = ReplicationServerUtils.createFile();
+
+                        JSONObject theirMetadata = fetch(serverIp,serverIps.get(serverIp));
+
+                        JSONArray timeStamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
+                        Iterator iterator = timeStamps.iterator();
+                        while (iterator.hasNext()){
+                            ReplicationServerUtils.timestampADDJSON(file,(JSONObject) iterator.next());
+                        }
                     } else{
                         //start new
                         file = ReplicationServerUtils.createFile();
