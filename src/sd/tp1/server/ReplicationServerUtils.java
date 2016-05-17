@@ -93,7 +93,7 @@ public class ReplicationServerUtils {
 
     public static Clock timestampGetClock(JSONObject file,String id){
         JSONObject jsonObject= timestampgetJSONbyID(file, id);
-        return new Clock((int)jsonObject.get(CLOCK),(int)jsonObject.get(REPLICA));
+        return new Clock((int)jsonObject.get(CLOCK),(String)jsonObject.get(REPLICA));
     }
 
 
