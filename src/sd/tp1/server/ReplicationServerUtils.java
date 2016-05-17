@@ -169,4 +169,18 @@ public class ReplicationServerUtils {
         return new File(FILENAME).exists();
     }
 
+    public static String buildNewId(String albumName,String pictureName){
+
+        String defaultAlbum = "Album:"+albumName;
+        String defaultPicture = "Picture:";
+        return pictureName.isEmpty() ? defaultAlbum : defaultAlbum+"|"+defaultPicture+pictureName;
+    }
+
+    public static String[] getId(String id){
+        if (id.contains("Picture:")){
+            return id.split("Album:")[0].split("Picture:") ;
+        }else{
+            return id.split("Album:");
+        }
+    }
 }

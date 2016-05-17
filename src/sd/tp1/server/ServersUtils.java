@@ -3,6 +3,7 @@ package sd.tp1.server;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import sd.tp1.utils.Clock;
 import sd.tp1.utils.HostInfo;
 
 import javax.ws.rs.core.Response;
@@ -30,7 +31,8 @@ public class ServersUtils {
     public static final String MAINSOURCE = "."+File.separator+"src"+File.separator;
     public static final File mainDirectory = new File(MAINSOURCE);
     public static final String METADATAPATH = "metadata.txt";
-
+    public static final String REMOVEOP= "REMOVED";
+    public static final String CREATEOP= "CREATED";
 
     public static void startListening(String serverType,int port){
 
@@ -145,12 +147,10 @@ public class ServersUtils {
 
         boolean success = false;
         if (correctMainDirectory()){
-
             File album = new File(MAINSOURCE+albumName);
             if(album.isDirectory() && album.exists()){
                 File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
                 success= album.renameTo(delAlbum);
-
             }
         }
         return success;
@@ -169,6 +169,21 @@ public class ServersUtils {
     }
 
 
+    public static void loadAndChangeMetadata(String id, String operation){
+
+        JSONObject file = getMetaData();
+        String replica = ReplicationServerUtils.getReplicaid(file);
+        if (operation.equals(CREATEOP)){
+            ReplicationServerUtils.timestampADD(file,id,new Clock(1,replica),CREATEOP);
+        }else if (operation.equals(REMOVEOP)){
+            Clock clock = ReplicationServerUtils.timestampGetClock(file,id);
+            clock.setClock(clock.getClock()+1);
+            clock.setReplica(replica);
+            ReplicationServerUtils.timestampChangeClock(file,id,clock);
+            ReplicationServerUtils.timestampChangeOperation(file,id,REMOVEOP);
+        }
+        ReplicationServerUtils.writeToFile(file);
+    }
 
     public static boolean uploadPicture(String albumName,String pictureName,byte[] pictureData){
 

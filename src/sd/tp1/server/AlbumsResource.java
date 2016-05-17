@@ -14,7 +14,8 @@ import java.util.List;
  */
 @Path("/albums")
 public class AlbumsResource implements ServerRESTInterface{
-
+    public static final String REMOVEOP= "REMOVED";
+    public static final String CREATEOP= "CREATED";
     public static final String MAINSOURCE = "."+File.separator+"src"+File.separator;
     File mainDirectory = new File(MAINSOURCE);
 
@@ -105,6 +106,8 @@ public class AlbumsResource implements ServerRESTInterface{
         if (checkPassword(password)) {
             String response = ServersUtils.createAlbum(albumName);
             if (response != null) {
+                String empty = "";
+                ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),CREATEOP);
                 return Response.ok().build();
             }
         }
@@ -118,6 +121,7 @@ public class AlbumsResource implements ServerRESTInterface{
     public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData,@PathParam("password")String password){
         if (checkPassword(password)) {
             if (ServersUtils.uploadPicture(albumName, pictureName, pictureData)) {
+                ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,pictureName),CREATEOP);
                 return Response.ok().build();
             }
         }
@@ -129,6 +133,8 @@ public class AlbumsResource implements ServerRESTInterface{
 
         if (checkPassword(password)) {
             if (ServersUtils.deleteAlbum(albumName)) {
+                String empty = "";
+                ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),REMOVEOP);
                 return Response.ok().build();
             }
         }
@@ -144,6 +150,7 @@ public class AlbumsResource implements ServerRESTInterface{
 
         if(checkPassword(password)) {
             if (ServersUtils.deletePicture(albumName, pictureName)) {
+                ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,pictureName),REMOVEOP);
                 return Response.ok().build();
             }
         }
@@ -192,12 +199,4 @@ public class AlbumsResource implements ServerRESTInterface{
         rep.getHeaders().add("Access-Control-Allow-Origin", "*");
         return rep;
     }
-
-
-
 }
-
-
-
-
-

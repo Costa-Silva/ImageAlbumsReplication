@@ -145,7 +145,7 @@ public class ReplicationServer {
 
     public void update(JSONObject myfile, JSONArray sharedBy, String timestampStringID,String operation,
                        SharedGalleryClient sharedGalleryClient,String theirReplica,Clock clockObj){
-        String[] nameid = getId(timestampStringID);
+        String[] nameid = ReplicationServerUtils.getId(timestampStringID);
         if (nameid.length>1){
             if (operation.equals(CREATEOP)){
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
@@ -184,20 +184,7 @@ public class ReplicationServer {
         ReplicationServerUtils.writeToFile(myfile);
     }
 
-    public String buildNewId(String albumName,String pictureName){
 
-        String defaultAlbum = "Album:"+albumName;
-        String defaultPicture = "Picture:";
-        return pictureName.equals("") ? defaultAlbum : defaultAlbum+"|"+defaultPicture+pictureName;
-    }
-
-    public String[] getId(String id){
-        if (id.contains("Picture:")){
-            return id.split("Album:")[0].split("Picture:") ;
-        }else{
-            return id.split("Album:");
-        }
-    }
 
 
     public void loadContentFromDisk(){
