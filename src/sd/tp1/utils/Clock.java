@@ -6,9 +6,9 @@ package sd.tp1.utils;
 public class Clock {
 
     private int clock;
-    private int replica;
+    private String replica;
 
-    public Clock(int clock, int replica) {
+    public Clock(int clock, String replica) {
         this.clock = clock;
         this.replica = replica;
     }
@@ -21,11 +21,11 @@ public class Clock {
         this.clock = clock;
     }
 
-    public int getReplica() {
+    public String getReplica() {
         return replica;
     }
 
-    public void setReplica(int replica) {
+    public void setReplica(String replica) {
         this.replica = replica;
     }
 }
