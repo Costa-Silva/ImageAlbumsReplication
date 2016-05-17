@@ -106,10 +106,10 @@ public class DiscoveryClient {
                             if (servers.get(newServerHost) == null) {
                                 System.out.println("Got new response from server : " + newServerHost);
                                 if (newServerResponse.contains("REST")) {
-                                    SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost),password);
+                                    SharedGalleryClient sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(newServerHost),password);
                                     servers.put(newServerHost, sharedGalleryClientREST);
                                 } else {
-                                    SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
+                                    SharedGalleryClient sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(newServerHost));
                                     servers.put(newServerHost, sharedGalleryClientSOAP);
 
                                 }
@@ -186,10 +186,10 @@ public class DiscoveryClient {
 
                         if (serverType.equals("REST")) {
 
-                            SharedGalleryClientREST sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(serverHost),password);
+                            SharedGalleryClient sharedGalleryClientREST = new SharedGalleryClientREST(getWebTarget(serverHost),password);
                             servers.put(serverHost,sharedGalleryClientREST);
                         }else{
-                            SharedGalleryClientSOAP sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(serverHost));
+                            SharedGalleryClient sharedGalleryClientSOAP = new SharedGalleryClientSOAP(getWebServiceServer(serverHost));
                             servers.put(serverHost, sharedGalleryClientSOAP);
                         }
                         handShake=true;

@@ -87,8 +87,10 @@ public class AlbumsResource implements ServerRESTInterface{
         if (checkPassword(password)) {
             byte[] array = ServersUtils.getPictureData(albumName, pictureName);
             if (array != null && array.length > 0) {
+                System.out.println("Array com cenas");
                 return Response.ok(array).build();
             }
+            System.out.println("NOT FOUND");
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
