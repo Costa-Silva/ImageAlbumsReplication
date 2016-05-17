@@ -1,6 +1,7 @@
 package sd.tp1.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sd.tp1.utils.Clock;
@@ -27,12 +28,13 @@ public class ReplicationServerUtils {
 
 
         JSONObject jsonObject = createFile();
+
         writeToFile(jsonObject);
     }
 
-
     public static void timestampRemove(JSONObject file,int id){
-        ((JSONObject) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).remove(id);
+
+        ((JSONArray) ((JSONObject)file.get(DATA)).get(TIMESTAMP)).remove(timestampgetJSONbyID(file,id));
     }
 
     public static void timestampADD(JSONObject file,int id,Clock clock){
@@ -49,7 +51,7 @@ public class ReplicationServerUtils {
         Iterator iterator= ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).iterator();
         while (iterator.hasNext()){
             JSONObject timestamp = (JSONObject) iterator.next();
-            if(timestamp.get(id)!=null){
+            if((int)timestamp.get(OBJECTID)== id){
                 return timestamp;
             }
         }
@@ -66,8 +68,8 @@ public class ReplicationServerUtils {
         return ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP));
     }
 
-    public static void setTimeStamps(JSONObject file,JSONObject timestamp){
-        ((JSONObject)file.get(DATA)).put(TIMESTAMP,timestamp);
+    public static void setTimeStamps(JSONObject file,JSONArray timestamps){
+        ((JSONObject)file.get(DATA)).put(TIMESTAMP,timestamps);
     }
 
     public static Clock timestampGetClock(JSONObject file,int id){
