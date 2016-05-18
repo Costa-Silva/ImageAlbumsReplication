@@ -43,7 +43,7 @@ public class ObjectFactory {
     private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
     private final static QName _DeletePictureResponse_QNAME = new QName("http://server.tp1.sd/", "deletePictureResponse");
     private final static QName _UploadPictureArg2_QNAME = new QName("", "arg2");
-    private final static QName _GetPictureDataResponseReturn_QNAME = new QName("", "return");
+    private final static QName _GetMetaDataResponseReturn_QNAME = new QName("", "return");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: sd.tp1.client.ws
@@ -371,9 +371,18 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
+    @XmlElementDecl(namespace = "", name = "return", scope = GetMetaDataResponse.class)
+    public JAXBElement<byte[]> createGetMetaDataResponseReturn(byte[] value) {
+        return new JAXBElement<byte[]>(_GetMetaDataResponseReturn_QNAME, byte[].class, GetMetaDataResponse.class, ((byte[]) value));
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
     @XmlElementDecl(namespace = "", name = "return", scope = GetPictureDataResponse.class)
     public JAXBElement<byte[]> createGetPictureDataResponseReturn(byte[] value) {
-        return new JAXBElement<byte[]>(_GetPictureDataResponseReturn_QNAME, byte[].class, GetPictureDataResponse.class, ((byte[]) value));
+        return new JAXBElement<byte[]>(_GetMetaDataResponseReturn_QNAME, byte[].class, GetPictureDataResponse.class, ((byte[]) value));
     }
 
 }

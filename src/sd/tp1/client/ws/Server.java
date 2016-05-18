@@ -27,39 +27,27 @@ public interface Server {
 
     /**
      * 
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "deletePicture", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeletePicture")
-    @ResponseWrapper(localName = "deletePictureResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeletePictureResponse")
-    @Action(input = "http://server.tp1.sd/Server/deletePictureRequest", output = "http://server.tp1.sd/Server/deletePictureResponse")
-    public boolean deletePicture(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1);
-
-    /**
-     * 
-     * @param arg1
-     * @param arg0
      * @return
      *     returns byte[]
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getPictureData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureData")
-    @ResponseWrapper(localName = "getPictureDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureDataResponse")
-    @Action(input = "http://server.tp1.sd/Server/getPictureDataRequest", output = "http://server.tp1.sd/Server/getPictureDataResponse")
-    public byte[] getPictureData(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1);
+    @RequestWrapper(localName = "getMetaData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaData")
+    @ResponseWrapper(localName = "getMetaDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaDataResponse")
+    @Action(input = "http://server.tp1.sd/Server/getMetaDataRequest", output = "http://server.tp1.sd/Server/getMetaDataResponse")
+    public byte[] getMetaData();
+
+    /**
+     * 
+     * @return
+     *     returns long
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getserverSpace", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetserverSpace")
+    @ResponseWrapper(localName = "getserverSpaceResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetserverSpaceResponse")
+    @Action(input = "http://server.tp1.sd/Server/getserverSpaceRequest", output = "http://server.tp1.sd/Server/getserverSpaceResponse")
+    public long getserverSpace();
 
     /**
      * 
@@ -75,6 +63,24 @@ public interface Server {
     public String createAlbum(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "deletePicture", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeletePicture")
+    @ResponseWrapper(localName = "deletePictureResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeletePictureResponse")
+    @Action(input = "http://server.tp1.sd/Server/deletePictureRequest", output = "http://server.tp1.sd/Server/deletePictureResponse")
+    public boolean deletePicture(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
 
     /**
      * 
@@ -94,30 +100,6 @@ public interface Server {
     /**
      * 
      * @return
-     *     returns long
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getserverSpace", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetserverSpace")
-    @ResponseWrapper(localName = "getserverSpaceResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetserverSpaceResponse")
-    @Action(input = "http://server.tp1.sd/Server/getserverSpaceRequest", output = "http://server.tp1.sd/Server/getserverSpaceResponse")
-    public long getserverSpace();
-
-    /**
-     * 
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getMetaData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaData")
-    @ResponseWrapper(localName = "getMetaDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaDataResponse")
-    @Action(input = "http://server.tp1.sd/Server/getMetaDataRequest", output = "http://server.tp1.sd/Server/getMetaDataResponse")
-    public String getMetaData();
-
-    /**
-     * 
-     * @return
      *     returns java.util.List<java.lang.String>
      */
     @WebMethod
@@ -126,6 +108,24 @@ public interface Server {
     @ResponseWrapper(localName = "getAlbumListResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumListResponse")
     @Action(input = "http://server.tp1.sd/Server/getAlbumListRequest", output = "http://server.tp1.sd/Server/getAlbumListResponse")
     public List<String> getAlbumList();
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns byte[]
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPictureData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureData")
+    @ResponseWrapper(localName = "getPictureDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureDataResponse")
+    @Action(input = "http://server.tp1.sd/Server/getPictureDataRequest", output = "http://server.tp1.sd/Server/getPictureDataResponse")
+    public byte[] getPictureData(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
 
     /**
      * 

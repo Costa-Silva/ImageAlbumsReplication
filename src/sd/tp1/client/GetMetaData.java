@@ -13,8 +13,8 @@ public class GetMetaData {
 
     public static byte[] getMetaData(Server server){
         try{
-            JSONParser parser = new JSONParser();
-          // return server.getMetaData();
+
+           return server.getMetaData();
 
         } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());

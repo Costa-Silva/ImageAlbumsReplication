@@ -38,8 +38,8 @@ public class Server implements ServerSOAPInterface {
 
 
     @WebMethod
-    public String getMetaData(){
-        return ServersUtils.getJsonFromFile(new byte[0]).toJSONString();
+    public byte[] getMetaData(){
+        return ServersUtils.getMetaData();
     }
 
     @WebMethod
