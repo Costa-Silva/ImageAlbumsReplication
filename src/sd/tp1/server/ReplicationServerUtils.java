@@ -30,7 +30,7 @@ public class ReplicationServerUtils {
 
        JSONObject jsonObject = createFile();
        // timestampADD(jsonObject,"alu",new Clock(1,"ss"),OPERATION);
-        JSONArray test=getTimeStamps(ServersUtils.getMetaData());
+        JSONArray test=getTimeStamps(ServersUtils.getJsonFromFile());
         System.out.println(test);
         //System.out.println(getTimeStamps(jsonObject));
 

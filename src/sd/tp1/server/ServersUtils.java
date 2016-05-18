@@ -5,14 +5,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sd.tp1.utils.Clock;
 import sd.tp1.utils.HostInfo;
+import sun.misc.IOUtils;
 
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,60 +24,60 @@ import java.util.List;
  * Created by Antonio on 28/03/16.
  */
 public class ServersUtils {
-    public static final List<String> EXTENSIONS = Arrays.asList(new String[] { "tiff", "gif", "jpg", "jpeg", "png" });
+    public static final List<String> EXTENSIONS = Arrays.asList(new String[]{"tiff", "gif", "jpg", "jpeg", "png"});
     public static final String MULTICASTIP = "224.0.0.1";
     public static final int PORT = 5555;
     public static final int MAXBYTESBUFFER = 65536;
     public static final String MYIDENTIFIER = "OPENBAR";
     public static final String SERVERSIDENTIFIER = "OPENBARSV";
-    public static final String MAINSOURCE = "."+File.separator+"src"+File.separator;
+    public static final String MAINSOURCE = "." + File.separator + "src" + File.separator;
     public static final File mainDirectory = new File(MAINSOURCE);
     public static final String METADATAPATH = "metadata.txt";
-    public static final String REMOVEOP= "REMOVED";
-    public static final String CREATEOP= "CREATED";
+    public static final String REMOVEOP = "REMOVED";
+    public static final String CREATEOP = "CREATED";
 
-    public static void startListening(String serverType,int port){
+    public static void startListening(String serverType, int port) {
 
         try {
-            sendingMyInfo(port,serverType);
+            sendingMyInfo(port, serverType);
             ReplicationServer replicationServer = new ReplicationServer();
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
 
             socket.joinGroup(address);
 
-            System.out.println("Listening on "+MULTICASTIP+":"+PORT);
+            System.out.println("Listening on " + MULTICASTIP + ":" + PORT);
 
-            while (true){
+            while (true) {
 
                 byte[] buffer = new byte[MAXBYTESBUFFER];
-                DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
+                DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
                 socket.receive(datagramPacket);
-                HostInfo hostInfo = new HostInfo(datagramPacket.getAddress(),datagramPacket.getPort());
-                String message = new String(datagramPacket.getData(),datagramPacket.getOffset(),
+                HostInfo hostInfo = new HostInfo(datagramPacket.getAddress(), datagramPacket.getPort());
+                String message = new String(datagramPacket.getData(), datagramPacket.getOffset(),
                         datagramPacket.getLength());
-                if (message.equals(MYIDENTIFIER) || message.equals(InetAddress.getLocalHost().getHostAddress()+":"+port)){
+                if (message.equals(MYIDENTIFIER) || message.equals(InetAddress.getLocalHost().getHostAddress() + ":" + port)) {
 
-                    System.out.println("Sending my info to : "+hostInfo.getAddress()+":"+hostInfo.getPort());
-                    String myinfo= InetAddress.getLocalHost().getHostAddress()+":"+port+"-"+serverType ;
+                    System.out.println("Sending my info to : " + hostInfo.getAddress() + ":" + hostInfo.getPort());
+                    String myinfo = InetAddress.getLocalHost().getHostAddress() + ":" + port + "-" + serverType;
 
                     buffer = myinfo.getBytes();
-                    datagramPacket = new DatagramPacket(buffer,buffer.length);
+                    datagramPacket = new DatagramPacket(buffer, buffer.length);
 
                     datagramPacket.setAddress(hostInfo.getAddress());
                     datagramPacket.setPort(hostInfo.getPort());
                     socket.send(datagramPacket);
-                }else if (message.contains(SERVERSIDENTIFIER)){
-                    String myip= InetAddress.getLocalHost().getHostAddress()+":"+port ;
+                } else if (message.contains(SERVERSIDENTIFIER)) {
+                    String myip = InetAddress.getLocalHost().getHostAddress() + ":" + port;
                     String ip = message.split("-")[1];
-                    if (!myip.equals(ip)){
+                    if (!myip.equals(ip)) {
                         String type;
-                        if (message.contains("REST")){
-                            type= "REST";
-                        }else{
-                            type="SOAP";
+                        if (message.contains("REST")) {
+                            type = "REST";
+                        } else {
+                            type = "SOAP";
                         }
-                        replicationServer.addServer(ip,type);
+                        replicationServer.addServer(ip, type);
                     }
                 }
             }
@@ -86,30 +88,30 @@ public class ServersUtils {
         }
     }
 
-    public static void sendingMyInfo(int port,String type){
-        new Thread(()->{
+    public static void sendingMyInfo(int port, String type) {
+        new Thread(() -> {
             try {
                 InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
                 MulticastSocket socket = new MulticastSocket(); //IOexception
                 socket.joinGroup(address);
-                String myinfo= SERVERSIDENTIFIER+"_"+type+"-"+InetAddress.getLocalHost().getHostAddress()+":"+port;
+                String myinfo = SERVERSIDENTIFIER + "_" + type + "-" + InetAddress.getLocalHost().getHostAddress() + ":" + port;
                 byte[] buffer = myinfo.getBytes();
-                DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
+                DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
                 datagramPacket.setAddress(address);
                 datagramPacket.setPort(PORT);
-                while (true){
+                while (true) {
                     socket.send(datagramPacket);
                     System.out.println("Sent Multicast");
                     Thread.sleep(3000);
                 }
-            }catch (IOException | InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }).start();
     }
 
 
-    public static boolean deletePicture(String albumName,String pictureName) {
+    public static boolean deletePicture(String albumName, String pictureName) {
 
         boolean success = false;
         if (correctMainDirectory()) {
@@ -139,26 +141,24 @@ public class ServersUtils {
     }
 
 
-
-
-    public static boolean deleteAlbum(String albumName){
+    public static boolean deleteAlbum(String albumName) {
 
         boolean success = false;
-        if (correctMainDirectory()){
-            File album = new File(MAINSOURCE+albumName);
-            if(album.isDirectory() && album.exists()){
+        if (correctMainDirectory()) {
+            File album = new File(MAINSOURCE + albumName);
+            if (album.isDirectory() && album.exists()) {
                 File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
-                success= album.renameTo(delAlbum);
+                success = album.renameTo(delAlbum);
             }
         }
         return success;
     }
 
-    public static String createAlbum(String albumName){
+    public static String createAlbum(String albumName) {
 
-        if (correctMainDirectory()){
-            File album = new File(MAINSOURCE+albumName);
-            if(!album.exists()){
+        if (correctMainDirectory()) {
+            File album = new File(MAINSOURCE + albumName);
+            if (!album.exists()) {
                 album.mkdir();
                 return album.getName();
             }
@@ -167,31 +167,46 @@ public class ServersUtils {
     }
 
 
-    public static void loadAndChangeMetadata(String id, String operation){
+    public static JSONObject getJsonFromFile(){
+        try {
+        byte[] stringFile = getMetaData();
+        JSONParser parser = new JSONParser();
+        String fileS = new String(stringFile);
 
-        JSONObject file = getMetaData();
+            JSONObject file = (JSONObject) parser.parse(fileS);
+            return file;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public static void loadAndChangeMetadata(String id, String operation) {
+
+        JSONObject file = getJsonFromFile();
         String replica = ReplicationServerUtils.getReplicaid(file);
-        if (operation.equals(CREATEOP)){
-            ReplicationServerUtils.timestampADD(file,id,new Clock(1,replica),CREATEOP);
-        }else if (operation.equals(REMOVEOP)){
-            Clock clock = ReplicationServerUtils.timestampGetClock(file,id);
-            clock.setClock(clock.getClock()+1);
+        if (operation.equals(CREATEOP)) {
+            ReplicationServerUtils.timestampADD(file, id, new Clock(1, replica), CREATEOP);
+        } else if (operation.equals(REMOVEOP)) {
+            Clock clock = ReplicationServerUtils.timestampGetClock(file, id);
+            clock.setClock(clock.getClock() + 1);
             clock.setReplica(replica);
-            ReplicationServerUtils.timestampChangeClock(file,id,clock);
-            ReplicationServerUtils.timestampChangeOperation(file,id,REMOVEOP);
+            ReplicationServerUtils.timestampChangeClock(file, id, clock);
+            ReplicationServerUtils.timestampChangeOperation(file, id, REMOVEOP);
         }
         ReplicationServerUtils.writeToFile(file);
     }
 
-    public static boolean uploadPicture(String albumName,String pictureName,byte[] pictureData){
+    public static boolean uploadPicture(String albumName, String pictureName, byte[] pictureData) {
 
-        boolean success=false;
-        if (correctMainDirectory()){
-            File album = new File(MAINSOURCE+albumName);
+        boolean success = false;
+        if (correctMainDirectory()) {
+            File album = new File(MAINSOURCE + albumName);
             if (album.exists() && album.isDirectory()) {
-                File newPicture = new File(album.getAbsolutePath()+ File.separator + pictureName);
+                File newPicture = new File(album.getAbsolutePath() + File.separator + pictureName);
                 try {
-                    Files.write(newPicture.toPath(),pictureData, StandardOpenOption.CREATE_NEW);
+                    Files.write(newPicture.toPath(), pictureData, StandardOpenOption.CREATE_NEW);
                     success = newPicture.exists();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -202,7 +217,7 @@ public class ServersUtils {
     }
 
 
-    public static byte[] getPictureData(String albumName, String picture){
+    public static byte[] getPictureData(String albumName, String picture) {
 
         if (correctMainDirectory()) {
             File album = new File(MAINSOURCE + albumName);
@@ -230,11 +245,11 @@ public class ServersUtils {
         return null;
     }
 
-    public static List<String> getPicturesList(String albumName){
+    public static List<String> getPicturesList(String albumName) {
 
         List<String> list = new ArrayList<>();
-        if (correctMainDirectory()){
-            File album = new File(MAINSOURCE+albumName);
+        if (correctMainDirectory()) {
+            File album = new File(MAINSOURCE + albumName);
             if (album.exists() && album.isDirectory()) {
                 File albumDir = new File(album.getAbsolutePath());
                 File[] files = albumDir.listFiles();
@@ -245,18 +260,17 @@ public class ServersUtils {
                 }
             }
         }
-        return  list;
+        return list;
     }
 
 
-
-    public static List<String> getAlbumList(){
+    public static List<String> getAlbumList() {
 
         List<String> albums = new ArrayList<>();
-        if (correctMainDirectory()){
+        if (correctMainDirectory()) {
             File[] files = mainDirectory.listFiles();
-            for (File file: files) {
-                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.isDirectory()  ){
+            for (File file : files) {
+                if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && file.isDirectory()) {
                     albums.add(file.getName());
                 }
             }
@@ -264,12 +278,12 @@ public class ServersUtils {
         return albums;
     }
 
-    private static boolean correctMainDirectory(){
+    private static boolean correctMainDirectory() {
 
         return mainDirectory.exists() && mainDirectory.isDirectory();
     }
 
-    private static boolean checkExtension(File f){
+    private static boolean checkExtension(File f) {
         String filename = f.getName();
         int i = filename.lastIndexOf('.');
         String ext = i < 0 ? "" : filename.substring(i + 1).toLowerCase();
@@ -277,14 +291,12 @@ public class ServersUtils {
     }
 
 
-    public static JSONObject getMetaData(){
+    public static byte[] getMetaData() {
         try {
-            JSONParser parser = new JSONParser();
-
-          Object object =  parser.parse(new FileReader(METADATAPATH));
-
-            return (JSONObject) object ;
-        } catch (ParseException |IOException e) {
+            Path path = Paths.get(METADATAPATH);
+            byte[] metadataFile = Files.readAllBytes(path);
+            return metadataFile;
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
