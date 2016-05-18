@@ -113,12 +113,16 @@ public class ReplicationServer {
 
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                         JSONObject theirMetadata = sharedGalleryClient.getMetaData();
+
                         String theirReplica = "";
                         JSONObject myfile = ServersUtils.getMetaData();
 
                         System.out.println("MY FILE: "+myfile);
 
+                        System.out.println("Their file " + theirMetadata);
                         ReplicationServerUtils.addHost(myfile,buildIP(serverIp,serverIps.get(serverIp)));
+
+
 
                         JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
                         Iterator iteratorTheirTimestamps = timestamps.iterator();
