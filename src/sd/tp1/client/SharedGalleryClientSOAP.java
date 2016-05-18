@@ -64,7 +64,7 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
     }
 
     @Override
-    public JSONObject getMetaData() {
+    public byte[] getMetaData() {
         return sd.tp1.client.GetMetaData.getMetaData(server);
     }
 }

@@ -11,10 +11,10 @@ import sd.tp1.client.ws.Server;
 public class GetMetaData {
 
 
-    public static JSONObject getMetaData(Server server){
+    public static byte[] getMetaData(Server server){
         try{
             JSONParser parser = new JSONParser();
-           return (JSONObject) parser.parse(server.getMetaData());
+          // return server.getMetaData();
 
         } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());

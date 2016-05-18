@@ -68,7 +68,7 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
     }
 
     @Override
-    public JSONObject getMetaData() {
+    public byte[] getMetaData() {
         return GetMetaDataRest.getMetaData(target,password);
     }
 

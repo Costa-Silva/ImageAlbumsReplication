@@ -51,7 +51,7 @@ public class ReplicationServer {
                 if (ReplicationServerUtils.metadataExistence()){
                     //load metadata
                     //load from disk to memory
-                    file = ServersUtils.getMetaData();
+                    file = ServersUtils.getJsonFromFile(new byte[0]);
                     JSONArray array = ReplicationServerUtils.getTimeStamps(file);
                     System.out.println("O MEU GETTIMESTAMPS " + array.toJSONString() );
 
@@ -112,10 +112,10 @@ public class ReplicationServer {
                         String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
 
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
-                        JSONObject theirMetadata = sharedGalleryClient.getMetaData();
+                        JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
 
                         String theirReplica = "";
-                        JSONObject myfile = ServersUtils.getMetaData();
+                        JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
 
                         System.out.println("MY FILE: "+myfile);
 
@@ -256,7 +256,7 @@ public class ReplicationServer {
             content.put(albumName,imageContent);
         });
 
-        return sharedGalleryClient.getMetaData();
+        return ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
     }
 
     private SharedGalleryClient getClient(String ip, String type){

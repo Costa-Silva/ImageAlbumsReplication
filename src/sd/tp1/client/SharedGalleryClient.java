@@ -18,5 +18,5 @@ public interface SharedGalleryClient {
     boolean deletePicture(String albumName,String pictureName);
     long getServerSize();
     String getType();
-    JSONObject getMetaData();
+    byte[] getMetaData();
 }

@@ -44,7 +44,7 @@ public class AlbumsResource implements ServerRESTInterface{
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getMetaData(@PathParam("password") String password){
         if (checkPassword(password)) {
-           return  Response.ok(ServersUtils.getJsonFromFile()).build();
+           return  Response.ok(ServersUtils.getJsonFromFile(new byte[0])).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }

@@ -39,7 +39,7 @@ public class Server implements ServerSOAPInterface {
 
     @WebMethod
     public String getMetaData(){
-        return ServersUtils.getMetaData().toJSONString();
+        return ServersUtils.getJsonFromFile(new byte[0]).toJSONString();
     }
 
     @WebMethod

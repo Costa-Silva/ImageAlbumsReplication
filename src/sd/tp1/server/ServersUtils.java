@@ -167,24 +167,9 @@ public class ServersUtils {
     }
 
 
-    public static JSONObject getJsonFromFile(){
-        try {
-        byte[] stringFile = getMetaData();
-        JSONParser parser = new JSONParser();
-        String fileS = new String(stringFile);
-
-            JSONObject file = (JSONObject) parser.parse(fileS);
-            return file;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     public static void loadAndChangeMetadata(String id, String operation) {
 
-        JSONObject file = getJsonFromFile();
+        JSONObject file = getJsonFromFile(new byte[0]);
         String replica = ReplicationServerUtils.getReplicaid(file);
         if (operation.equals(CREATEOP)) {
             ReplicationServerUtils.timestampADD(file, id, new Clock(1, replica), CREATEOP);
@@ -297,6 +282,26 @@ public class ServersUtils {
             byte[] metadataFile = Files.readAllBytes(path);
             return metadataFile;
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static JSONObject getJsonFromFile(byte[] arg1){
+        try {
+            byte[] stringFile;
+            System.out.println("Vieram bytes : " + arg1.length);
+            if (arg1.length>0){
+                stringFile = arg1;
+            }else{
+                stringFile = getMetaData();
+            }
+            JSONParser parser = new JSONParser();
+            String fileS = new String(stringFile);
+
+            JSONObject file = (JSONObject) parser.parse(fileS);
+            return file;
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
