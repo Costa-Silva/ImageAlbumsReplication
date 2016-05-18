@@ -23,13 +23,14 @@ public class ReplicationGJON {
 
 
     private String replicaId;
+    private List<String> knownHosts;
+    private List<List<String>> timestamps;
 
-    private Map<String,List<List<String>>> timestamps;
 
-    private String clock;
-    private String replica;
-
-    private String[] sharedBy;
+    //private String clock;
+    //private String replica;
+    //private String id;
+    //private String[] sharedBy;
 
 
 }
