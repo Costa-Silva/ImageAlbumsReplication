@@ -90,7 +90,9 @@ public class ReplicationServerUtils {
     }
 
     public static JSONArray getTimeStamps(JSONObject file){
-        return (JSONArray) ((JSONObject)file.get(DATA)).get(TIMESTAMP);
+        JSONArray array = new JSONArray();
+          array.add(((JSONObject)file.get(DATA)).get(TIMESTAMP));
+        return array;
     }
 
     public static void addHost(JSONObject file, String ip){
