@@ -146,13 +146,13 @@ public class ReplicationServerUtils {
     }
 
     public static void setReplicaid(JSONObject file, UUID replica){
-        ((JSONObject)file.get(DATA)).put(REPLICAID,replica);
+        ((JSONObject)file.get(DATA)).put(REPLICAID,replica.toString());
     }
 
     public static JSONObject createFile(){
         JSONObject file = new JSONObject();
         Map<Object,Object> jSONconstructorFile  = new LinkedHashMap<>();
-        jSONconstructorFile.put(REPLICAID,UUID.randomUUID());
+        jSONconstructorFile.put(REPLICAID,UUID.randomUUID().toString());
         jSONconstructorFile.put(KNOWNHOSTS,new JSONArray());
         jSONconstructorFile.put(TIMESTAMP,new JSONArray());
         JSONObject json = new JSONObject(jSONconstructorFile);
