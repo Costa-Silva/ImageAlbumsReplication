@@ -165,8 +165,8 @@ public class ReplicationServerUtils {
     public static void writeToFile(JSONObject file){
         try {
             FileWriter fileWriter = new FileWriter(FILENAME);
-            ObjectMapper mapper = new ObjectMapper();
-            fileWriter.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(file));
+            //ObjectMapper mapper = new ObjectMapper();
+            fileWriter.write(file.toJSONString());
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {
