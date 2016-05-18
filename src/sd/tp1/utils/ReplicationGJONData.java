@@ -2,6 +2,7 @@ package sd.tp1.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Antonio on 18/05/16.
@@ -14,6 +15,7 @@ public class ReplicationGJONData {
     public ReplicationGJONData() {
         knownHosts = new ArrayList<>();
         timestamps = new ArrayList<>();
+        this.replicaId = UUID.randomUUID().toString();
     }
 
 

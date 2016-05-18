@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class ReplicationGJONID {
     private String id;
-    private String clock;
+    private int clock;
     private String replica;
     private String operation;
     private List<String> sharedBy;
@@ -26,11 +26,11 @@ public class ReplicationGJONID {
         this.id = id;
     }
 
-    public String getClock() {
+    public int getClock() {
         return clock;
     }
 
-    public void setClock(String clock) {
+    public void setClock(int clock) {
         this.clock = clock;
     }
 
