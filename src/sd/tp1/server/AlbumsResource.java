@@ -41,10 +41,10 @@ public class AlbumsResource implements ServerRESTInterface{
 
     @GET
     @Path("/metadata/key/{password}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getMetaData(@PathParam("password") String password){
         if (checkPassword(password)) {
-           return  Response.ok(ServersUtils.getMetaData()).build();
+           return  Response.ok(ServersUtils.getJsonFromFile()).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }

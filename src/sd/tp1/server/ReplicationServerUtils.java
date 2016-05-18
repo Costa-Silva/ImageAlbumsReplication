@@ -1,7 +1,5 @@
 package sd.tp1.server;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sd.tp1.utils.Clock;

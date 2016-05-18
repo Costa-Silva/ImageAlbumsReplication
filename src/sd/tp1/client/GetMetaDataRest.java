@@ -16,15 +16,13 @@ public class GetMetaDataRest {
     private static String KEY = "key/";
 
 
-    public static JSONObject getMetaData(WebTarget target, String password){
+    public static byte[] getMetaData(WebTarget target, String password){
 
-        JSONObject file = target.path(PATH+KEY+password)
+        byte[] file = target.path(PATH+KEY+password)
                 .request()
-                .accept(MediaType.APPLICATION_JSON)
-                .get(JSONObject.class);
+                .accept(MediaType.APPLICATION_OCTET_STREAM)
+                .get(byte[].class);
 
         return file;
     }
-
-
 }
