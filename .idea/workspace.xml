@@ -2,35 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/kafka-clients-0.9.0.1.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/log4j-1.2.17.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/slf4j-api-1.7.6.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/slf4j-log4j12-1.7.6.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider$SharedAlbum.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider$SharedAlbum.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider$SharedPicture.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider$SharedPicture.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/InsecureClass$InsecureTrustManager.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/InsecureClass$InsecureTrustManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPictureData.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPictureData.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPictureDataResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPictureDataResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPicturesList.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPicturesList.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPicturesListResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPicturesListResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetserverSpace.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetserverSpace.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetserverSpaceResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetserverSpaceResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ObjectFactory.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ObjectFactory.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ServerService.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ServerService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/UploadPicture.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/UploadPicture.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/UploadPictureResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/UploadPictureResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/example/LocalFilesystemGalleryContentProvider.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/example/LocalFilesystemGalleryContentProvider.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AddAlbumIcon.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AddAlbumIcon.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AlbumView.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AlbumView.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$PictureView.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$PictureView.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$TrashIcon.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$TrashIcon.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/SharedGalleryContentProvider.java" afterPath="$PROJECT_DIR$/src/sd/tp1/SharedGalleryContentProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java" />
     </list>
     <ignored path="SD2016-TP1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -2211,7 +2183,14 @@
       <option name="project" value="LOCAL" />
       <updated>1463612448314</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Kafka alpha">
+      <created>1463617535319</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1463617535319</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -2228,7 +2207,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2242,7 +2221,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32733223" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5151286" sideWeight="0.4792703" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5151286" sideWeight="0.4792703" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15227629" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2271,7 +2250,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="melhoramento de codigo no server. nova utils cliente" />
     <MESSAGE value="cliente unificado" />
     <MESSAGE value="classes" />
     <MESSAGE value="nada de jeito" />
@@ -2296,7 +2274,8 @@
     <MESSAGE value="delPict 1st try" />
     <MESSAGE value="changes in load" />
     <MESSAGE value="new method to convert json from string" />
-    <option name="LAST_COMMIT_MESSAGE" value="new method to convert json from string" />
+    <MESSAGE value="Kafka alpha" />
+    <option name="LAST_COMMIT_MESSAGE" value="Kafka alpha" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
