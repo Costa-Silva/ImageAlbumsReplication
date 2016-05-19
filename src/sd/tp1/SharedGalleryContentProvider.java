@@ -1,6 +1,11 @@
 package sd.tp1;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import sd.tp1.client.*;
 import sd.tp1.gui.GalleryContentProvider;
 import sd.tp1.gui.Gui;
@@ -21,10 +26,45 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	private Map<String,Integer> leastAccessedAlbum;
 	private boolean gotnewInfo;
 
+	private List<String> topics;
+
+	KafkaConsumer<String, String> consumer;
 	SharedGalleryContentProvider() {
 		discoveryClient = new DiscoveryClient();
 		discoveryClient.checkNewConnections();
 		cacheInit();
+		initKafkaConsumer();
+	}
+
+	private void initKafkaConsumer() {
+
+		Properties props = new Properties();
+		props.put("bootstrap.servers", "localhost:9092");
+		props.put("group.id", "consumer-tutorial" + System.nanoTime());
+		props.put("key.deserializer", StringDeserializer.class.getName());
+		props.put("value.deserializer", StringDeserializer.class.getName());
+		consumer= new KafkaConsumer<>(props);
+		topics = new ArrayList<>();
+
+		consumer.subscribe(topics);
+		new Thread(()->{
+			try {
+
+
+				for (; ; ) {
+					ConsumerRecords<String, String> records = consumer.poll(1000);
+					System.out.println("TOPICS : " + topics.toString());
+					System.out.println("POLLNG e records com " + records.count());
+					records.forEach(r -> {
+								if (r.value().contains("Create")){
+									gui.updateAlbums();
+								}
+					});
+				}
+			}finally {
+				consumer.close();
+			}
+		}).start();
 	}
 
 
@@ -92,6 +132,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		List<Album> list = new ArrayList<Album>();
 		List<String> listString = new ArrayList<>();
 
+		topics.clear();
+		topics.add("Albums");
+
 		if (isGotnewInfo()){
 			if (cache != null && cache.size()>0 ){
 				for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
@@ -102,6 +145,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 			}
 		}
+
+
 
 		List<String> listReceived;
 		for (Map.Entry<String,SharedGalleryClient> entry : discoveryClient.getServers().entrySet()) {
@@ -118,6 +163,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				leastAccessedAlbum.put(album,1);
 			}
 		}
+
+		topics.addAll(listString);
+
 		setGotnewInfo(false);
 		return list;
 

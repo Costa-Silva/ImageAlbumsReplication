@@ -1,5 +1,8 @@
 package sd.tp1.server;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,6 +22,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Antonio on 28/03/16.
@@ -41,6 +45,7 @@ public class ServersUtils {
         try {
             sendingMyInfo(port, serverType);
             ReplicationServer replicationServer = new ReplicationServer();
+
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
 
@@ -84,6 +89,31 @@ public class ServersUtils {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void kafkaPublisher(String topic , String event) {
+        Properties env = System.getProperties();
+        Properties props = new Properties();
+
+
+        props.put("zk.connect", env.getOrDefault("zk.connect", "localhost:2181/"));
+        props.put("bootstrap.servers", env.getOrDefault("bootstrap.servers", "localhost:9092"));
+        props.put("log.retention.ms", 1000);
+
+        props.put("serializer.class", "kafka.serializer.StringEncoder");
+        props.put("key.serializer", StringSerializer.class.getName());
+        props.put("value.serializer", StringSerializer.class.getName());
+
+        KafkaProducer<String, String> producer = new KafkaProducer<>(props);
+
+        try{
+            ProducerRecord<String,String> data = new ProducerRecord<>(topic,event+System.nanoTime());
+            System.out.println("TOPICO É " + topic + " e o evento " + event);
+            producer.send(data);
+
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -148,7 +178,8 @@ public class ServersUtils {
             File album = new File(MAINSOURCE + albumName);
             if (album.isDirectory() && album.exists()) {
                 File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
-                success = album.renameTo(delAlbum);
+                if(success = album.renameTo(delAlbum))
+                    kafkaPublisher(albumName,"Delete"+System.nanoTime());
             }
         }
         return success;
@@ -160,6 +191,7 @@ public class ServersUtils {
             File album = new File(MAINSOURCE + albumName);
             if (!album.exists()) {
                 album.mkdir();
+                kafkaPublisher(albumName,"Create"+System.nanoTime());
                 return album.getName();
             }
         }
