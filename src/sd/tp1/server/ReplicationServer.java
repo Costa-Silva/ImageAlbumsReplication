@@ -73,13 +73,6 @@ public class ReplicationServer {
                         }
                         file = ReplicationServerUtils.createFile();
 
-
-                        if (hasContent()){
-                            loadContentFromDisk(file);
-                        }
-
-                        ReplicationServerUtils.writeToFile(file);
-
                         JSONObject theirMetadata = fetch(serverIp,serverIps.get(serverIp));
 
                         JSONArray timeStamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
@@ -93,6 +86,11 @@ public class ReplicationServer {
                         //start new
                         file = ReplicationServerUtils.createFile();
                     }
+
+                    if (hasContent()){
+                        loadContentFromDisk(file);
+                    }
+
                     ReplicationServerUtils.writeToFile(file);
                 }
                 startReplicationTask();
