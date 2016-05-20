@@ -87,10 +87,12 @@ public class ReplicationServer {
                         while (iterator.hasNext()){
                             ReplicationServerUtils.timestampADDJSON(file,(JSONObject) iterator.next());
                         }
+                        ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
                     } else{
                         //start new
                         file = ReplicationServerUtils.createFile();
                     }
+
                     System.out.println("ESCREVI:  " +file);
                     ReplicationServerUtils.writeToFile(file);
                 }
@@ -120,9 +122,11 @@ public class ReplicationServer {
                         System.out.println("MY FILE: "+myfile);
 
                         System.out.println("Their file " + theirMetadata);
-                        ReplicationServerUtils.addHost(myfile,buildIP(serverIp,serverIps.get(serverIp)));
 
 
+                        if (!ReplicationServerUtils.hasHost(myfile,serverIp)){
+                            ReplicationServerUtils.addHost(myfile,buildIP(serverIp,serverIps.get(serverIp)));
+                        }
 
                         JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
                         Iterator iteratorTheirTimestamps = timestamps.iterator();
@@ -307,9 +311,6 @@ public class ReplicationServer {
             ReplicationServerUtils.removeHost(file,ipToCheck);
             ReplicationServerUtils.writeToFile(file);
         }).start();
-
-
-
     }
 
 

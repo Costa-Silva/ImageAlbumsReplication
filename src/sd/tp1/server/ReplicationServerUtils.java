@@ -26,13 +26,13 @@ public class ReplicationServerUtils {
     public static void main(String[] args) throws Exception {
 
 
-       //JSONObject jsonObject = createFile();
+        //JSONObject jsonObject = createFile();
         //timestampADD(jsonObject,"alu",new Clock(1,"ss"),OPERATION);
         JSONArray test=getTimeStamps(ServersUtils.getJsonFromFile(new byte[0]));
-       System.out.println(test);
+        System.out.println(test);
         //System.out.println(getTimeStamps(jsonObject));
 
-       // writeToFile(jsonObject);
+        // writeToFile(jsonObject);
     }
 
     public static void timestampRemove(JSONObject file,String id){
@@ -88,11 +88,25 @@ public class ReplicationServerUtils {
     }
 
     public static JSONArray getTimeStamps(JSONObject file){
-            return (JSONArray) ((JSONObject)file.get(DATA)).get(TIMESTAMP);
+        return (JSONArray) ((JSONObject)file.get(DATA)).get(TIMESTAMP);
     }
 
     public static void addHost(JSONObject file, String ip){
         ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).add(ip);
+    }
+
+    public static boolean hasHost(JSONObject file, String ip){
+        JSONArray knowhosts = ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS));
+
+        Iterator iterator = knowhosts.iterator();
+
+        while (iterator.hasNext()){
+            String host = (String)iterator.next();
+            if (host.equals(ip)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void timestampADDJSON(JSONObject file, JSONObject newtimestamp){
