@@ -2,6 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider$SharedAlbum.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider$SharedAlbum.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider$SharedPicture.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider$SharedPicture.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/InsecureClass$InsecureTrustManager.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/InsecureClass$InsecureTrustManager.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/example/LocalFilesystemGalleryContentProvider.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/example/LocalFilesystemGalleryContentProvider.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AddAlbumIcon.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AddAlbumIcon.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AlbumView.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AlbumView.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$PictureView.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$PictureView.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$TrashIcon.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$TrashIcon.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java" />
@@ -40,8 +52,8 @@
       <file leaf-file-name="ReplicationServerUtils.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1417">
-              <caret line="183" column="33" selection-start-line="183" selection-start-column="33" selection-end-line="183" selection-end-column="33" />
+            <state relative-caret-position="127">
+              <caret line="197" column="25" selection-start-line="197" selection-start-column="25" selection-end-line="197" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -52,8 +64,8 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="128" column="25" selection-start-line="128" selection-start-column="25" selection-end-line="128" selection-end-column="25" />
+            <state relative-caret-position="126">
+              <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1064,14 +1076,7 @@
       <workItem from="1463499548328" duration="15226000" />
       <workItem from="1463564734326" duration="418000" />
       <workItem from="1463613037312" duration="1263000" />
-      <workItem from="1463782733628" duration="1941000" />
-    </task>
-    <task id="LOCAL-00033" summary="SSL DONE">
-      <created>1462903002325</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1462903002325</updated>
+      <workItem from="1463782733628" duration="4047000" />
     </task>
     <task id="LOCAL-00034" summary="new server">
       <created>1462914839894</created>
@@ -1409,11 +1414,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463534185500</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="changes">
+      <created>1463785369713</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1463785369714</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="175775000" />
+    <option name="totallyTimeSpent" value="177881000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1489,12 +1501,12 @@
     <MESSAGE value="added keep-alive" />
     <MESSAGE value="added keep-alive recheck" />
     <MESSAGE value="test" />
-    <MESSAGE value="changes" />
     <MESSAGE value="changes TEST" />
     <MESSAGE value="changes TESTT" />
     <MESSAGE value="changeTOSTRING" />
     <MESSAGE value="GSON FINISHED" />
-    <option name="LAST_COMMIT_MESSAGE" value="GSON FINISHED" />
+    <MESSAGE value="changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1792,7 +1804,7 @@
         <state relative-caret-position="450">
           <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1825,6 +1837,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4380">
+          <caret line="341" column="5" selection-start-line="341" selection-start-column="5" selection-end-line="341" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/metadata.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1835,26 +1855,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1417">
-          <caret line="183" column="33" selection-start-line="183" selection-start-column="33" selection-end-line="183" selection-end-column="33" />
+        <state relative-caret-position="127">
+          <caret line="197" column="25" selection-start-line="197" selection-start-column="25" selection-end-line="197" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4380">
-          <caret line="341" column="5" selection-start-line="341" selection-start-column="5" selection-end-line="341" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="128" column="25" selection-start-line="128" selection-start-column="25" selection-end-line="128" selection-end-column="25" />
+        <state relative-caret-position="126">
+          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -53,13 +53,12 @@ public class ReplicationServer {
                     //load from disk to memory
                     file = ServersUtils.getJsonFromFile(new byte[0]);
                     JSONArray array = ReplicationServerUtils.getTimeStamps(file);
-                    System.out.println("O MEU GETTIMESTAMPS " + array.toJSONString() );
 
                     Iterator it = array.iterator();
                     while (it.hasNext()){
                         mytimeStampsSet.add(((JSONObject) it.next()).toJSONString());
                     }
-                    loadContentFromDisk();
+                    loadContentFromDisk(file);
                 }else{
                     System.err.println("Waiting for possible connections");
                     Thread.sleep(5000); // any server discovered? no? create from scratch
@@ -73,15 +72,17 @@ public class ReplicationServer {
                             break;
                         }
                         file = ReplicationServerUtils.createFile();
+
+
+                        if (hasContent()){
+                            loadContentFromDisk(file);
+                        }
+
                         ReplicationServerUtils.writeToFile(file);
 
                         JSONObject theirMetadata = fetch(serverIp,serverIps.get(serverIp));
 
-                        System.out.println("They metadata : " +theirMetadata.toJSONString());
-
                         JSONArray timeStamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
-
-                        System.out.println("THEIR TIMESTAMPS " + timeStamps.toJSONString());
 
                         Iterator iterator = timeStamps.iterator();
                         while (iterator.hasNext()){
@@ -92,8 +93,6 @@ public class ReplicationServer {
                         //start new
                         file = ReplicationServerUtils.createFile();
                     }
-
-                    System.out.println("ESCREVI:  " +file);
                     ReplicationServerUtils.writeToFile(file);
                 }
                 startReplicationTask();
@@ -118,10 +117,6 @@ public class ReplicationServer {
 
                         String theirReplica = "";
                         JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
-
-                        System.out.println("MY FILE: "+myfile);
-
-                        System.out.println("Their file " + theirMetadata);
 
 
                         if (!ReplicationServerUtils.hasHost(myfile,serverIp)){
@@ -222,25 +217,33 @@ public class ReplicationServer {
         ReplicationServerUtils.writeToFile(myfile);
     }
 
+    public boolean hasContent(){
+        if (ServersUtils.getAlbumList().size()>0)
+            return true;
+
+    return false;
+    }
 
 
-
-    public void loadContentFromDisk(){
+    public void loadContentFromDisk(JSONObject file){
 
         ServersUtils.getAlbumList().forEach(albumName->{
             HashMap<String,byte[]> imageContent = new HashMap<>();
+            ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
+
             ServersUtils.getPicturesList(albumName).forEach(pictureName->{
                 imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
-            });
+                ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
 
-            Iterator hostsIterator = ReplicationServerUtils.getKnownHosts(file).iterator();
-            while (hostsIterator.hasNext()){
-                String[] identifiers = ((String)hostsIterator.next()).split("-");
-                serverIps.put(identifiers[0],identifiers[1]);
-            }
+            });
             content.put(albumName,imageContent);
         });
-        System.out.println("Load Content size " +content.size());
+        Iterator hostsIterator = ReplicationServerUtils.getKnownHosts(file).iterator();
+        while (hostsIterator.hasNext()){
+            String[] identifiers = ((String)hostsIterator.next()).split("-");
+            serverIps.put(identifiers[0],identifiers[1]);
+        }
+        System.out.println("Loaded Content size " +content.size());
     }
 
     public void addServer(String newIp,String type){

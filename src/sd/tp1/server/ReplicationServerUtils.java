@@ -60,6 +60,11 @@ public class ReplicationServerUtils {
         ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(timestampConstrutor(id,clock,operation)));
     }
 
+    public static void newTimestamp(JSONObject file,String id,String myReplica, String operation){
+        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(timestampConstrutor(id, new Clock(0,myReplica),operation)));
+    }
+
+
     public static void timestampSet(JSONObject file, String id,Clock clock,String operation){
 
         JSONArray array = new JSONArray();
