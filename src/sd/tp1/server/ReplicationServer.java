@@ -6,7 +6,7 @@ import sd.tp1.client.DiscoveryClient;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
+import static java.lang.Math.toIntExact;
 import sd.tp1.client.SharedGalleryClient;
 import sd.tp1.client.SharedGalleryClientREST;
 import sd.tp1.client.SharedGalleryClientSOAP;
@@ -129,7 +129,8 @@ public class ReplicationServer {
                             JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
                             String timestampStringID = timestamp.get(OBJECTID).toString();
                             String operation = timestamp.get(OPERATION).toString();
-                            int clock = (int)timestamp.get(CLOCK);
+                            int clock = toIntExact((long)timestamp.get(CLOCK))  ;
+
                             String replica = timestamp.get(REPLICA).toString();
                             Clock clockObj = new Clock(clock,replica);
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
