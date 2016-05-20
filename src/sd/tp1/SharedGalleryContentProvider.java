@@ -26,11 +26,15 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	private Map<String,Integer> leastAccessedAlbum;
 	private boolean gotnewInfo;
 
+	private List<Album> viewingAlbums;
+	private Map<String,List<Picture>> viewingPictures;
 	private List<String> topics;
 
 	KafkaConsumer<String, String> consumer;
 	SharedGalleryContentProvider() {
 		discoveryClient = new DiscoveryClient();
+		viewingAlbums = new LinkedList<>();
+		viewingPictures = new HashMap<>();
 		discoveryClient.checkNewConnections();
 		cacheInit();
 		initKafkaConsumer();
@@ -45,26 +49,63 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		props.put("value.deserializer", StringDeserializer.class.getName());
 		consumer= new KafkaConsumer<>(props);
 		topics = new ArrayList<>();
-
-		consumer.subscribe(topics);
 		new Thread(()->{
 			try {
 
 
 				for (; ; ) {
-					ConsumerRecords<String, String> records = consumer.poll(1000);
+					fillTopics();
+					consumer.subscribe(topics);
 					System.out.println("TOPICS : " + topics.toString());
+					ConsumerRecords<String, String> records = consumer.poll(1000);
 					System.out.println("POLLNG e records com " + records.count());
 					records.forEach(r -> {
-								if (r.value().contains("Create")){
-									gui.updateAlbums();
-								}
+
+						String[] splittedvalue = r.value().split("-");
+						System.out.println(" topic e " + r.topic() + " " + " value " + r.value());
+						if(r.topic().equals("Albums")){
+							if(canUpdateAlbums((splittedvalue))) {
+								gui.updateAlbums();
+							}
+						}else{
+							if(canUpdateAlbum((splittedvalue))){
+								gui.updateAlbum(new SharedAlbum(splittedvalue[0]));
+							}
+						}
 					});
+					topics.clear();
 				}
 			}finally {
 				consumer.close();
 			}
 		}).start();
+	}
+
+	private void fillTopics() {
+		topics.add("Albums");
+		viewingAlbums.forEach(album -> {
+			topics.add(album.getName());
+		});
+	}
+
+	private boolean canUpdateAlbum(String[] splittedvalue) {
+		if(viewingPictures.containsKey(splittedvalue[0])){
+			if(viewingPictures.get(splittedvalue[0]).contains(splittedvalue[1])){
+				boolean canUpdate = splittedvalue[2].equals("Delete");
+				if(splittedvalue[2].equals("Delete"))
+					viewingPictures.get(splittedvalue[0]).remove(splittedvalue[1]);
+
+			}else {
+				return splittedvalue[2].equals("Create");
+			}
+		}
+		return false;
+	}
+
+	private boolean canUpdateAlbums(String[] splittedvalue){
+
+		return (viewingAlbums.contains(splittedvalue[0]) && splittedvalue[1].equals("Delete")) ||
+				(!viewingAlbums.contains(splittedvalue[0]) && splittedvalue[1].equals("Create"));
 	}
 
 
@@ -129,11 +170,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	@Override
 	public List<Album> getListOfAlbums() {
 
+		viewingAlbums.clear();
 		List<Album> list = new ArrayList<Album>();
 		List<String> listString = new ArrayList<>();
-
-		topics.clear();
-		topics.add("Albums");
 
 		if (isGotnewInfo()){
 			if (cache != null && cache.size()>0 ){
@@ -141,6 +180,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 					list.add(new SharedAlbum(entry.getKey()));
 				}
+				viewingAlbums.addAll(list);
 				return list;
 
 			}
@@ -164,8 +204,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			}
 		}
 
-		topics.addAll(listString);
-
+		viewingAlbums.addAll(list);
 		setGotnewInfo(false);
 		return list;
 
@@ -177,6 +216,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Picture> getListOfPictures(Album album) {
+		viewingPictures.clear();
 		List<Picture> list = new ArrayList<Picture>();
 		Map<String,byte[]> picturesMap = new HashMap<>();
 
@@ -221,7 +261,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			cache.put(album.getName(),new HashMap<>());
 
 		}
-
+		viewingPictures.get(album).addAll(list);
 		return list;
 	}
 
@@ -286,6 +326,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			}
 		leastAccessedAlbum.put(album.getName(),0);
 		cache.put(album.getName(),new HashMap<>());
+
+		viewingAlbums.add(album);
 		return album;
 	}
 
@@ -305,6 +347,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			}
 		setCurrentCacheSize(-albumSize);
 		leastAccessedAlbum.remove(album.getName());
+		viewingAlbums.remove(album);
 	}
 
 	/**
@@ -349,7 +392,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					}
 				}
 			}
-
+			viewingPictures.get(album.getName()).add(new SharedPicture(name));
 			return new SharedPicture(name);
 
 		}
@@ -388,6 +431,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					}
 				}
 			}
+			viewingPictures.get(album.getName()).remove(picture.getName());
 		}
 		return success;
 	}
@@ -459,6 +503,14 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		public String getName() {
 			return name;
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(obj instanceof Album ){
+				return ((Album) obj).getName().equals(getName());
+			}
+			return false;
+		}
 	}
 
 
@@ -477,5 +529,14 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		public String getName() {
 			return name;
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof Picture){
+				return ((Picture) obj).getName().equals(getName());
+			}
+			return false;
+		}
+
 	}
 }

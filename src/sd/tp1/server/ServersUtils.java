@@ -109,7 +109,7 @@ public class ServersUtils {
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
         try{
-            ProducerRecord<String,String> data = new ProducerRecord<>(topic,event+System.nanoTime());
+            ProducerRecord<String,String> data = new ProducerRecord<>(topic,event);
             System.out.println("TOPICO É " + topic + " e o evento " + event);
             producer.send(data);
 
@@ -162,6 +162,7 @@ public class ServersUtils {
                         File pict = new File(album.getAbsolutePath() + File.separator + pictureName.concat(".deleted"));
 
                         success = picture.renameTo(pict);
+                        kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Delete"+System.nanoTime()));
                         System.out.println("renamed to " + pict.getAbsolutePath() + "  " + success);
                     }
                 }
@@ -179,7 +180,7 @@ public class ServersUtils {
             if (album.isDirectory() && album.exists()) {
                 File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
                 if(success = album.renameTo(delAlbum))
-                    kafkaPublisher(albumName,"Delete"+System.nanoTime());
+                    kafkaPublisher("Albums",new String(albumName+"-"+"Delete"+"-"+System.nanoTime()));
             }
         }
         return success;
@@ -191,7 +192,7 @@ public class ServersUtils {
             File album = new File(MAINSOURCE + albumName);
             if (!album.exists()) {
                 album.mkdir();
-                kafkaPublisher(albumName,"Create"+System.nanoTime());
+                kafkaPublisher("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
                 return album.getName();
             }
         }
@@ -225,6 +226,7 @@ public class ServersUtils {
                 try {
                     Files.write(newPicture.toPath(), pictureData, StandardOpenOption.CREATE_NEW);
                     success = newPicture.exists();
+                    kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Create"+System.nanoTime()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
