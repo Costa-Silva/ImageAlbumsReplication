@@ -128,7 +128,7 @@ public class ReplicationServer {
 
                             JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
                             String timestampStringID = timestamp.get(OBJECTID).toString();
-                            String operation = ((JSONObject)timestamp.get(OPERATION)).toJSONString();
+                            String operation = timestamp.get(OPERATION).toString();
                             int clock = (int)timestamp.get(CLOCK);
                             String replica = timestamp.get(REPLICA).toString();
                             Clock clockObj = new Clock(clock,replica);
