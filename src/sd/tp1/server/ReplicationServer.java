@@ -131,7 +131,7 @@ public class ReplicationServer {
 
                         if (!ReplicationServerUtils.hasHost(myfile,buildIP(serverIp,serverIps.get(serverIp)))) {
                             ReplicationServerUtils.addHost(myfile,buildIP(serverIp,serverIps.get(serverIp)));
-                            System.out.println("adicionei aos meus hosts: "+ serverIp);
+                            System.out.println("added to my hosts: "+ serverIp);
                         }
 
                         JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
@@ -159,20 +159,15 @@ public class ReplicationServer {
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
                                             update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
-                                            System.out.println("entrou result<0 ");
                                         }
 
                                     }else if ((long)timestamp.get(CLOCK) > (long) myTimestamp.get(CLOCK)){
                                         update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
-                                        System.out.println("entrou clocks ");
-
                                     }
                                 }
                             }else{
                                 if (operation.equals(CREATEOP)){
                                     update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
-                                    System.out.println("entrou else ");
-
                                 }else if (operation.equals(REMOVEOP)){
                                     writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,theirReplica);
                                 }
@@ -213,8 +208,6 @@ public class ReplicationServer {
                 }
             }
         }else{
-            System.out.println("TOU NO UPDATE tenho op: "+ operation);
-
             if (operation.equals(CREATEOP)){
                 content.put(nameid[0],new HashMap<>());
                 if (ServersUtils.hasAlbum(nameid[0]) || ServersUtils.createAlbum(nameid[0])!=null)
@@ -231,10 +224,6 @@ public class ReplicationServer {
 
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String theirReplica){
-
-        System.out.println(myfile.toJSONString()+" "+timestampStringID);
-
-
         JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
 
         for (int i = 0; i < sharedBy.size() ; i++) {
@@ -247,6 +236,12 @@ public class ReplicationServer {
         }
 
         jsonObject.put(SHAREDBY,sharedBy);
+
+        Iterator it= sharedBy.iterator();
+        while (it.hasNext()){
+            System.out.println("Shared by: "+it.next().toString());
+        }
+
 
         ReplicationServerUtils.writeToFile(myfile);
     }
@@ -278,7 +273,7 @@ public class ReplicationServer {
             String[] identifiers = ((String)hostsIterator.next()).split("-");
             serverIps.put(identifiers[0],identifiers[1]);
         }
-        System.out.println("Loaded Content size " +content.size());
+        System.out.println("Loaded Content size: " +content.size());
     }
 
     public void addServer(String newIp,String type){
