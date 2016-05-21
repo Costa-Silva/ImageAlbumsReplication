@@ -56,7 +56,7 @@ public class ReplicationServer {
 
                     Iterator it = array.iterator();
                     while (it.hasNext()){
-                        mytimeStampsSet.add(((JSONObject) it.next()).toJSONString());
+                        mytimeStampsSet.add(ReplicationServerUtils.getTimestampID((JSONObject) it.next()));
                     }
                     loadContentFromDisk(file);
                 }else{
@@ -148,9 +148,9 @@ public class ReplicationServer {
 
 
 
-                            System.out.println("Testar timestampsids entrou: "+ timestampStringID +" || "+mytimeStampsSet.contains(timestamp)  );
+                            System.out.println("Testar timestampsids entrou: "+ timestampStringID +" || "+mytimeStampsSet.contains(timestampStringID)  );
 
-                            if (mytimeStampsSet.contains(timestamp)){
+                            if (mytimeStampsSet.contains(timestampStringID)){
                                 JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,timestampStringID);
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
 
@@ -253,12 +253,13 @@ public class ReplicationServer {
 
         ServersUtils.getAlbumList().forEach(albumName->{
             HashMap<String,byte[]> imageContent = new HashMap<>();
-           String albumTimestamp = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
-            mytimeStampsSet.add(albumTimestamp);
+           JSONObject albumTimestampJson = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
+            mytimeStampsSet.add(ReplicationServerUtils.getTimestampID(albumTimestampJson));
             ServersUtils.getPicturesList(albumName).forEach(pictureName->{
                 imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
-               String newTimestamp = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
-                mytimeStampsSet.add(newTimestamp);
+               JSONObject newTimestampJson = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
+                mytimeStampsSet.add(ReplicationServerUtils.getTimestampID(newTimestampJson));
+
             });
             content.put(albumName,imageContent);
         });

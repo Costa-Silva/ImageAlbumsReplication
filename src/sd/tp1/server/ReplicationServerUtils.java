@@ -1,5 +1,6 @@
 package sd.tp1.server;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sd.tp1.utils.Clock;
@@ -60,12 +61,16 @@ public class ReplicationServerUtils {
         ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(timestampConstrutor(id,clock,operation)));
     }
 
-    public static String newTimestamp(JSONObject file,String id,String myReplica, String operation){
+    public static JSONObject newTimestamp(JSONObject file,String id,String myReplica, String operation){
 
        JSONObject newTimestamp = new JSONObject(timestampConstrutor(id, new Clock(0,myReplica),operation));
        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(newTimestamp);
 
-        return  newTimestamp.toJSONString();
+        return  newTimestamp;
+    }
+
+    public static String getTimestampID(JSONObject timestamp){
+        return timestamp.get(OBJECTID).toString();
     }
 
 
