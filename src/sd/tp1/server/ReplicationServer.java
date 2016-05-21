@@ -224,8 +224,9 @@ public class ReplicationServer {
 
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String hostIp){
+
         JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
-            int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,hostIp);
+        int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,hostIp);
 
         if (index>=0){
             sharedBy.set(index,hostIp);
@@ -233,14 +234,7 @@ public class ReplicationServer {
             sharedBy.add(hostIp);
         }
 
-
         jsonObject.put(SHAREDBY,sharedBy);
-
-        Iterator it= sharedBy.iterator();
-        while (it.hasNext()){
-            System.out.println("Shared by: "+it.next().toString());
-        }
-
 
         ReplicationServerUtils.writeToFile(myfile);
     }
