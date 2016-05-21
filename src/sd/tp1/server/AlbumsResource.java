@@ -40,6 +40,21 @@ public class AlbumsResource implements ServerRESTInterface{
 
 
     @GET
+    @Path("/checkAndaddSharedby/{ip}/{objectid}/key/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkAndAddSharedBy(@PathParam("ip") String ip,@PathParam("objectid") String objectId,
+                                                                @PathParam("password") String password) {
+
+        if (checkPassword(password)) {
+           boolean result = ServersUtils.checkAndAddSharedBy(ip, objectId);
+            return Response.ok(result).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+
+
+    @GET
     @Path("/metadata/key/{password}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getMetaData(@PathParam("password") String password){

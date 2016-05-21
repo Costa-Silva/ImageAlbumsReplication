@@ -36,6 +36,11 @@ public class Server implements ServerSOAPInterface {
 
     }
 
+    @WebMethod
+    public boolean checkAndAddSharedBy(String ip, String objectid){
+        return ServersUtils.checkAndAddSharedBy(ip,objectid);
+    }
+
 
     @WebMethod
     public byte[] getMetaData(){
@@ -112,7 +117,7 @@ public class Server implements ServerSOAPInterface {
 
         System.err.println("FileServer started");
 
-        ServersUtils.startListening(TYPE,port);
+        //ServersUtils.startListening(TYPE,port);
     }
 
 

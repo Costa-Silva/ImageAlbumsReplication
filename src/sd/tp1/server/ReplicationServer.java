@@ -36,11 +36,13 @@ public class ReplicationServer {
     public static final String SOAP ="SOAP";
     private JSONObject file;
     private Set<String> mytimeStampsSet;
+    private String myFullIp;
 
-    public ReplicationServer(){
+    public ReplicationServer(String myFullIp){
         serverIps = new ConcurrentHashMap<>();
         content = new HashMap<>();
         mytimeStampsSet =new HashSet<>();
+        this.myFullIp=myFullIp;
         initReplication();
     }
 
@@ -85,14 +87,14 @@ public class ReplicationServer {
 
                         Iterator iterator = timeStamps.iterator();
                         while (iterator.hasNext()){
-                          JSONObject timestampjson =  (JSONObject) iterator.next();
+                            JSONObject timestampjson =  (JSONObject) iterator.next();
 
                             if (!mytimeStampsSet.contains(timestampjson.get(OBJECTID).toString()))
-                            ReplicationServerUtils.timestampADDJSON(file,timestampjson);
+                                ReplicationServerUtils.timestampADDJSON(file,timestampjson);
                         }
 
 
-                            ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
+                        ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
 
 
                     } else{
@@ -169,7 +171,7 @@ public class ReplicationServer {
                                 if (operation.equals(CREATEOP)){
                                     update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                 }else if (operation.equals(REMOVEOP)){
-                                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp);
+                                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp,sharedGalleryClient);
                                 }
                             }
                         }
@@ -200,32 +202,36 @@ public class ReplicationServer {
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
                 content.get(nameid[0]).put(nameid[1],aux);
                 ServersUtils.uploadPicture(nameid[0],nameid[1],aux);
-                writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp);
+                writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp,sharedGalleryClient);
             }else if (operation.equals(REMOVEOP)){
                 content.get(nameid[0]).remove(nameid[1]);
                 if (ServersUtils.deletePicture(nameid[0],nameid[1])){
-                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp);
+                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp,sharedGalleryClient);
                 }
             }
         }else{
             if (operation.equals(CREATEOP)){
                 content.put(nameid[0],new HashMap<>());
                 if (ServersUtils.hasAlbum(nameid[0]) || ServersUtils.createAlbum(nameid[0])!=null)
-                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp);
+                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp,sharedGalleryClient);
 
             }else if (operation.equals(REMOVEOP)){
                 content.remove(nameid[0]);
                 if (ServersUtils.deleteAlbum(nameid[0])) {
-                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp);
+                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp,sharedGalleryClient);
                 }
             }
         }
     }
 
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
-                              String operation,String hostIp){
+                              String operation,String hostIp, SharedGalleryClient sharedGalleryClient){
 
-        System.err.println("Updated:"+ timestampStringID);
+
+        //notify another server to let him known that he can count with me :)
+        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
+
+
 
         JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
         int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,hostIp);
@@ -235,17 +241,16 @@ public class ReplicationServer {
         }else{
             sharedBy.add(hostIp);
         }
-
         jsonObject.put(SHAREDBY,sharedBy);
-
         ReplicationServerUtils.writeToFile(myfile);
+        System.out.println("Updated:"+ timestampStringID);
     }
 
     public boolean hasContent(){
         if (ServersUtils.getAlbumList().size()>0)
             return true;
 
-    return false;
+        return false;
     }
 
 
@@ -253,11 +258,11 @@ public class ReplicationServer {
 
         ServersUtils.getAlbumList().forEach(albumName->{
             HashMap<String,byte[]> imageContent = new HashMap<>();
-           JSONObject albumTimestampJson = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
+            JSONObject albumTimestampJson = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
             mytimeStampsSet.add(ReplicationServerUtils.getTimestampID(albumTimestampJson));
             ServersUtils.getPicturesList(albumName).forEach(pictureName->{
                 imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
-               JSONObject newTimestampJson = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
+                JSONObject newTimestampJson = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
                 mytimeStampsSet.add(ReplicationServerUtils.getTimestampID(newTimestampJson));
 
             });

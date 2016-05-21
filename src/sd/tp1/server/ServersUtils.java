@@ -3,6 +3,7 @@ package sd.tp1.server;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -39,12 +40,14 @@ public class ServersUtils {
     public static final String METADATAPATH = "metadata.txt";
     public static final String REMOVEOP = "REMOVED";
     public static final String CREATEOP = "CREATED";
+    public static final String SHAREDBY= "sharedBy";
 
     public static void startListening(String serverType, int port) {
 
         try {
             sendingMyInfo(port, serverType);
-            ReplicationServer replicationServer = new ReplicationServer();
+            String myinfo = InetAddress.getLocalHost().getHostAddress() + ":" + port + "-" + serverType;
+            ReplicationServer replicationServer = new ReplicationServer(myinfo);
 
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
@@ -64,7 +67,6 @@ public class ServersUtils {
                 if (message.equals(MYIDENTIFIER) || message.equals(InetAddress.getLocalHost().getHostAddress() + ":" + port)) {
 
                     System.out.println("Sending my info to : " + hostInfo.getAddress() + ":" + hostInfo.getPort());
-                    String myinfo = InetAddress.getLocalHost().getHostAddress() + ":" + port + "-" + serverType;
 
                     buffer = myinfo.getBytes();
                     datagramPacket = new DatagramPacket(buffer, buffer.length);
@@ -330,6 +332,27 @@ public class ServersUtils {
         }
         return null;
     }
+
+    public static boolean checkAndAddSharedBy(String ip,String objectId){
+
+        JSONObject myfile = getJsonFromFile(new byte[0]);
+
+        JSONObject timestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,objectId);
+
+        JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
+        int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,ip);
+
+        if (index<0){
+            sharedBy.add(ip);
+            timestamp.put(SHAREDBY,sharedBy);
+            ReplicationServerUtils.writeToFile(myfile);
+            return true;
+        }
+
+        return false;
+    }
+
+
 
     public static JSONObject getJsonFromFile(byte[] arg1){
         try {

@@ -29,11 +29,13 @@ public class ObjectFactory {
     private final static QName _UploadPicture_QNAME = new QName("http://server.tp1.sd/", "uploadPicture");
     private final static QName _GetPictureData_QNAME = new QName("http://server.tp1.sd/", "getPictureData");
     private final static QName _GetPictureDataResponse_QNAME = new QName("http://server.tp1.sd/", "getPictureDataResponse");
+    private final static QName _CheckAndAddSharedBy_QNAME = new QName("http://server.tp1.sd/", "checkAndAddSharedBy");
     private final static QName _DeleteAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "deleteAlbumResponse");
     private final static QName _CreateAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "createAlbumResponse");
     private final static QName _GetMetaDataResponse_QNAME = new QName("http://server.tp1.sd/", "getMetaDataResponse");
     private final static QName _DeletePicture_QNAME = new QName("http://server.tp1.sd/", "deletePicture");
     private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
+    private final static QName _CheckAndAddSharedByResponse_QNAME = new QName("http://server.tp1.sd/", "checkAndAddSharedByResponse");
     private final static QName _UploadPictureResponse_QNAME = new QName("http://server.tp1.sd/", "uploadPictureResponse");
     private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
     private final static QName _GetserverSpaceResponse_QNAME = new QName("http://server.tp1.sd/", "getserverSpaceResponse");
@@ -42,14 +44,22 @@ public class ObjectFactory {
     private final static QName _GetAlbumList_QNAME = new QName("http://server.tp1.sd/", "getAlbumList");
     private final static QName _CreateAlbum_QNAME = new QName("http://server.tp1.sd/", "createAlbum");
     private final static QName _DeletePictureResponse_QNAME = new QName("http://server.tp1.sd/", "deletePictureResponse");
-    private final static QName _UploadPictureArg2_QNAME = new QName("", "arg2");
     private final static QName _GetMetaDataResponseReturn_QNAME = new QName("", "return");
+    private final static QName _UploadPictureArg2_QNAME = new QName("", "arg2");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: sd.tp1.client.ws
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link CheckAndAddSharedBy }
+     * 
+     */
+    public CheckAndAddSharedBy createCheckAndAddSharedBy() {
+        return new CheckAndAddSharedBy();
     }
 
     /**
@@ -157,6 +167,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CheckAndAddSharedByResponse }
+     * 
+     */
+    public CheckAndAddSharedByResponse createCheckAndAddSharedByResponse() {
+        return new CheckAndAddSharedByResponse();
+    }
+
+    /**
      * Create an instance of {@link DeletePictureResponse }
      * 
      */
@@ -242,6 +260,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CheckAndAddSharedBy }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "checkAndAddSharedBy")
+    public JAXBElement<CheckAndAddSharedBy> createCheckAndAddSharedBy(CheckAndAddSharedBy value) {
+        return new JAXBElement<CheckAndAddSharedBy>(_CheckAndAddSharedBy_QNAME, CheckAndAddSharedBy.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DeleteAlbumResponse }{@code >}}
      * 
      */
@@ -284,6 +311,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
     public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
         return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CheckAndAddSharedByResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "checkAndAddSharedByResponse")
+    public JAXBElement<CheckAndAddSharedByResponse> createCheckAndAddSharedByResponse(CheckAndAddSharedByResponse value) {
+        return new JAXBElement<CheckAndAddSharedByResponse>(_CheckAndAddSharedByResponse_QNAME, CheckAndAddSharedByResponse.class, null, value);
     }
 
     /**
@@ -362,18 +398,18 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "arg2", scope = UploadPicture.class)
-    public JAXBElement<byte[]> createUploadPictureArg2(byte[] value) {
-        return new JAXBElement<byte[]>(_UploadPictureArg2_QNAME, byte[].class, UploadPicture.class, ((byte[]) value));
+    @XmlElementDecl(namespace = "", name = "return", scope = GetMetaDataResponse.class)
+    public JAXBElement<byte[]> createGetMetaDataResponseReturn(byte[] value) {
+        return new JAXBElement<byte[]>(_GetMetaDataResponseReturn_QNAME, byte[].class, GetMetaDataResponse.class, ((byte[]) value));
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "return", scope = GetMetaDataResponse.class)
-    public JAXBElement<byte[]> createGetMetaDataResponseReturn(byte[] value) {
-        return new JAXBElement<byte[]>(_GetMetaDataResponseReturn_QNAME, byte[].class, GetMetaDataResponse.class, ((byte[]) value));
+    @XmlElementDecl(namespace = "", name = "arg2", scope = UploadPicture.class)
+    public JAXBElement<byte[]> createUploadPictureArg2(byte[] value) {
+        return new JAXBElement<byte[]>(_UploadPictureArg2_QNAME, byte[].class, UploadPicture.class, ((byte[]) value));
     }
 
     /**

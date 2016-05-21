@@ -72,5 +72,10 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
         return GetMetaDataRest.getMetaData(target,password);
     }
 
+    @Override
+    public boolean checkAndAddSharedBy(String ip, String objectId) {
+        return false;
+    }
+
 
 }

@@ -67,4 +67,9 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
     public byte[] getMetaData() {
         return sd.tp1.client.GetMetaData.getMetaData(server);
     }
+
+    @Override
+    public boolean checkAndAddSharedBy(String ip, String objectId) {
+        return false;
+    }
 }

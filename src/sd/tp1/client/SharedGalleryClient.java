@@ -19,4 +19,5 @@ public interface SharedGalleryClient {
     long getServerSize();
     String getType();
     byte[] getMetaData();
+    boolean checkAndAddSharedBy(String ip,String objectId);
 }
