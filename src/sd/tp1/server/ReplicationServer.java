@@ -77,18 +77,25 @@ public class ReplicationServer {
 
                         JSONArray timeStamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
 
+                        if (hasContent()){
+                            loadContentFromDisk(file);
+                        }
+
+
                         Iterator iterator = timeStamps.iterator();
                         while (iterator.hasNext()){
-                            ReplicationServerUtils.timestampADDJSON(file,(JSONObject) iterator.next());
+                          JSONObject timestampjson =  (JSONObject) iterator.next();
+
+                            if (!mytimeStampsSet.contains(timestampjson.get(OBJECTID).toString()))
+                            ReplicationServerUtils.timestampADDJSON(file,timestampjson);
                         }
                         ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
                     } else{
                         //start new
                         file = ReplicationServerUtils.createFile();
-                    }
-
-                    if (hasContent()){
-                        loadContentFromDisk(file);
+                        if (hasContent()){
+                            loadContentFromDisk(file);
+                        }
                     }
 
                     ReplicationServerUtils.writeToFile(file);
@@ -140,8 +147,6 @@ public class ReplicationServer {
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
 
                                 if (timestampStringID.equals(mytimestampStringID)){
-
-                                    System.out.println("é igual id: "+timestampStringID);
 
                                     if ((long)timestamp.get(CLOCK)==(long)myTimestamp.get(CLOCK)){
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());

@@ -324,7 +324,6 @@ public class ServersUtils {
     public static JSONObject getJsonFromFile(byte[] arg1){
         try {
             byte[] stringFile;
-            System.out.println("Vieram bytes : " + arg1.length);
             if (arg1.length>0){
                 stringFile = arg1;
             }else{
