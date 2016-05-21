@@ -135,21 +135,6 @@ public class ReplicationServer {
                             Clock clockObj = new Clock(clock,replica);
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
-
-
-                            Iterator iterator =mytimeStampsSet.iterator();
-
-                            while (iterator.hasNext()){
-                                System.out.println("Tenho: "+ iterator.next());
-                            }
-
-                            System.out.println(".....");
-
-
-
-
-                            System.out.println("Testar timestampsids entrou: "+ timestampStringID +" || "+mytimeStampsSet.contains(timestampStringID)  );
-
                             if (mytimeStampsSet.contains(timestampStringID)){
                                 JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,timestampStringID);
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
@@ -158,8 +143,7 @@ public class ReplicationServer {
 
                                     System.out.println("é igual id: "+timestampStringID);
 
-
-                                    if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
+                                    if ((long)timestamp.get(CLOCK)==(long)myTimestamp.get(CLOCK)){
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
@@ -167,7 +151,7 @@ public class ReplicationServer {
                                             System.out.println("entrou result<0 ");
                                         }
 
-                                    }else if ((int)timestamp.get(CLOCK) > (int) myTimestamp.get(CLOCK)){
+                                    }else if ((long)timestamp.get(CLOCK) > (long) myTimestamp.get(CLOCK)){
                                         update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
                                         System.out.println("entrou clocks ");
 
