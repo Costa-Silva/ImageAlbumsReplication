@@ -128,9 +128,9 @@ public class ReplicationServer {
                         String theirReplica = "";
                         JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
 
-
-                        if (!ReplicationServerUtils.hasHost(myfile,buildIP(serverIp,serverIps.get(serverIp)))) {
-                            ReplicationServerUtils.addHost(myfile,buildIP(serverIp,serverIps.get(serverIp)));
+                        String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
+                        if (!ReplicationServerUtils.hasHost(myfile,fullServerIp)) {
+                            ReplicationServerUtils.addHost(myfile,fullServerIp);
                             System.out.println("added to my hosts: "+ serverIp);
                         }
 
@@ -158,18 +158,18 @@ public class ReplicationServer {
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
-                                            update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,serverIp,clockObj);
+                                            update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                         }
 
                                     }else if ((long)timestamp.get(CLOCK) > (long) myTimestamp.get(CLOCK)){
-                                        update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,serverIp,clockObj);
+                                        update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                     }
                                 }
                             }else{
                                 if (operation.equals(CREATEOP)){
-                                    update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,serverIp,clockObj);
+                                    update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                 }else if (operation.equals(REMOVEOP)){
-                                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,serverIp);
+                                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp);
                                 }
                             }
                         }
