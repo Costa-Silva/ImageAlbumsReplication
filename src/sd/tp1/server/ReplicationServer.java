@@ -225,6 +225,8 @@ public class ReplicationServer {
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String hostIp){
 
+        System.err.println("Updated:"+ timestampStringID);
+
         JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
         int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,hostIp);
 
