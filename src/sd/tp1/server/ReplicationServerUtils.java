@@ -78,7 +78,7 @@ public class ReplicationServerUtils {
 
         JSONArray array = (JSONArray) ((JSONObject)file.get(DATA)).get(TIMESTAMP);
 
-        JSONObject newTimeStamp = (JSONObject) timestampConstrutor(id,clock,operation);
+        JSONObject newTimeStamp = new JSONObject(timestampConstrutor(id,clock,operation));
 
         for (int i = 0; i < array.size() ; i++) {
             JSONObject jsonObject = (JSONObject) array.get(i);
