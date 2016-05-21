@@ -42,21 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="metadata.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/metadata.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="58" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="525" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="133" column="85" selection-start-line="133" selection-start-column="85" selection-end-line="133" selection-end-column="85" />
+            <state relative-caret-position="283">
+              <caret line="131" column="59" selection-start-line="131" selection-start-column="52" selection-end-line="131" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1067,14 +1057,7 @@
       <workItem from="1463499548328" duration="15226000" />
       <workItem from="1463564734326" duration="418000" />
       <workItem from="1463613037312" duration="1263000" />
-      <workItem from="1463782733628" duration="15292000" />
-    </task>
-    <task id="LOCAL-00053" summary="work work work work lalala">
-      <created>1463439861388</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1463439861389</updated>
+      <workItem from="1463782733628" duration="15708000" />
     </task>
     <task id="LOCAL-00054" summary="replication utils">
       <created>1463439969776</created>
@@ -1412,11 +1395,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463798361106</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="changes">
+      <created>1463799042372</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1463799042372</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="189126000" />
+    <option name="totallyTimeSpent" value="189542000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1840,14 +1830,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/metadata.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="58" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="525" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServerUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
@@ -1862,10 +1844,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/metadata.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="34" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="499" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="133" column="85" selection-start-line="133" selection-start-column="85" selection-end-line="133" selection-end-column="85" />
+        <state relative-caret-position="283">
+          <caret line="131" column="59" selection-start-line="131" selection-start-column="52" selection-end-line="131" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

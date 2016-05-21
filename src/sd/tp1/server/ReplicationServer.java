@@ -91,9 +91,9 @@ public class ReplicationServer {
                             ReplicationServerUtils.timestampADDJSON(file,timestampjson);
                         }
 
-                        if (!ReplicationServerUtils.hasHost(file,serverIp)) {
+
                             ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
-                        }
+
 
                     } else{
                         //start new
@@ -129,7 +129,7 @@ public class ReplicationServer {
                         JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
 
 
-                        if (!ReplicationServerUtils.hasHost(myfile,serverIp)){
+                        if (!ReplicationServerUtils.hasHost(myfile,buildIP(serverIp,serverIps.get(serverIp)))) {
                             ReplicationServerUtils.addHost(myfile,buildIP(serverIp,serverIps.get(serverIp)));
                             System.out.println("adicionei aos meus hosts: "+ serverIp);
                         }
