@@ -242,6 +242,7 @@ public class ReplicationServer {
         }
 
         jsonObject.put(SHAREDBY,sharedBy);
+
         ReplicationServerUtils.writeToFile(myfile);
     }
 
