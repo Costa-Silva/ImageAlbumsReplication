@@ -60,8 +60,12 @@ public class ReplicationServerUtils {
         ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(timestampConstrutor(id,clock,operation)));
     }
 
-    public static void newTimestamp(JSONObject file,String id,String myReplica, String operation){
-        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(timestampConstrutor(id, new Clock(0,myReplica),operation)));
+    public static String newTimestamp(JSONObject file,String id,String myReplica, String operation){
+
+       JSONObject newTimestamp = new JSONObject(timestampConstrutor(id, new Clock(0,myReplica),operation));
+       ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(newTimestamp);
+
+        return  newTimestamp.toJSONString();
     }
 
 
@@ -205,7 +209,6 @@ public class ReplicationServerUtils {
     public static String[] getId(String id){
 
         if (id.contains("Picture:")){
-            System.out.println("ENTROU pict: "+ id.split("Album:")[0].split("|Picture:"));
             return id.split("Album:")[0].split("|Picture:") ;
         }else{
             String[] result = new String[1];

@@ -139,20 +139,29 @@ public class ReplicationServer {
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
 
                                 if (timestampStringID.equals(mytimestampStringID)){
+
+                                    System.out.println("é igual id: "+timestampStringID);
+
+
                                     if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
                                             update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
+                                            System.out.println("entrou result<0 ");
                                         }
 
                                     }else if ((int)timestamp.get(CLOCK) > (int) myTimestamp.get(CLOCK)){
                                         update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
+                                        System.out.println("entrou clocks ");
+
                                     }
                                 }
                             }else{
                                 if (operation.equals(CREATEOP)){
                                     update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
+                                    System.out.println("entrou else ");
+
                                 }else if (operation.equals(REMOVEOP)){
                                     writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,theirReplica);
                                 }
@@ -180,10 +189,6 @@ public class ReplicationServer {
         String[] nameid = ReplicationServerUtils.getId(timestampStringID);
         if (nameid.length>1){
             if (operation.equals(CREATEOP)){
-
-                System.out.println("PEDIIIII: "+nameid[0] +" kuku "+ nameid[1] );
-
-
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
                 content.get(nameid[0]).put(nameid[1],aux);
                 ServersUtils.uploadPicture(nameid[0],nameid[1],aux);
@@ -232,12 +237,12 @@ public class ReplicationServer {
 
         ServersUtils.getAlbumList().forEach(albumName->{
             HashMap<String,byte[]> imageContent = new HashMap<>();
-            ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
-
+           String albumTimestamp = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
+            mytimeStampsSet.add(albumTimestamp);
             ServersUtils.getPicturesList(albumName).forEach(pictureName->{
                 imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
-                ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
-
+               String newTimestamp = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
+                mytimeStampsSet.add(newTimestamp);
             });
             content.put(albumName,imageContent);
         });
