@@ -90,7 +90,11 @@ public class ReplicationServer {
                             if (!mytimeStampsSet.contains(timestampjson.get(OBJECTID).toString()))
                             ReplicationServerUtils.timestampADDJSON(file,timestampjson);
                         }
-                        ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
+
+                        if (!ReplicationServerUtils.hasHost(file,serverIp)) {
+                            ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
+                        }
+
                     } else{
                         //start new
                         file = ReplicationServerUtils.createFile();
@@ -127,6 +131,7 @@ public class ReplicationServer {
 
                         if (!ReplicationServerUtils.hasHost(myfile,serverIp)){
                             ReplicationServerUtils.addHost(myfile,buildIP(serverIp,serverIps.get(serverIp)));
+                            System.out.println("adicionei aos meus hosts: "+ serverIp);
                         }
 
                         JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
