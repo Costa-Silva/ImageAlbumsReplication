@@ -31,6 +31,7 @@ public class ReplicationServer {
     public static final String REMOVEOP= "REMOVED";
     public static final String CREATEOP= "CREATED";
     public static final String OPERATION ="operation";
+    public static final String DATA= "data";
     public static final String REST ="REST";
     public static final String SOAP ="SOAP";
     private JSONObject file;
@@ -229,11 +230,18 @@ public class ReplicationServer {
         System.out.println(myfile.toJSONString()+" "+timestampStringID);
 
 
-        ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
+        JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
 
-        ReplicationServerUtils.timestampSetSharedBy(myfile,timestampStringID,sharedBy,
-                ReplicationServerUtils.getReplicaid(myfile));
-        ReplicationServerUtils.timestampAddSharedBy(myfile,timestampStringID,theirReplica);
+        for (int i = 0; i < sharedBy.size() ; i++) {
+           String ip =sharedBy.get(i).toString();
+
+            if (ip.equals(ReplicationServerUtils.getReplicaid(myfile))){
+                sharedBy.set(i,theirReplica);
+                break;
+            }
+        }
+
+        jsonObject.put(SHAREDBY,sharedBy);
         ReplicationServerUtils.writeToFile(myfile);
     }
 

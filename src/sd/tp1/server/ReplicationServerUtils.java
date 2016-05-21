@@ -63,8 +63,8 @@ public class ReplicationServerUtils {
 
     public static JSONObject newTimestamp(JSONObject file,String id,String myReplica, String operation){
 
-       JSONObject newTimestamp = new JSONObject(timestampConstrutor(id, new Clock(0,myReplica),operation));
-       ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(newTimestamp);
+        JSONObject newTimestamp = new JSONObject(timestampConstrutor(id, new Clock(0,myReplica),operation));
+        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(newTimestamp);
 
         return  newTimestamp;
     }
@@ -74,13 +74,22 @@ public class ReplicationServerUtils {
     }
 
 
-    public static void timestampSet(JSONObject file, String id,Clock clock,String operation){
+    public static JSONObject timestampSet(JSONObject file, String id,Clock clock,String operation){
 
-        JSONArray array = new JSONArray();
+        JSONArray array = (JSONArray) ((JSONObject)file.get(DATA)).get(TIMESTAMP);
 
-        array.add(timestampConstrutor(id,clock,operation));
+        JSONObject newTimeStamp = (JSONObject) timestampConstrutor(id,clock,operation);
 
+        for (int i = 0; i < array.size() ; i++) {
+            JSONObject jsonObject = (JSONObject) array.get(i);
+            if (getTimestampID(jsonObject).equals(id)){
+                array.set (i,newTimeStamp);
+                break;
+            }
+        }
         ((JSONObject)file.get(DATA)).put(TIMESTAMP,array);
+
+        return newTimeStamp;
     }
 
 
