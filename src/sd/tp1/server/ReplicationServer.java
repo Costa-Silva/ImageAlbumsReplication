@@ -134,7 +134,23 @@ public class ReplicationServer {
                             String replica = timestamp.get(REPLICA).toString();
                             Clock clockObj = new Clock(clock,replica);
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
-                            if (mytimeStampsSet.contains(timestampStringID)){
+
+
+
+                            Iterator iterator =mytimeStampsSet.iterator();
+
+                            while (iterator.hasNext()){
+                                System.out.println("Tenho: "+ iterator.next());
+                            }
+
+                            System.out.println(".....");
+
+
+
+
+                            System.out.println("Testar timestampsids entrou: "+ timestampStringID +" || "+mytimeStampsSet.contains(timestamp)  );
+
+                            if (mytimeStampsSet.contains(timestamp)){
                                 JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,timestampStringID);
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
 
