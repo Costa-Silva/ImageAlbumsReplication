@@ -136,6 +136,17 @@ public class ReplicationServerUtils {
         ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(newtimestamp);
     }
 
+    public static int hasSharedByPosition(JSONArray sharedBy,String ip){
+
+        for (int i = 0; i < sharedBy.size() ; i++) {
+            String testIp =sharedBy.get(i).toString();
+
+            if (ip.equals(testIp)){
+                return i;
+            }
+        }
+            return -1;
+    }
 
     public static void setTimeStamps(JSONObject file,JSONArray timestamps){
         ((JSONObject)file.get(DATA)).put(TIMESTAMP,timestamps);

@@ -158,18 +158,18 @@ public class ReplicationServer {
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
-                                            update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
+                                            update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,serverIp,clockObj);
                                         }
 
                                     }else if ((long)timestamp.get(CLOCK) > (long) myTimestamp.get(CLOCK)){
-                                        update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
+                                        update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,serverIp,clockObj);
                                     }
                                 }
                             }else{
                                 if (operation.equals(CREATEOP)){
-                                    update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,theirReplica,clockObj);
+                                    update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,serverIp,clockObj);
                                 }else if (operation.equals(REMOVEOP)){
-                                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,theirReplica);
+                                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,serverIp);
                                 }
                             }
                         }
@@ -191,7 +191,7 @@ public class ReplicationServer {
     }
 
     public void update(JSONObject myfile, JSONArray sharedBy, String timestampStringID,String operation,
-                       SharedGalleryClient sharedGalleryClient,String theirReplica,Clock clockObj){
+                       SharedGalleryClient sharedGalleryClient,String serverIp,Clock clockObj){
         String[] nameid = ReplicationServerUtils.getId(timestampStringID);
 
 
@@ -200,40 +200,39 @@ public class ReplicationServer {
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
                 content.get(nameid[0]).put(nameid[1],aux);
                 ServersUtils.uploadPicture(nameid[0],nameid[1],aux);
-                writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,theirReplica);
+                writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp);
             }else if (operation.equals(REMOVEOP)){
                 content.get(nameid[0]).remove(nameid[1]);
                 if (ServersUtils.deletePicture(nameid[0],nameid[1])){
-                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,theirReplica);
+                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp);
                 }
             }
         }else{
             if (operation.equals(CREATEOP)){
                 content.put(nameid[0],new HashMap<>());
                 if (ServersUtils.hasAlbum(nameid[0]) || ServersUtils.createAlbum(nameid[0])!=null)
-                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,theirReplica);
+                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp);
 
             }else if (operation.equals(REMOVEOP)){
                 content.remove(nameid[0]);
                 if (ServersUtils.deleteAlbum(nameid[0])) {
-                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,theirReplica);
+                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,serverIp);
                 }
             }
         }
     }
 
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
-                              String operation,String theirReplica){
+                              String operation,String hostIp){
         JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
+            int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,hostIp);
 
-        for (int i = 0; i < sharedBy.size() ; i++) {
-           String ip =sharedBy.get(i).toString();
-
-            if (ip.equals(ReplicationServerUtils.getReplicaid(myfile))){
-                sharedBy.set(i,theirReplica);
-                break;
-            }
+        if (index>=0){
+            sharedBy.set(index,hostIp);
+        }else{
+            sharedBy.add(hostIp);
         }
+
 
         jsonObject.put(SHAREDBY,sharedBy);
 
