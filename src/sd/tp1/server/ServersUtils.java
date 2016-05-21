@@ -188,16 +188,26 @@ public class ServersUtils {
 
     public static String createAlbum(String albumName) {
 
-        if (correctMainDirectory()) {
+        if (!hasAlbum(albumName)){
             File album = new File(MAINSOURCE + albumName);
-            if (!album.exists()) {
-                album.mkdir();
-                kafkaPublisher("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
-                return album.getName();
-            }
+            album.mkdir();
+            kafkaPublisher("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
+            return album.getName();
         }
+
         return null;
     }
+
+    public static boolean hasAlbum(String albumName){
+        if (correctMainDirectory()) {
+            File album = new File(MAINSOURCE + albumName);
+            if (album.exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
     public static void loadAndChangeMetadata(String id, String operation) {

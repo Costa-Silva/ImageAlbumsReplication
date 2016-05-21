@@ -193,9 +193,8 @@ public class ReplicationServer {
                        SharedGalleryClient sharedGalleryClient,String theirReplica,Clock clockObj){
         String[] nameid = ReplicationServerUtils.getId(timestampStringID);
 
-        System.out.println("TOU NO UPDATE tenho op: "+ operation);
 
-        if (nameid.length>0){
+        if (nameid.length>1){
             if (operation.equals(CREATEOP)){
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
                 content.get(nameid[0]).put(nameid[1],aux);
@@ -208,9 +207,11 @@ public class ReplicationServer {
                 }
             }
         }else{
+            System.out.println("TOU NO UPDATE tenho op: "+ operation);
+
             if (operation.equals(CREATEOP)){
                 content.put(nameid[0],new HashMap<>());
-                if (ServersUtils.createAlbum(nameid[0])!=null)
+                if (ServersUtils.hasAlbum(nameid[0]) || ServersUtils.createAlbum(nameid[0])!=null)
                     writeMetaData(myfile,timestampStringID,clockObj,sharedBy,operation,theirReplica);
 
             }else if (operation.equals(REMOVEOP)){
