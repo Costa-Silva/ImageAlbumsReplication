@@ -203,10 +203,17 @@ public class ReplicationServerUtils {
     }
 
     public static String[] getId(String id){
+
         if (id.contains("Picture:")){
-            return id.split("Album:")[0].split("Picture:") ;
+            System.out.println("ENTROU pict: "+ id.split("Album:")[0].split("|Picture:"));
+            return id.split("Album:")[0].split("|Picture:") ;
         }else{
-            return id.split("Album:");
+
+            String desiredAlbum = id.split("Album:")[1];
+            String[] result = new String[1];
+            result[0] = desiredAlbum;
+
+            return result;
         }
     }
 }

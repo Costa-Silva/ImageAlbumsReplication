@@ -180,6 +180,10 @@ public class ReplicationServer {
         String[] nameid = ReplicationServerUtils.getId(timestampStringID);
         if (nameid.length>1){
             if (operation.equals(CREATEOP)){
+
+                System.out.println("PEDIIIII: "+nameid[0] +" kuku "+ nameid[1] );
+
+
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
                 content.get(nameid[0]).put(nameid[1],aux);
                 ServersUtils.uploadPicture(nameid[0],nameid[1],aux);
