@@ -192,6 +192,9 @@ public class ReplicationServer {
     public void update(JSONObject myfile, JSONArray sharedBy, String timestampStringID,String operation,
                        SharedGalleryClient sharedGalleryClient,String theirReplica,Clock clockObj){
         String[] nameid = ReplicationServerUtils.getId(timestampStringID);
+
+        System.out.println("TOU NO UPDATE tenho nameid lenght: "+ nameid.length);
+
         if (nameid.length>1){
             if (operation.equals(CREATEOP)){
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
@@ -221,6 +224,9 @@ public class ReplicationServer {
 
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String theirReplica){
+
+        System.out.println(myfile.toJSONString()+" "+timestampStringID);
+
 
         ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
 
