@@ -208,10 +208,8 @@ public class ReplicationServerUtils {
             System.out.println("ENTROU pict: "+ id.split("Album:")[0].split("|Picture:"));
             return id.split("Album:")[0].split("|Picture:") ;
         }else{
-
-            String desiredAlbum = id.split("Album:")[1];
             String[] result = new String[1];
-            result[0] = desiredAlbum;
+            result[0] = id.split("Album:")[1];
 
             return result;
         }
