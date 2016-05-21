@@ -193,7 +193,7 @@ public class ReplicationServer {
                        SharedGalleryClient sharedGalleryClient,String theirReplica,Clock clockObj){
         String[] nameid = ReplicationServerUtils.getId(timestampStringID);
 
-        System.out.println("TOU NO UPDATE tenho nameid lenght: "+ nameid.length);
+        System.out.println("TOU NO UPDATE tenho op: "+ operation);
 
         if (nameid.length>1){
             if (operation.equals(CREATEOP)){
