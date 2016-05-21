@@ -195,7 +195,7 @@ public class ReplicationServer {
 
         System.out.println("TOU NO UPDATE tenho op: "+ operation);
 
-        if (nameid.length>1){
+        if (nameid.length>0){
             if (operation.equals(CREATEOP)){
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
                 content.get(nameid[0]).put(nameid[1],aux);
