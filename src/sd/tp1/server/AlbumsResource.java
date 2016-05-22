@@ -38,9 +38,8 @@ public class AlbumsResource implements ServerRESTInterface{
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-
     @GET
-    @Path("/checkAndaddSharedby/{ip}/{objectid}/key/{password}")
+    @Path("/checkAndaddSharedbyx/{ip}/{objectid}/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkAndAddSharedBy(@PathParam("ip") String ip,@PathParam("objectid") String objectId,
                                                                 @PathParam("password") String password) {
