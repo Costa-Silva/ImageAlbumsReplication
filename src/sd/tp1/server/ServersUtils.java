@@ -164,8 +164,8 @@ public class ServersUtils {
                 }
             }
         }
-        if(success)
-        kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Delete"+"-"+System.nanoTime()));
+      //  if(success)
+        //kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Delete"+"-"+System.nanoTime()));
 
         return success;
     }
@@ -178,8 +178,8 @@ public class ServersUtils {
             File album = new File(MAINSOURCE + albumName);
             if (album.isDirectory() && album.exists()) {
                 File delAlbum = new File(album.getAbsolutePath().concat(".deleted"));
-                if(success = album.renameTo(delAlbum))
-                    kafkaPublisher("Albums",new String(albumName+"-"+"Delete"+"-"+System.nanoTime()));
+                if(success = album.renameTo(delAlbum)){}
+                   // kafkaPublisher("Albums",new String(albumName+"-"+"Delete"+"-"+System.nanoTime()));
             }
         }
         return success;
@@ -190,7 +190,7 @@ public class ServersUtils {
         if (!hasAlbum(albumName)){
             File album = new File(MAINSOURCE + albumName);
             album.mkdir();
-            kafkaPublisher("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
+            //kafkaPublisher("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
             return album.getName();
         }
 
@@ -235,7 +235,7 @@ public class ServersUtils {
                 try {
                     Files.write(newPicture.toPath(), pictureData, StandardOpenOption.CREATE_NEW);
                     success = newPicture.exists();
-                    kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Create" + "-"+System.nanoTime()));
+                  //  kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Create" + "-"+System.nanoTime()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
