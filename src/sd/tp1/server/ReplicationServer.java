@@ -179,8 +179,11 @@ public class ReplicationServer {
                             while (iterator.hasNext()){
 
                                 if (mySharedBy.size()>0){
-                                    if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,iterator.next().toString())<0)
+                                    System.out.println("entrei");
+                                    if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,(String)iterator.next())<0) {
+                                        System.out.println("entrei equals");
                                         mySharedBy.add(fullServerIp);
+                                    }
                                 }
                             }
 
@@ -246,7 +249,7 @@ public class ReplicationServer {
 
 
         //notify another server to let him known that he can count with me :)
-       sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
+        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
 
         if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
             ReplicationServerUtils.timestampSet(file,timestampStringID,clockObj,operation);
@@ -255,7 +258,6 @@ public class ReplicationServer {
         }
 
         System.out.println("Updated:"+ timestampStringID);
-        System.out.println("posUpd: "+file);
     }
 
     public boolean hasContent(){
