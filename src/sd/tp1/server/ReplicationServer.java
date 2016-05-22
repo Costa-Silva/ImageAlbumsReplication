@@ -180,6 +180,10 @@ public class ReplicationServer {
                                 }
                             }
 
+                            int myindex = ReplicationServerUtils.hasSharedByPosition(sharedBy,myFullIp);
+                            if (myindex>0) {
+                                sharedBy.remove(myindex);
+                            }
                             int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,fullServerIp);
                             if (index>=0){
                                 sharedBy.set(index,fullServerIp);
