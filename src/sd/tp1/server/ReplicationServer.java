@@ -165,6 +165,7 @@ public class ReplicationServer {
                                     }
                                 }
                             }else{
+                                mytimeStampsSet.add(timestampStringID);
                                 if (operation.equals(CREATEOP)){
                                     update(file,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                 }else if (operation.equals(REMOVEOP)){
@@ -222,6 +223,8 @@ public class ReplicationServer {
 
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String hostIp, SharedGalleryClient sharedGalleryClient){
+
+
 
 
         //notify another server to let him known that he can count with me :)
