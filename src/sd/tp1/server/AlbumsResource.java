@@ -44,9 +44,10 @@ public class AlbumsResource implements ServerRESTInterface{
     public Response checkAndAddSharedBy(@PathParam("ip") String ip,@PathParam("objectid") String objectId,
                                                                 @PathParam("password") String password) {
 
+        System.out.print("enTREI: "+ip+"  "+objectId);
         if (checkPassword(password)) {
-            System.out.print("enTREI: "+ip+"  "+objectId);
 
+            System.out.println("entrei mesmo");
            boolean result = ServersUtils.checkAndAddSharedBy(ip, objectId);
 
             long respond= result ? 1: 0 ;

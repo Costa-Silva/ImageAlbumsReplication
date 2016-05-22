@@ -4,6 +4,7 @@
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/CheckAndAddSharedByREST.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/CheckAndAddSharedByREST.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" />
     </list>
     <ignored path="SD2016-TP1.iws" />
@@ -30,18 +31,8 @@
       <file leaf-file-name="AlbumsResource.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="70">
-              <caret line="41" column="31" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerSizeREST.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/ServerSizeREST.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="20" column="25" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="25" />
+            <state relative-caret-position="126">
+              <caret line="49" column="44" selection-start-line="49" selection-start-column="44" selection-end-line="49" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -50,18 +41,18 @@
       <file leaf-file-name="CheckAndAddSharedByREST.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/CheckAndAddSharedByREST.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+            <state relative-caret-position="291">
+              <caret line="28" column="1" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CheckAndAddSharedBy.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/CheckAndAddSharedBy.java">
+      <file leaf-file-name="ServerSizeREST.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/ServerSizeREST.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+            <state relative-caret-position="156">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="23" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -1013,14 +1004,7 @@
       <workItem from="1463613037312" duration="1263000" />
       <workItem from="1463782733628" duration="18944000" />
       <workItem from="1463873139359" duration="2764000" />
-      <workItem from="1463876297839" duration="9222000" />
-    </task>
-    <task id="LOCAL-00083" summary="changes">
-      <created>1463787478248</created>
-      <option name="number" value="00083" />
-      <option name="presentableId" value="LOCAL-00083" />
-      <option name="project" value="LOCAL" />
-      <updated>1463787478249</updated>
+      <workItem from="1463876297839" duration="9444000" />
     </task>
     <task id="LOCAL-00084" summary="changes">
       <created>1463787868246</created>
@@ -1358,11 +1342,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463887258086</updated>
     </task>
-    <option name="localTasksCounter" value="132" />
+    <task id="LOCAL-00132" summary="changes">
+      <created>1463887343328</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1463887343329</updated>
+    </task>
+    <option name="localTasksCounter" value="133" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="204764000" />
+    <option name="totallyTimeSpent" value="204986000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1787,14 +1778,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/ServerSizeREST.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="20" column="25" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/CheckAndAddSharedBy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -1803,18 +1786,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/ServerSizeREST.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="23" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/CheckAndAddSharedByREST.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        <state relative-caret-position="291">
+          <caret line="28" column="1" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="41" column="31" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
+        <state relative-caret-position="126">
+          <caret line="49" column="44" selection-start-line="49" selection-start-column="44" selection-end-line="49" selection-end-column="44" />
           <folding />
         </state>
       </provider>
