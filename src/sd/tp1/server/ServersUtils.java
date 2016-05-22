@@ -227,9 +227,13 @@ public class ServersUtils {
         } else if (operation.equals(REMOVEOP)) {
             System.out.println("entrou no removeop");
             Clock clock = ReplicationServerUtils.timestampGetClock(file, id);
+            System.out.println("entrou no removeop1");
             clock.setClock(clock.getClock() + 1);
+            System.out.println("entrou no removeop2");
             clock.setReplica(replica);
+            System.out.println("entrou no removeop3");
             ReplicationServerUtils.timestampChangeClock(file, id, clock);
+            System.out.println("entrou no removeop4");
             ReplicationServerUtils.timestampChangeOperation(file, id, REMOVEOP);
         }
 
