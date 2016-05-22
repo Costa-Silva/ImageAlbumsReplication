@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/CheckAndAddSharedByREST.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/CheckAndAddSharedByREST.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" />
@@ -31,8 +30,8 @@
       <file leaf-file-name="AlbumsResource.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+            <state relative-caret-position="70">
+              <caret line="41" column="31" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -1014,14 +1013,7 @@
       <workItem from="1463613037312" duration="1263000" />
       <workItem from="1463782733628" duration="18944000" />
       <workItem from="1463873139359" duration="2764000" />
-      <workItem from="1463876297839" duration="9137000" />
-    </task>
-    <task id="LOCAL-00082" summary="changes">
-      <created>1463785369713</created>
-      <option name="number" value="00082" />
-      <option name="presentableId" value="LOCAL-00082" />
-      <option name="project" value="LOCAL" />
-      <updated>1463785369714</updated>
+      <workItem from="1463876297839" duration="9222000" />
     </task>
     <task id="LOCAL-00083" summary="changes">
       <created>1463787478248</created>
@@ -1359,11 +1351,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463886745016</updated>
     </task>
-    <option name="localTasksCounter" value="131" />
+    <task id="LOCAL-00131" summary="changes">
+      <created>1463887258085</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1463887258086</updated>
+    </task>
+    <option name="localTasksCounter" value="132" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="204679000" />
+    <option name="totallyTimeSpent" value="204764000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1814,8 +1813,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+        <state relative-caret-position="70">
+          <caret line="41" column="31" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
           <folding />
         </state>
       </provider>

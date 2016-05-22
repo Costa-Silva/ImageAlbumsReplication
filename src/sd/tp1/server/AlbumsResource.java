@@ -39,7 +39,7 @@ public class AlbumsResource implements ServerRESTInterface{
     }
 
     @GET
-    @Path("/checkAndaddSharedbyx/{ip}/{objectid}/key/{password}")
+    @Path("/checkAndaddSharedby/{ip}/{objectid}/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkAndAddSharedBy(@PathParam("ip") String ip,@PathParam("objectid") String objectId,
                                                                 @PathParam("password") String password) {
