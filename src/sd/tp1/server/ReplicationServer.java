@@ -183,15 +183,6 @@ public class ReplicationServer {
         }).start();
     }
 
-
-    public boolean checkLong(Object obj){
-
-        if (obj instanceof Long)
-        return true;
-
-        return false;
-    }
-
     public  String buildIP(String ip,String type){
 
         return type.equals(REST) ? ip+"-"+REST  : ip+"-"+SOAP;
