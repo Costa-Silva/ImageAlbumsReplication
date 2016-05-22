@@ -184,12 +184,11 @@ public class ReplicationServer {
                             }
 
                             while (iterator.hasNext()){
-                                    System.out.println("entrei");
                                 String newIP= (String)iterator.next();
+                                System.out.println("hey "+newIP);
                                     if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,newIP)<0) {
                                         System.out.println("entrei equals");
                                         mySharedBy.add(newIP);
-
                                 }
                             }
 
