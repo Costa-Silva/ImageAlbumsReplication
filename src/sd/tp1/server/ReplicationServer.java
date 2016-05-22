@@ -157,14 +157,14 @@ public class ReplicationServer {
                                 if (timestampStringID.equals(mytimestampStringID)){
 
 
-                                    if (((long)timestamp.get(CLOCK))==(long)myTimestamp.get(CLOCK)){
+                                    if (( Integer.parseInt(timestamp.get(CLOCK).toString()))==Integer.parseInt(myTimestamp.get(CLOCK).toString())){
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
                                             update(file,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                         }
 
-                                    }else if ((long)timestamp.get(CLOCK) > (long) myTimestamp.get(CLOCK)){
+                                    }else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())){
                                         update(file,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                     }
                                 }
