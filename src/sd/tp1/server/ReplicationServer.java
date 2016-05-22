@@ -171,9 +171,6 @@ public class ReplicationServer {
                                     writeMetaData(file,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp,sharedGalleryClient);
                                 }
                             }
-
-                            //notify another server to let him known that he can count with me :)
-                            sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
                         }
                     }else {
                         System.out.println("No servers found to replicate");
