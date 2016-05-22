@@ -19,11 +19,12 @@ public class CheckAndAddSharedByREST {
 
         String path = PATH+SHAREDBY+SLASH+ip+SLASH+objectid+SLASH+KEY+password;
 
-        boolean result = target.path(path)
+        int result = target.path(path)
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
-                .get(boolean.class);
+                .get(Integer.class);
 
-        return result;
+
+        return result==1;
     }
 }
