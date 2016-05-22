@@ -160,17 +160,9 @@ public class ReplicationServerUtils {
 
     public static Clock timestampGetClock(JSONObject file,String id){
         JSONObject jsonObject= timestampgetJSONbyID(file, id);
-        System.out.println("a minha timestamp: "+jsonObject.toJSONString());
-
-        int clockint= Integer.parseInt(jsonObject.get(CLOCK).toString());
-        System.out.println(clockint);
-        String replica = (String)jsonObject.get(REPLICA);
-        System.out.println(clockint+replica);
-        Clock clock = new Clock(clockint,replica);
-        System.out.println("retorneiCLOCK: "+clock.getClock() + clock.getReplica() );
+        Clock clock = new Clock(Integer.parseInt(jsonObject.get(CLOCK).toString()),jsonObject.get(REPLICA).toString());
         return clock;
     }
-
 
     public static void timestampAddSharedBy(JSONObject file,String id,String sharedBy){
         JSONObject jsonObject = timestampgetJSONbyID(file, id);

@@ -146,7 +146,6 @@ public class AlbumsResource implements ServerRESTInterface{
         if (checkPassword(password)) {
             if (ServersUtils.deleteAlbum(albumName)) {
                 String empty = "";
-                System.out.println("delete albsss");
                 ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),REMOVEOP);
                 return Response.ok().build();
             }
