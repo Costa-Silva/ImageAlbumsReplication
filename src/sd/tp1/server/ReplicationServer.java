@@ -127,6 +127,9 @@ public class ReplicationServer {
                         JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
 
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
+
+
+                        System.out.println("myfile: "+ myfile.toJSONString());
                         if (!ReplicationServerUtils.hasHost(myfile,fullServerIp)) {
                             ReplicationServerUtils.addHost(myfile,fullServerIp);
                             System.out.println("added to my hosts: "+ serverIp);
@@ -149,6 +152,9 @@ public class ReplicationServer {
                             if (mytimeStampsSet.contains(timestampStringID)){
                                 JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,timestampStringID);
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
+
+                                //notify another server to let him known that he can count with me :)
+                                sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
 
                                 if (timestampStringID.equals(mytimestampStringID)){
 
