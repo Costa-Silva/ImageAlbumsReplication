@@ -214,19 +214,21 @@ public class ServersUtils {
         JSONObject file = getJsonFromFile(new byte[0]);
         String replica = ReplicationServerUtils.getReplicaid(file);
 
+        Clock clock = ReplicationServerUtils.timestampGetClock(file, id);
+        clock.setClock(clock.getClock() + 1);
+        clock.setReplica(replica);
+        ReplicationServerUtils.timestampChangeClock(file, id, clock);
+
+
         if (operation.equals(CREATEOP)) {
             JSONObject timestamp = ReplicationServerUtils.timestampgetJSONbyID(file,id);
 
             if (timestamp.size()>0){
-                ReplicationServerUtils.timestampSet(file, id, new Clock(0, replica), CREATEOP);
+                ReplicationServerUtils.timestampChangeOperation(file, id, CREATEOP);
             }else{
                 ReplicationServerUtils.timestampADD(file, id, new Clock(0, replica), CREATEOP);
             }
         } else if (operation.equals(REMOVEOP)) {
-            Clock clock = ReplicationServerUtils.timestampGetClock(file, id);
-            clock.setClock(clock.getClock() + 1);
-            clock.setReplica(replica);
-            ReplicationServerUtils.timestampChangeClock(file, id, clock);
             ReplicationServerUtils.timestampChangeOperation(file, id, REMOVEOP);
         }
 
