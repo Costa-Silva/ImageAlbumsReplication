@@ -22,7 +22,7 @@ public class CheckAndAddSharedByREST {
         boolean result = target.path(path)
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
-                .get(Boolean.class);
+                .get(boolean.class);
 
         return result;
     }
