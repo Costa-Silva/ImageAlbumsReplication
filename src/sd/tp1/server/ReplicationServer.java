@@ -126,6 +126,8 @@ public class ReplicationServer {
                         JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
 
+                        file = ServersUtils.getJsonFromFile(new byte[0]);
+
                         if (!ReplicationServerUtils.hasHost(file,fullServerIp)) {
                             ReplicationServerUtils.addHost(file,fullServerIp);
                             ReplicationServerUtils.writeToFile(file);
