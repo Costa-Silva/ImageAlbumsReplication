@@ -111,7 +111,6 @@ public class ServersUtils {
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
         ProducerRecord<String,String> data = new ProducerRecord<>(topic,event);
-        System.out.println("TOPICO É " + topic + " e o evento " + event);
         producer.send(data);
 
     }
@@ -341,9 +340,15 @@ public class ServersUtils {
         JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
         int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,ip);
 
+        System.out.println("check1: "+index+" "+sharedBy.get(0));
+
+
         if (index<0){
             sharedBy.add(ip);
             timestamp.put(SHAREDBY,sharedBy);
+
+            System.out.println("checkeeed: "+myfile.toJSONString());
+
             ReplicationServerUtils.writeToFile(myfile);
             return true;
         }
