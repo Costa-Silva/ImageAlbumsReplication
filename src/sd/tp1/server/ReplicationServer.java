@@ -146,6 +146,13 @@ public class ReplicationServer {
                             Clock clockObj = new Clock(clock,replica);
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
+
+                            Iterator iterator= sharedBy.iterator();
+                            while (iterator.hasNext()){
+                                System.out.println("sharedbuy: "+iterator.next());
+                            }
+
+
                             if (mytimeStampsSet.contains(timestampStringID)){
                                 JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
@@ -238,6 +245,7 @@ public class ReplicationServer {
 
         //notify another server to let him known that he can count with me :)
        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
+
         if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
             ReplicationServerUtils.timestampSet(file,timestampStringID,clockObj,operation);
         }else{
