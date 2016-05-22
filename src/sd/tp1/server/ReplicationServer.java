@@ -126,8 +126,6 @@ public class ReplicationServer {
                         JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
 
-
-                        System.out.println("myfile: "+ ReplicationServerUtils.hasHost(file,fullServerIp) +" " + file.toJSONString());
                         if (!ReplicationServerUtils.hasHost(file,fullServerIp)) {
                             ReplicationServerUtils.addHost(file,fullServerIp);
                             ReplicationServerUtils.writeToFile(file);
@@ -237,8 +235,11 @@ public class ReplicationServer {
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String hostIp, SharedGalleryClient sharedGalleryClient){
 
+
+        System.out.println("vou pedir ao sv");
         //notify another server to let him known that he can count with me :)
-        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
+        boolean x = sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
+        System.out.println("vou pedir ao sv"+ x);
 
 
         JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
