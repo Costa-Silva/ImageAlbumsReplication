@@ -185,17 +185,13 @@ public class ReplicationServer {
 
                             while (iterator.hasNext()){
                                 String newIP= (String)iterator.next();
-                                System.out.println("hey "+newIP);
-                                    if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,newIP)<0) {
-                                        System.out.println("entrei equals");
+                                if (!newIP.equals(myFullIp)) {
+                                    if (ReplicationServerUtils.hasSharedByPosition(mySharedBy, newIP) < 0) {
                                         mySharedBy.add(newIP);
+                                    }
                                 }
                             }
 
-                            int myindex = ReplicationServerUtils.hasSharedByPosition(mySharedBy,myFullIp);
-                            if (myindex>0) {
-                                mySharedBy.remove(myindex);
-                            }
                             JSONObject jsonObject = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
                             jsonObject.put(SHAREDBY,mySharedBy);
                             ReplicationServerUtils.writeToFile(file);
@@ -254,7 +250,7 @@ public class ReplicationServer {
 
 
         //notify another server to let him known that he can count with me :)
-       sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
+        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
         if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
             ReplicationServerUtils.timestampSet(file,timestampStringID,clockObj,operation);
         }else{
