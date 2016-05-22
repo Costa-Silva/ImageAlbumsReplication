@@ -127,12 +127,9 @@ public class ReplicationServer {
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
 
 
-                        System.out.println("myfile: "+ file.toJSONString());
+                        System.out.println("myfile: "+ ReplicationServerUtils.hasHost(file,fullServerIp) +" " + file.toJSONString());
                         if (!ReplicationServerUtils.hasHost(file,fullServerIp)) {
                             ReplicationServerUtils.addHost(file,fullServerIp);
-                            ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
-
-
                             System.out.println("added to my hosts: "+ serverIp);
                         }
 
