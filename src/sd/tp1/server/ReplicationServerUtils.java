@@ -217,8 +217,8 @@ public class ReplicationServerUtils {
     public static void writeToFile(JSONObject file){
         try {
             FileWriter fileWriter = new FileWriter(FILENAME);
-            //ObjectMapper mapper = new ObjectMapper();
             fileWriter.write(file.toJSONString());
+            System.out.println("escrevi: "+file.toJSONString());
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {
