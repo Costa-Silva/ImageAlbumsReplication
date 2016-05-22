@@ -190,7 +190,6 @@ public class ReplicationServer {
                             int myindex = ReplicationServerUtils.hasSharedByPosition(mySharedBy,myFullIp);
                             if (myindex>0) {
                                 mySharedBy.remove(myindex);
-
                             }
                             JSONObject jsonObject = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
                             jsonObject.put(SHAREDBY,mySharedBy);
