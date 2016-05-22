@@ -213,6 +213,7 @@ public class ServersUtils {
 
         JSONObject file = getJsonFromFile(new byte[0]);
         String replica = ReplicationServerUtils.getReplicaid(file);
+        System.out.println("tou no load");
 
         if (operation.equals(CREATEOP)) {
 
