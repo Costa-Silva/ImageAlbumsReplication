@@ -45,9 +45,10 @@ public class ServersUtils {
     public static void startListening(String serverType, int port) {
 
         try {
-            sendingMyInfo(port, serverType);
             String myinfo = InetAddress.getLocalHost().getHostAddress() + ":" + port + "-" + serverType;
             ReplicationServer replicationServer = new ReplicationServer(myinfo);
+
+            sendingMyInfo(port, serverType,replicationServer);
 
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
@@ -115,9 +116,14 @@ public class ServersUtils {
 
     }
 
-    public static void sendingMyInfo(int port, String type) {
+    public static void sendingMyInfo(int port, String type, ReplicationServer replicationServer) {
         new Thread(() -> {
+
             try {
+
+                while (!replicationServer.allowedToSendInfo()){
+                    Thread.sleep(1500);
+                }
                 InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
                 MulticastSocket socket = new MulticastSocket(); //IOexception
                 socket.joinGroup(address);

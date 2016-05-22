@@ -34,6 +34,7 @@ public class ReplicationServer {
     public static final String DATA= "data";
     public static final String REST ="REST";
     public static final String SOAP ="SOAP";
+    private boolean initialized;
     private JSONObject file;
     private Set<String> mytimeStampsSet;
     private String myFullIp;
@@ -43,6 +44,7 @@ public class ReplicationServer {
         content = new HashMap<>();
         mytimeStampsSet =new HashSet<>();
         this.myFullIp=myFullIp;
+        initialized =false;
         initReplication();
     }
 
@@ -105,6 +107,7 @@ public class ReplicationServer {
 
                     ReplicationServerUtils.writeToFile(file);
                 }
+                initialized=true;
                 startReplicationTask();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -176,8 +179,6 @@ public class ReplicationServer {
 
                             Iterator iterator = sharedBy.iterator();
                             JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
-
-
 
                             if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,fullServerIp)<0) {
                                 mySharedBy.add(fullServerIp);
@@ -319,6 +320,11 @@ public class ReplicationServer {
             return new SharedGalleryClientSOAP(server);
         }
     }
+
+    public boolean allowedToSendInfo(){
+        return initialized;
+    }
+
 
     private void keepAlive(){
         int timeout = 6000;

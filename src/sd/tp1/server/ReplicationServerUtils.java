@@ -218,7 +218,6 @@ public class ReplicationServerUtils {
         try {
             FileWriter fileWriter = new FileWriter(FILENAME);
             fileWriter.write(file.toJSONString());
-            System.out.println("Escrevi para o file "+ file.toJSONString());
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {
