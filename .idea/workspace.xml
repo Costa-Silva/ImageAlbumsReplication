@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" />
     </list>
@@ -42,12 +41,12 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="340" column="62" selection-start-line="340" selection-start-column="62" selection-end-line="340" selection-end-column="62" />
+            <state relative-caret-position="1557">
+              <caret line="328" column="25" selection-start-line="328" selection-start-column="25" selection-end-line="328" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#15064#15065#0" expanded="true" />
-                <element signature="e#15098#15099#0" expanded="true" />
+                <element signature="e#14691#14692#0" expanded="true" />
+                <element signature="e#14725#14726#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1684,13 +1683,6 @@
       <workItem from="1463876297839" duration="20912000" />
       <workItem from="1463939077548" duration="4139000" />
     </task>
-    <task id="LOCAL-00122" summary="changes">
-      <created>1463884291211</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1463884291211</updated>
-    </task>
     <task id="LOCAL-00123" summary="changes">
       <created>1463884530453</created>
       <option name="number" value="00123" />
@@ -2027,11 +2019,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463950276851</updated>
     </task>
-    <option name="localTasksCounter" value="171" />
+    <task id="LOCAL-00171" summary="changes">
+      <created>1463951780841</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1463951780841</updated>
+    </task>
+    <option name="localTasksCounter" value="172" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="227112000" />
+    <option name="totallyTimeSpent" value="228370000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2470,12 +2469,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="340" column="62" selection-start-line="340" selection-start-column="62" selection-end-line="340" selection-end-column="62" />
+        <state relative-caret-position="1557">
+          <caret line="328" column="25" selection-start-line="328" selection-start-column="25" selection-end-line="328" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#15064#15065#0" expanded="true" />
-            <element signature="e#15098#15099#0" expanded="true" />
+            <element signature="e#14691#14692#0" expanded="true" />
+            <element signature="e#14725#14726#0" expanded="true" />
           </folding>
         </state>
       </provider>
