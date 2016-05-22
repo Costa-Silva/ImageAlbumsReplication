@@ -231,6 +231,9 @@ public class ServersUtils {
             ReplicationServerUtils.timestampChangeClock(file, id, clock);
             ReplicationServerUtils.timestampChangeOperation(file, id, REMOVEOP);
         }
+
+        System.out.println("LOADEDFILE: "+file.toJSONString());
+
         ReplicationServerUtils.writeToFile(file);
     }
 
