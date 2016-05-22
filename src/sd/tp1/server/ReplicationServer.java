@@ -234,15 +234,18 @@ public class ReplicationServer {
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String hostIp, SharedGalleryClient sharedGalleryClient){
 
+
+
         //notify another server to let him known that he can count with me :)
        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
         if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
-            ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
+            ReplicationServerUtils.timestampSet(file,timestampStringID,clockObj,operation);
         }else{
-            ReplicationServerUtils.timestampADD(myfile,timestampStringID,clockObj,operation);
+            ReplicationServerUtils.timestampADD(file,timestampStringID,clockObj,operation);
         }
 
         System.out.println("Updated:"+ timestampStringID);
+        System.out.println("posUpd: "+file);
     }
 
     public boolean hasContent(){
