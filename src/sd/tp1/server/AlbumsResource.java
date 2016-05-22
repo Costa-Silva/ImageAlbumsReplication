@@ -50,7 +50,7 @@ public class AlbumsResource implements ServerRESTInterface{
 
            boolean result = ServersUtils.checkAndAddSharedBy(ip, objectId);
 
-            int respond= result ? 1: 0 ;
+            long respond= result ? 1: 0 ;
             return Response.ok(respond).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
