@@ -26,8 +26,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	private Map<String,Integer> leastAccessedAlbum;
 	private boolean gotnewInfo;
 
-	private List<Album> viewingAlbums;
-	private Map<String,List<Picture>> viewingPictures;
+	private List<String> viewingAlbums;
+	private Map<String,List<String>> viewingPictures;
 	private List<String> topics;
 
 	KafkaConsumer<String, String> consumer;
@@ -56,20 +56,20 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				for (; ; ) {
 					fillTopics();
 					consumer.subscribe(topics);
-					System.out.println("TOPICS : " + topics.toString());
 					ConsumerRecords<String, String> records = consumer.poll(1000);
-					System.out.println("POLLNG e records com " + records.count());
 					records.forEach(r -> {
 
 						String[] splittedvalue = r.value().split("-");
-						System.out.println(" topic e " + r.topic() + " " + " value " + r.value());
 						if(r.topic().equals("Albums")){
 							if(canUpdateAlbums((splittedvalue))) {
+								setGotnewInfo(true);
 								gui.updateAlbums();
 							}
 						}else{
 							if(canUpdateAlbum((splittedvalue))){
+								setGotnewInfo(true);
 								gui.updateAlbum(new SharedAlbum(splittedvalue[0]));
+
 							}
 						}
 					});
@@ -84,7 +84,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	private void fillTopics() {
 		topics.add("Albums");
 		viewingAlbums.forEach(album -> {
-			topics.add(album.getName());
+			topics.add(album);
 		});
 	}
 
@@ -92,8 +92,9 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		if(viewingPictures.containsKey(splittedvalue[0])){
 			if(viewingPictures.get(splittedvalue[0]).contains(splittedvalue[1])){
 				boolean canUpdate = splittedvalue[2].equals("Delete");
-				if(splittedvalue[2].equals("Delete"))
+				if(canUpdate)
 					viewingPictures.get(splittedvalue[0]).remove(splittedvalue[1]);
+				return canUpdate;
 
 			}else {
 				return splittedvalue[2].equals("Create");
@@ -103,7 +104,6 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	}
 
 	private boolean canUpdateAlbums(String[] splittedvalue){
-
 		return (viewingAlbums.contains(splittedvalue[0]) && splittedvalue[1].equals("Delete")) ||
 				(!viewingAlbums.contains(splittedvalue[0]) && splittedvalue[1].equals("Create"));
 	}
@@ -171,16 +171,20 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	public List<Album> getListOfAlbums() {
 
 		viewingAlbums.clear();
+		viewingPictures.clear();
+
 		List<Album> list = new ArrayList<Album>();
 		List<String> listString = new ArrayList<>();
 
-		if (isGotnewInfo()){
+		if (!isGotnewInfo()){
 			if (cache != null && cache.size()>0 ){
 				for (Map.Entry<String,Map<String,byte[]> > entry : cache.entrySet()){
 
 					list.add(new SharedAlbum(entry.getKey()));
+					viewingAlbums.add(entry.getKey());
+					viewingPictures.put(entry.getKey(),new LinkedList<>());
 				}
-				viewingAlbums.addAll(list);
+
 				return list;
 
 			}
@@ -197,6 +201,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 
 		for (String album: listString) {
 			list.add(new SharedAlbum(album));
+			viewingAlbums.add(album);
+			viewingPictures.put(album,new LinkedList<>());
 
 			if (cache.get(album)==null){
 				cache.put(album,new HashMap<>());
@@ -204,7 +210,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			}
 		}
 
-		viewingAlbums.addAll(list);
+
 		setGotnewInfo(false);
 		return list;
 
@@ -216,16 +222,17 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	 */
 	@Override
 	public List<Picture> getListOfPictures(Album album) {
-		viewingPictures.clear();
+		viewingPictures.get(album.getName()).clear();
 		List<Picture> list = new ArrayList<Picture>();
 		Map<String,byte[]> picturesMap = new HashMap<>();
 
 		if (cache!=null && cache.size()>0) {
 			for (Map.Entry<String, Map<String, byte[]>> entryAlbums : cache.entrySet()) {
 				if (entryAlbums.getKey().equals(album.getName())) {
-					if (cache.get(entryAlbums.getKey()).size() > 0) {
+					if (!isGotnewInfo() && cache.get(entryAlbums.getKey()).size() > 0) {
 						for (Map.Entry<String, byte[]> pictures : entryAlbums.getValue().entrySet()) {
 							list.add(new SharedPicture(pictures.getKey()));
+							viewingPictures.get(album.getName()).add(pictures.getKey());
 						}
 					} else {
 						for (Map.Entry<String, SharedGalleryClient> entrySV : discoveryClient.getServers().entrySet()) {
@@ -241,6 +248,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 									setCurrentCacheSize(pictureData.length);
 
 									list.add(pictureObj);
+
+									viewingPictures.get(album.getName()).add(pictureObj.getName());
 								}
 							}
 						}
@@ -261,7 +270,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			cache.put(album.getName(),new HashMap<>());
 
 		}
-		viewingPictures.get(album).addAll(list);
+
+		setGotnewInfo(false);
 		return list;
 	}
 
@@ -327,7 +337,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		leastAccessedAlbum.put(album.getName(),0);
 		cache.put(album.getName(),new HashMap<>());
 
-		viewingAlbums.add(album);
+		viewingAlbums.add(album.getName());
+		viewingPictures.put(album.getName(),new LinkedList<>());
 		return album;
 	}
 
@@ -347,7 +358,8 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 			}
 		setCurrentCacheSize(-albumSize);
 		leastAccessedAlbum.remove(album.getName());
-		viewingAlbums.remove(album);
+		viewingAlbums.remove(album.getName());
+		viewingPictures.remove(album.getName());
 	}
 
 	/**
@@ -392,7 +404,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 					}
 				}
 			}
-			viewingPictures.get(album.getName()).add(new SharedPicture(name));
+			viewingPictures.get(album.getName()).add(name);
 			return new SharedPicture(name);
 
 		}

@@ -110,14 +110,10 @@ public class ServersUtils {
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
-        try{
-            ProducerRecord<String,String> data = new ProducerRecord<>(topic,event);
-            System.out.println("TOPICO É " + topic + " e o evento " + event);
-            producer.send(data);
+        ProducerRecord<String,String> data = new ProducerRecord<>(topic,event);
+        System.out.println("TOPICO É " + topic + " e o evento " + event);
+        producer.send(data);
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     public static void sendingMyInfo(int port, String type) {
@@ -164,12 +160,14 @@ public class ServersUtils {
                         File pict = new File(album.getAbsolutePath() + File.separator + pictureName.concat(".deleted"));
 
                         success = picture.renameTo(pict);
-                        kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Delete"+System.nanoTime()));
                         System.out.println("renamed to " + pict.getAbsolutePath() + "  " + success);
                     }
                 }
             }
         }
+        if(success)
+        kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Delete"+"-"+System.nanoTime()));
+
         return success;
     }
 
@@ -238,7 +236,7 @@ public class ServersUtils {
                 try {
                     Files.write(newPicture.toPath(), pictureData, StandardOpenOption.CREATE_NEW);
                     success = newPicture.exists();
-                    kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Create"+System.nanoTime()));
+                    kafkaPublisher(albumName,new String(albumName+"-"+pictureName+"-"+"Create" + "-"+System.nanoTime()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -285,6 +283,7 @@ public class ServersUtils {
                 File albumDir = new File(album.getAbsolutePath());
                 File[] files = albumDir.listFiles();
                 for (File file : files) {
+                    System.out.println(file.getName());
                     if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && !file.isDirectory() && checkExtension(file)) {
                         list.add(file.getName());
                     }

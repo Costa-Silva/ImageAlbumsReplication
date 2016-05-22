@@ -33,6 +33,8 @@ public class AlbumsProxyResource {
     private List<ImgurPicture> pictures;
     private Map<String,Long> pictureSize;
     private long serversize;
+    private KafkaPublisher publisher;
+
     public AlbumsProxyResource(OAuth20Service service, OAuth2AccessToken accessToken,String srvpass){
         this.service = service;
         this.accessToken = accessToken;
@@ -41,6 +43,7 @@ public class AlbumsProxyResource {
         pictures = new LinkedList<>();
         pictureSize=new HashMap<>();
         serversize=0;
+        publisher=new KafkaPublisher();
     }
 
     private boolean checkPassword(String srvpass){
@@ -250,6 +253,8 @@ public class AlbumsProxyResource {
 
                         albumsIdName.put(albumID,albumName);
 
+                        publisher.publishEvent("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
+
                         return Response.ok().build();
                     }
                     return Response.status(Response.Status.NOT_FOUND).build();
@@ -297,6 +302,8 @@ public class AlbumsProxyResource {
                         pictures.add(new ImgurPicture(imageID,pictureName,albumID));
                         serversize+=pictureData.length;
                         pictureSize.put(imageID,(long)pictureData.length);
+
+                        publisher.publishEvent(albumName,new String(albumName+"-"+pictureName+"-"+"Create"+System.nanoTime()));
                         return Response.ok().build();
                     }
                 }
@@ -324,6 +331,7 @@ public class AlbumsProxyResource {
 
                 albumsIdName.put(albumName+".deleted",val);
 
+                publisher.publishEvent("Albums",new String(albumName+"-"+"Delete"+"-"+System.nanoTime()));
                 return  Response.status(dAlbRes.getCode()).build();
             }else return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -356,6 +364,7 @@ public class AlbumsProxyResource {
 
                     final com.github.scribejava.core.model.Response dPicRes = dPicReq.send();
 
+                    publisher.publishEvent(albumName,new String(albumName+"-"+pictureName+"-"+"Delete"+System.nanoTime()));
 
                     return Response.status(dPicRes.getCode()).build();
                 }
