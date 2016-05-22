@@ -271,8 +271,10 @@ public class GalleryWindow implements Gui {
 
 			tile.getChildren().add(new TrashIcon());
 			List<Picture> list = contentProvider.getListOfPictures(album);
+			System.out.println("O numero de pic que o albm tem :" + list.size());
 			if (list != null)
 				contentProvider.getListOfPictures(album).forEach(picture -> {
+					System.out.println("O ALBUM E " + album.getName() + " e o pict e " + picture.getName());
 					final PictureView pv = new PictureView(album, picture);
 					tile.getChildren().add(pv);
 				});
