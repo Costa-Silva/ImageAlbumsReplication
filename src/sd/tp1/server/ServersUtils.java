@@ -214,25 +214,30 @@ public class ServersUtils {
         JSONObject file = getJsonFromFile(new byte[0]);
         String replica = ReplicationServerUtils.getReplicaid(file);
 
-        Clock clock = ReplicationServerUtils.timestampGetClock(file, id);
-        clock.setClock(clock.getClock() + 1);
-        clock.setReplica(replica);
-        ReplicationServerUtils.timestampChangeClock(file, id, clock);
-
-
         if (operation.equals(CREATEOP)) {
             JSONObject timestamp = ReplicationServerUtils.timestampgetJSONbyID(file,id);
 
             if (timestamp.size()>0){
-                ReplicationServerUtils.timestampChangeOperation(file, id, CREATEOP);
+                updateTimestamp(file,id,replica,CREATEOP);
             }else{
                 ReplicationServerUtils.timestampADD(file, id, new Clock(0, replica), CREATEOP);
             }
         } else if (operation.equals(REMOVEOP)) {
+            updateTimestamp(file,id,replica,REMOVEOP);
             ReplicationServerUtils.timestampChangeOperation(file, id, REMOVEOP);
         }
 
         ReplicationServerUtils.writeToFile(file);
+    }
+
+
+    public static void updateTimestamp(JSONObject file, String id,String replica, String operation){
+
+        Clock clock = ReplicationServerUtils.timestampGetClock(file, id);
+        clock.setClock(clock.getClock() + 1);
+        clock.setReplica(replica);
+        ReplicationServerUtils.timestampChangeClock(file, id, clock);
+        ReplicationServerUtils.timestampChangeOperation(file, id, operation);
     }
 
     public static boolean uploadPicture(String albumName, String pictureName, byte[] pictureData) {
