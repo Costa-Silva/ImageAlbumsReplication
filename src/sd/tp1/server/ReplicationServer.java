@@ -146,6 +146,7 @@ public class ReplicationServer {
                             Clock clockObj = new Clock(clock,replica);
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
+                        System.out.println("a tratar do : "+timestampStringID);
 
                             if (mytimeStampsSet.contains(timestampStringID)){
                                 JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
