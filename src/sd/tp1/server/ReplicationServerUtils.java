@@ -66,7 +66,6 @@ public class ReplicationServerUtils {
         JSONObject newTimestamp = new JSONObject(timestampConstrutor(id, new Clock(0,myReplica),operation));
         ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(newTimestamp);
 
-
         return  newTimestamp;
     }
 
