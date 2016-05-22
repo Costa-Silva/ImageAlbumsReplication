@@ -213,7 +213,6 @@ public class ServersUtils {
 
         JSONObject file = getJsonFromFile(new byte[0]);
         String replica = ReplicationServerUtils.getReplicaid(file);
-        System.out.println("tou no load");
 
         if (operation.equals(CREATEOP)) {
 
@@ -226,12 +225,16 @@ public class ServersUtils {
                 ReplicationServerUtils.timestampADD(file, id, new Clock(0, replica), CREATEOP);
             }
         } else if (operation.equals(REMOVEOP)) {
+            System.out.println("entrou no removeop");
             Clock clock = ReplicationServerUtils.timestampGetClock(file, id);
             clock.setClock(clock.getClock() + 1);
             clock.setReplica(replica);
             ReplicationServerUtils.timestampChangeClock(file, id, clock);
             ReplicationServerUtils.timestampChangeOperation(file, id, REMOVEOP);
         }
+
+        System.out.println("escrevi "+ file.toJSONString());
+
         ReplicationServerUtils.writeToFile(file);
     }
 

@@ -118,7 +118,6 @@ public class AlbumsResource implements ServerRESTInterface{
             String response = ServersUtils.createAlbum(albumName);
             if (response != null) {
                 String empty = "";
-                System.out.println("chamei create album");
                 ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),CREATEOP);
 
                 return Response.ok().build();
@@ -147,6 +146,7 @@ public class AlbumsResource implements ServerRESTInterface{
         if (checkPassword(password)) {
             if (ServersUtils.deleteAlbum(albumName)) {
                 String empty = "";
+                System.out.println("delete albsss");
                 ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),REMOVEOP);
                 return Response.ok().build();
             }
