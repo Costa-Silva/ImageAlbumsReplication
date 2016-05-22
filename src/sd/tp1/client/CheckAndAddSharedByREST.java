@@ -18,12 +18,12 @@ public class CheckAndAddSharedByREST {
     public static boolean checkAndAddSharedBy(WebTarget target, String ip, String objectid, String password ){
 
         String path = PATH+SHAREDBY+SLASH+ip+SLASH+objectid+SLASH+KEY+password;
-        Long result = target.path(path)
+        boolean result = target.path(path)
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
-                .get(Long.class);
+                .get(Boolean.class);
 
 
-        return result==1;
+        return result;
     }
 }

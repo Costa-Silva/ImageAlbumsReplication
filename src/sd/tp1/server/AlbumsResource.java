@@ -46,13 +46,8 @@ public class AlbumsResource implements ServerRESTInterface{
 
         System.out.print("enTREI: "+ip+"  "+objectId);
         if (checkPassword(password)) {
-
-
            boolean result = ServersUtils.checkAndAddSharedBy(ip, objectId);
-
-            long respond= result ? 1: 0 ;
-            System.out.println("entrei mesmo"+ respond);
-            return Response.ok(respond).build();
+            return Response.ok(result).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
