@@ -282,7 +282,6 @@ public class ServersUtils {
                 File albumDir = new File(album.getAbsolutePath());
                 File[] files = albumDir.listFiles();
                 for (File file : files) {
-                    System.out.println(file.getName());
                     if (!file.getName().endsWith(".deleted") && !file.getName().startsWith(".") && !file.isDirectory() && checkExtension(file)) {
                         list.add(file.getName());
                     }
