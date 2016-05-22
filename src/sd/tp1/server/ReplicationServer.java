@@ -156,7 +156,8 @@ public class ReplicationServer {
 
                                 if (timestampStringID.equals(mytimestampStringID)){
 
-                                    if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
+
+                                    if (((long)timestamp.get(CLOCK))==(long)myTimestamp.get(CLOCK)){
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
@@ -189,6 +190,14 @@ public class ReplicationServer {
         }).start();
     }
 
+
+    public boolean checkLong(Object obj){
+
+        if (obj instanceof Long)
+        return true;
+
+        return false;
+    }
 
     public  String buildIP(String ip,String type){
 
