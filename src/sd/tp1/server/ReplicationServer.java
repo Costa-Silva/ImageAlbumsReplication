@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sd.tp1.client.DiscoveryClient;
 
+import java.net.ConnectException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import static java.lang.Math.toIntExact;
@@ -13,6 +14,7 @@ import sd.tp1.client.SharedGalleryClientSOAP;
 import sd.tp1.client.ws.Server;
 import sd.tp1.utils.Clock;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.WebTarget;
 
 /**
@@ -336,12 +338,11 @@ public class ReplicationServer {
                         //checking if return any info
                         String type = serverIps.get(ipToCheck);
                         SharedGalleryClient sharedGalleryClient = getClient(ipToCheck,type);
-                        if(!(sharedGalleryClient.getServerSize()>=0)){
+
+                        try{
+                            sharedGalleryClient.getServerSize();
+                        }catch (ProcessingException e){
                             serverIps.remove(ipToCheck);
-
-                            //remove from known hosts
-
-                            JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
                             keepAliveRecheck(ipToCheck,sharedGalleryClient);
                         }
                     }
@@ -359,16 +360,18 @@ public class ReplicationServer {
         new Thread(()->{
             int maxRetrys = 2;
             for (int i = 0; i < maxRetrys ; i++) {
-                if(sharedGalleryClient.getServerSize()>=0){
-                    String type = sharedGalleryClient.getType().equals(REST) ? REST : SOAP;
-                    serverIps.put(ipToCheck,type);
-                    break;
+                try{
+                    if(sharedGalleryClient.getServerSize()>=0){
+                        System.out.print(ipToCheck+" is back!");
+                        String type = sharedGalleryClient.getType().equals(REST) ? REST : SOAP;
+                        serverIps.put(ipToCheck,type);
+                        return;
+                    }
+                }catch (ProcessingException e){
                 }
             }
             ReplicationServerUtils.removeHost(file,ipToCheck);
             ReplicationServerUtils.writeToFile(file);
         }).start();
     }
-
-
 }
