@@ -124,14 +124,15 @@ public class ReplicationServer {
 
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                         JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
-                        JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
-
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
 
 
-                        System.out.println("myfile: "+ myfile.toJSONString());
-                        if (!ReplicationServerUtils.hasHost(myfile,fullServerIp)) {
-                            ReplicationServerUtils.addHost(myfile,fullServerIp);
+                        System.out.println("myfile: "+ file.toJSONString());
+                        if (!ReplicationServerUtils.hasHost(file,fullServerIp)) {
+                            ReplicationServerUtils.addHost(file,fullServerIp);
+                            ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
+
+
                             System.out.println("added to my hosts: "+ serverIp);
                         }
 
@@ -150,11 +151,8 @@ public class ReplicationServer {
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
                             if (mytimeStampsSet.contains(timestampStringID)){
-                                JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,timestampStringID);
+                                JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
-
-                                //notify another server to let him known that he can count with me :)
-                                sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
 
                                 if (timestampStringID.equals(mytimestampStringID)){
 
@@ -162,18 +160,18 @@ public class ReplicationServer {
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
-                                            update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
+                                            update(file,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                         }
 
                                     }else if ((long)timestamp.get(CLOCK) > (long) myTimestamp.get(CLOCK)){
-                                        update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
+                                        update(file,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                     }
                                 }
                             }else{
                                 if (operation.equals(CREATEOP)){
-                                    update(myfile,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
+                                    update(file,sharedBy,timestampStringID,operation,sharedGalleryClient,fullServerIp,clockObj);
                                 }else if (operation.equals(REMOVEOP)){
-                                    writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp,sharedGalleryClient);
+                                    writeMetaData(file,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp,sharedGalleryClient);
                                 }
                             }
 
