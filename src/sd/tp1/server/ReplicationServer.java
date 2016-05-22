@@ -156,7 +156,7 @@ public class ReplicationServer {
 
                                 if (timestampStringID.equals(mytimestampStringID)){
 
-                                    if ((long)timestamp.get(CLOCK)==(long)myTimestamp.get(CLOCK)){
+                                    if ((int)timestamp.get(CLOCK)==(int)myTimestamp.get(CLOCK)){
                                         int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
                                         //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                         if (result<0){
