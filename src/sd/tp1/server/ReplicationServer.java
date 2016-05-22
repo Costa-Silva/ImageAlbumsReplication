@@ -147,12 +147,6 @@ public class ReplicationServer {
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
 
-                            Iterator iterator= sharedBy.iterator();
-                            while (iterator.hasNext()){
-                                System.out.println("sharedbuy: "+iterator.next());
-                            }
-
-
                             if (mytimeStampsSet.contains(timestampStringID)){
                                 JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
                                 String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
@@ -180,18 +174,22 @@ public class ReplicationServer {
                                 }
                             }
 
+                            Iterator iterator = sharedBy.iterator();
+                            JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
+                            while (iterator.hasNext()){
+
+                                if (mySharedBy.size()>0){
+                                    if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,iterator.next().toString())<0)
+                                        mySharedBy.add(fullServerIp);
+                                }
+                            }
+
                             int myindex = ReplicationServerUtils.hasSharedByPosition(sharedBy,myFullIp);
                             if (myindex>0) {
                                 sharedBy.remove(myindex);
                             }
-                            int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,fullServerIp);
-                            if (index>=0){
-                                sharedBy.set(index,fullServerIp);
-                            }else{
-                                sharedBy.add(fullServerIp);
-                            }
                             JSONObject jsonObject = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
-                            jsonObject.put(SHAREDBY,sharedBy);
+                            jsonObject.put(SHAREDBY,mySharedBy);
                             ReplicationServerUtils.writeToFile(file);
                         }
                     }else {
