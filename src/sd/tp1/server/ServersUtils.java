@@ -339,7 +339,7 @@ public class ServersUtils {
         JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
         int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,ip);
 
-        System.out.println("check1: "+index+" "+sharedBy.get(0));
+        System.out.println("check1: "+index);
 
 
         if (index<0){
