@@ -239,7 +239,7 @@ public class ReplicationServer {
         System.out.println("vou pedir ao sv");
         //notify another server to let him known that he can count with me :)
         boolean x = sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
-        System.out.println("vou pedir ao sv"+ x);
+        System.out.println("tutu "+ x);
 
 
         JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);

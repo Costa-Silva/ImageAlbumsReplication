@@ -74,7 +74,7 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
 
     @Override
     public boolean checkAndAddSharedBy(String ip, String objectId) {
-        return false;
+        return CheckAndAddSharedByREST.checkAndAddSharedBy(target,ip,objectId,password);
     }
 
 

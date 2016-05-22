@@ -70,6 +70,6 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
 
     @Override
     public boolean checkAndAddSharedBy(String ip, String objectId) {
-        return false;
+        return CheckAndAddSharedBy.checkAndAddSharedBy(server,ip,objectId);
     }
 }
