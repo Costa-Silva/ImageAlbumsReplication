@@ -83,8 +83,6 @@ public class ReplicationServer {
                         if (hasContent()){
                             loadContentFromDisk(file);
                         }
-
-
                         Iterator iterator = timeStamps.iterator();
                         while (iterator.hasNext()){
                             JSONObject timestampjson =  (JSONObject) iterator.next();
@@ -232,7 +230,6 @@ public class ReplicationServer {
         sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
 
 
-
         JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
         int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,hostIp);
 
@@ -318,6 +315,10 @@ public class ReplicationServer {
                         SharedGalleryClient sharedGalleryClient = getClient(ipToCheck,type);
                         if(!(sharedGalleryClient.getServerSize()>=0)){
                             serverIps.remove(ipToCheck);
+
+                            //remove from known hosts
+
+                            JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
                             keepAliveRecheck(ipToCheck,sharedGalleryClient);
                         }
                     }
