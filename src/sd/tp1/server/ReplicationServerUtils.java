@@ -81,7 +81,6 @@ public class ReplicationServerUtils {
         for (int i = 0; i < array.size() ; i++) {
             JSONObject jsonObject = (JSONObject) array.get(i);
             if (getTimestampID(jsonObject).equals(id)){
-                System.out.println("entrei e vou dar set ao timestamp com id: " +id);
                 array.set (i,newTimeStamp);
                 break;
             }
@@ -219,6 +218,7 @@ public class ReplicationServerUtils {
         try {
             FileWriter fileWriter = new FileWriter(FILENAME);
             fileWriter.write(file.toJSONString());
+            System.out.println("Escrevi para o file "+ file.toJSONString());
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {

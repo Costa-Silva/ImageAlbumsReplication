@@ -222,7 +222,6 @@ public class ServersUtils {
             }else{
                 ReplicationServerUtils.timestampADD(file, id, new Clock(0, replica), CREATEOP);
             }
-            System.out.println("criei "+ id);
         } else if (operation.equals(REMOVEOP)) {
             Clock clock = ReplicationServerUtils.timestampGetClock(file, id);
             clock.setClock(clock.getClock() + 1);
@@ -230,6 +229,7 @@ public class ServersUtils {
             ReplicationServerUtils.timestampChangeClock(file, id, clock);
             ReplicationServerUtils.timestampChangeOperation(file, id, REMOVEOP);
         }
+
         ReplicationServerUtils.writeToFile(file);
     }
 
