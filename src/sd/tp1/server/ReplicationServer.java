@@ -118,7 +118,6 @@ public class ReplicationServer {
     }
 
     public void startReplicationTask(){
-        keepAlive();
         new Thread(()->{
             while(true){
                 try {
@@ -127,77 +126,79 @@ public class ReplicationServer {
                         List<String> keys = new ArrayList<>(serverIps.keySet());
                         String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
 
-                        SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
-                        JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
-                        String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
+                        if (keepAlive(serverIp)){
+                            SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
+                            JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
+                            String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
 
-                        file = ServersUtils.getJsonFromFile(new byte[0]);
+                            file = ServersUtils.getJsonFromFile(new byte[0]);
 
-                        if (!ReplicationServerUtils.hasHost(file,fullServerIp)) {
-                            ReplicationServerUtils.addHost(file,fullServerIp);
-                            ReplicationServerUtils.writeToFile(file);
-                            System.out.println("added to my hosts: "+ serverIp);
-                        }
+                            if (!ReplicationServerUtils.hasHost(file,fullServerIp)) {
+                                ReplicationServerUtils.addHost(file,fullServerIp);
+                                ReplicationServerUtils.writeToFile(file);
+                                System.out.println("added to my hosts: "+ serverIp);
+                            }
 
-                        JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
-                        Iterator iteratorTheirTimestamps = timestamps.iterator();
+                            JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
+                            Iterator iteratorTheirTimestamps = timestamps.iterator();
 
-                        while (iteratorTheirTimestamps.hasNext()){
+                            while (iteratorTheirTimestamps.hasNext()){
 
-                            JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
-                            String timestampStringID = timestamp.get(OBJECTID).toString();
-                            String operation = timestamp.get(OPERATION).toString();
-                            int clock = toIntExact((long)timestamp.get(CLOCK))  ;
+                                JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
+                                String timestampStringID = timestamp.get(OBJECTID).toString();
+                                String operation = timestamp.get(OPERATION).toString();
+                                int clock = toIntExact((long)timestamp.get(CLOCK))  ;
 
-                            String replica = timestamp.get(REPLICA).toString();
-                            Clock clockObj = new Clock(clock,replica);
-                            JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
+                                String replica = timestamp.get(REPLICA).toString();
+                                Clock clockObj = new Clock(clock,replica);
+                                JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
-                            if (mytimeStampsSet.contains(timestampStringID)){
-                                JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
-                                String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
+                                if (mytimeStampsSet.contains(timestampStringID)){
+                                    JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
+                                    String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
 
-                                if (timestampStringID.equals(mytimestampStringID)){
+                                    if (timestampStringID.equals(mytimestampStringID)){
 
-                                    if (( Integer.parseInt(timestamp.get(CLOCK).toString()))==Integer.parseInt(myTimestamp.get(CLOCK).toString())){
-                                        int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
-                                        //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
-                                        if (result<0){
+                                        if (( Integer.parseInt(timestamp.get(CLOCK).toString()))==Integer.parseInt(myTimestamp.get(CLOCK).toString())){
+                                            int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
+                                            //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
+                                            if (result<0){
+                                                update(timestampStringID,operation,sharedGalleryClient,clockObj);
+                                            }
+
+                                        }else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())){
                                             update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                         }
-
-                                    }else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())){
+                                    }
+                                }else{
+                                    mytimeStampsSet.add(timestampStringID);
+                                    if (operation.equals(CREATEOP)){
                                         update(timestampStringID,operation,sharedGalleryClient,clockObj);
+                                    }else if (operation.equals(REMOVEOP)){
+                                        writeMetaData(timestampStringID,clockObj,REMOVEOP,sharedGalleryClient);
                                     }
                                 }
-                            }else{
-                                mytimeStampsSet.add(timestampStringID);
-                                if (operation.equals(CREATEOP)){
-                                    update(timestampStringID,operation,sharedGalleryClient,clockObj);
-                                }else if (operation.equals(REMOVEOP)){
-                                    writeMetaData(timestampStringID,clockObj,REMOVEOP,sharedGalleryClient);
+
+                                Iterator iterator = sharedBy.iterator();
+                                JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
+
+                                if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,fullServerIp)<0) {
+                                    mySharedBy.add(fullServerIp);
                                 }
-                            }
 
-                            Iterator iterator = sharedBy.iterator();
-                            JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
-
-                            if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,fullServerIp)<0) {
-                                mySharedBy.add(fullServerIp);
-                            }
-
-                            while (iterator.hasNext()){
-                                String newIP= (String)iterator.next();
-                                if (!newIP.equals(myFullIp)) {
-                                    if (ReplicationServerUtils.hasSharedByPosition(mySharedBy, newIP) < 0) {
-                                        mySharedBy.add(newIP);
+                                while (iterator.hasNext()){
+                                    String newIP= (String)iterator.next();
+                                    if (!newIP.equals(myFullIp)) {
+                                        if (ReplicationServerUtils.hasSharedByPosition(mySharedBy, newIP) < 0) {
+                                            mySharedBy.add(newIP);
+                                        }
                                     }
                                 }
-                            }
 
-                            JSONObject jsonObject = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
-                            jsonObject.put(SHAREDBY,mySharedBy);
-                            ReplicationServerUtils.writeToFile(file);
+                                JSONObject jsonObject = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
+                                jsonObject.put(SHAREDBY,mySharedBy);
+                                ReplicationServerUtils.writeToFile(file);
+                            }
                         }
                     }else {
                         System.out.println("No servers found to replicate");
@@ -328,34 +329,23 @@ public class ReplicationServer {
     }
 
 
-    private void keepAlive(){
-        int timeout = 6000;
-        new Thread(()->{
-            while (true){
-                try {
-                    for (String ipToCheck :serverIps.keySet()) {
-                        //you there?
-                        //checking if return any info
-                        String type = serverIps.get(ipToCheck);
-                        SharedGalleryClient sharedGalleryClient = getClient(ipToCheck,type);
-
-                        try{
-                            sharedGalleryClient.getServerSize();
-                        }catch (ProcessingException e){
-                            serverIps.remove(ipToCheck);
-                            keepAliveRecheck(ipToCheck,sharedGalleryClient);
-                        }
-                    }
-                    Thread.sleep(timeout);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+    private boolean keepAlive(String ipToCheck){
+        //you there?
+        //checking if return any info
+        String type = serverIps.get(ipToCheck);
+        SharedGalleryClient sharedGalleryClient = getClient(ipToCheck,type);
+        try{
+            sharedGalleryClient.getServerSize();
+            return true;
+        }catch (ProcessingException e){
+            System.out.println("Couldnt connect to "+ipToCheck);
+            serverIps.remove(ipToCheck);
+            keepAliveRecheck(ipToCheck,sharedGalleryClient);
+        }
+        return false;
     }
 
     private void keepAliveRecheck(String ipToCheck,SharedGalleryClient sharedGalleryClient){
-
 
         new Thread(()->{
             int maxRetrys = 2;
@@ -368,8 +358,14 @@ public class ReplicationServer {
                         return;
                     }
                 }catch (ProcessingException e){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
+
             ReplicationServerUtils.removeHost(file,ipToCheck);
             ReplicationServerUtils.writeToFile(file);
         }).start();
