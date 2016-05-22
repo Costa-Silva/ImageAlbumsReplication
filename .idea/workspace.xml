@@ -5,8 +5,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/CheckAndAddSharedByREST.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/CheckAndAddSharedByREST.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/CheckAndAddSharedByREST.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/CheckAndAddSharedByREST.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" />
     </list>
     <ignored path="SD2016-TP1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1015,14 +1013,7 @@
       <workItem from="1463613037312" duration="1263000" />
       <workItem from="1463782733628" duration="18944000" />
       <workItem from="1463873139359" duration="2764000" />
-      <workItem from="1463876297839" duration="8604000" />
-    </task>
-    <task id="LOCAL-00080" summary="changeTOSTRING">
-      <created>1463533297861</created>
-      <option name="number" value="00080" />
-      <option name="presentableId" value="LOCAL-00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1463533297862</updated>
+      <workItem from="1463876297839" duration="8627000" />
     </task>
     <task id="LOCAL-00081" summary="GSON FINISHED">
       <created>1463534185500</created>
@@ -1360,11 +1351,18 @@
       <option name="project" value="LOCAL" />
       <updated>1463886534284</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL-00129" summary="changes">
+      <created>1463886723051</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1463886723051</updated>
+    </task>
+    <option name="localTasksCounter" value="130" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="204146000" />
+    <option name="totallyTimeSpent" value="204169000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
