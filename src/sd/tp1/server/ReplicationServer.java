@@ -130,6 +130,7 @@ public class ReplicationServer {
                         System.out.println("myfile: "+ ReplicationServerUtils.hasHost(file,fullServerIp) +" " + file.toJSONString());
                         if (!ReplicationServerUtils.hasHost(file,fullServerIp)) {
                             ReplicationServerUtils.addHost(file,fullServerIp);
+                            ReplicationServerUtils.writeToFile(file);
                             System.out.println("added to my hosts: "+ serverIp);
                         }
 
