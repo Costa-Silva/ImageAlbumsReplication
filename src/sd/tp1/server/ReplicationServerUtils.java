@@ -102,7 +102,7 @@ public class ReplicationServerUtils {
                 return timestamp;
             }
         }
-        return null;
+        return new JSONObject();
     }
 
     public static void timestampChangeClock(JSONObject file,String id,Clock clock){
