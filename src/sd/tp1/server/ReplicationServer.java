@@ -172,6 +172,7 @@ public class ReplicationServer {
                                     writeMetaData(file,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp,sharedGalleryClient);
                                 }
                             }
+
                             int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,fullServerIp);
                             if (index>=0){
                                 sharedBy.set(index,fullServerIp);
