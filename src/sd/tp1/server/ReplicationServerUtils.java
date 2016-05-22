@@ -160,7 +160,10 @@ public class ReplicationServerUtils {
 
     public static Clock timestampGetClock(JSONObject file,String id){
         JSONObject jsonObject= timestampgetJSONbyID(file, id);
-        return new Clock((int)jsonObject.get(CLOCK),(String)jsonObject.get(REPLICA));
+        System.out.println("a minha timestamp: "+jsonObject.toJSONString());
+        Clock clock = new Clock(Integer.parseInt((String)jsonObject.get(CLOCK)),(String)jsonObject.get(REPLICA));
+        System.out.println("retorneiCLOCK: "+clock.getClock() + clock.getReplica() );
+        return clock;
     }
 
 
