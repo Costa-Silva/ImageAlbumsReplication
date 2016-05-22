@@ -124,8 +124,6 @@ public class ReplicationServer {
 
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                         JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
-
-                        String theirReplica = "";
                         JSONObject myfile = ServersUtils.getJsonFromFile(new byte[0]);
 
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
@@ -172,6 +170,9 @@ public class ReplicationServer {
                                     writeMetaData(myfile,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp,sharedGalleryClient);
                                 }
                             }
+
+                            //notify another server to let him known that he can count with me :)
+                            sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
                         }
                     }else {
                         System.out.println("No servers found to replicate");

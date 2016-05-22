@@ -217,7 +217,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	}
 
 	/**
-	 * Returns the list of pictures for the given album. 
+	 * Returns the list of pictures for the given album.
 	 * On error this method should return null.
 	 */
 	@Override
