@@ -172,6 +172,15 @@ public class ReplicationServer {
                                     writeMetaData(file,timestampStringID,clockObj,sharedBy,REMOVEOP,fullServerIp,sharedGalleryClient);
                                 }
                             }
+                            int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,fullServerIp);
+                            if (index>=0){
+                                sharedBy.set(index,fullServerIp);
+                            }else{
+                                sharedBy.add(fullServerIp);
+                            }
+                            JSONObject jsonObject = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
+                            jsonObject.put(SHAREDBY,sharedBy);
+                            ReplicationServerUtils.writeToFile(file);
                         }
                     }else {
                         System.out.println("No servers found to replicate");
@@ -224,28 +233,14 @@ public class ReplicationServer {
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String hostIp, SharedGalleryClient sharedGalleryClient){
 
-
-
-
         //notify another server to let him known that he can count with me :)
        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
-        JSONObject jsonObject;
-
         if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
-            jsonObject= ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
+            ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
         }else{
-            jsonObject = ReplicationServerUtils.timestampADD(myfile,timestampStringID,clockObj,operation);
+            ReplicationServerUtils.timestampADD(myfile,timestampStringID,clockObj,operation);
         }
 
-        int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,hostIp);
-
-        if (index>=0){
-            sharedBy.set(index,hostIp);
-        }else{
-            sharedBy.add(hostIp);
-        }
-        jsonObject.put(SHAREDBY,sharedBy);
-        ReplicationServerUtils.writeToFile(myfile);
         System.out.println("Updated:"+ timestampStringID);
     }
 
