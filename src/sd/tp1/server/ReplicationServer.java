@@ -225,7 +225,6 @@ public class ReplicationServer {
     public void writeMetaData(JSONObject myfile,String timestampStringID,Clock clockObj,JSONArray sharedBy,
                               String operation,String hostIp, SharedGalleryClient sharedGalleryClient){
 
-
         //notify another server to let him known that he can count with me :)
         sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
 
