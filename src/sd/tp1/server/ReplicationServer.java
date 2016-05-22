@@ -229,8 +229,14 @@ public class ReplicationServer {
 
         //notify another server to let him known that he can count with me :)
        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
+        JSONObject jsonObject;
 
-        JSONObject jsonObject = ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
+        if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
+            jsonObject= ReplicationServerUtils.timestampSet(myfile,timestampStringID,clockObj,operation);
+        }else{
+            jsonObject = ReplicationServerUtils.timestampADD(myfile,timestampStringID,clockObj,operation);
+        }
+
         int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,hostIp);
 
         if (index>=0){

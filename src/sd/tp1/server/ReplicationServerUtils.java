@@ -57,9 +57,6 @@ public class ReplicationServerUtils {
         return jSONconstructorTimestamp;
     }
 
-    public static void timestampADD(JSONObject file,String id,Clock clock,String operation){
-        ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(new JSONObject(timestampConstrutor(id,clock,operation)));
-    }
 
     public static JSONObject newTimestamp(JSONObject file,String id,String myReplica, String operation){
 
@@ -91,6 +88,14 @@ public class ReplicationServerUtils {
         ((JSONObject)file.get(DATA)).put(TIMESTAMP,array);
 
         return newTimeStamp;
+    }
+
+
+    public static JSONObject timestampADD(JSONObject file,String id,Clock clock,String operation){
+
+       JSONObject jsonObject = new JSONObject(timestampConstrutor(id,clock,operation));
+         ((JSONArray)((JSONObject)file.get(DATA)).get(TIMESTAMP)).add(jsonObject);
+        return jsonObject;
     }
 
 
