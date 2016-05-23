@@ -98,10 +98,6 @@ public class ReplicationServer {
 
                     checkUnreplicaredContent();
 
-
-
-
-
                     if (serverIps.size()>0){
                         System.out.println("STARTING REPLICATION TASK");
                         List<String> keys = new ArrayList<>(serverIps.keySet());
@@ -431,15 +427,10 @@ public class ReplicationServer {
                 String type = fullip.split("-")[1];
                 SharedGalleryClient sharedGalleryClient = getClient(ip,type);
                 String operation= toReplicate.get(fullinfo);
-                updateMyInfo(objectId,operation,sharedGalleryClient);
+                update(objectId,operation,sharedGalleryClient,new Clock(0,myReplica));
             }
 
         }
-
-    }
-
-    private void updateMyInfo(String objectId, String operation, SharedGalleryClient sharedGalleryClient) {
-
 
     }
 }

@@ -2,50 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClient.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClientREST.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClientREST.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClientSOAP.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClientSOAP.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/AskForContent.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/AskForContent.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/AskForContentResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/AskForContentResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CheckAndAddSharedBy.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CheckAndAddSharedBy.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CheckAndAddSharedByResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CheckAndAddSharedByResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CreateAlbum.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CreateAlbum.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CreateAlbumResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CreateAlbumResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/DeleteAlbum.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/DeleteAlbum.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/DeleteAlbumResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/DeleteAlbumResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/DeletePicture.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/DeletePicture.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/DeletePictureResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/DeletePictureResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetAlbumList.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetAlbumList.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetAlbumListResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetAlbumListResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetMetaData.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetMetaData.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetMetaDataResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetMetaDataResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPictureData.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPictureData.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPictureDataResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPictureDataResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPicturesList.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPicturesList.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPicturesListResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetPicturesListResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetserverSpace.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetserverSpace.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetserverSpaceResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetserverSpaceResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ObjectFactory.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ObjectFactory.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/Server.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/Server.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ServerService.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ServerService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/UploadPicture.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/UploadPicture.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/UploadPictureResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/UploadPictureResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/Server.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/Server.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/SharedGalleryClient.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/SharedGalleryClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/SharedGalleryClientREST.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/SharedGalleryClientREST.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/SharedGalleryClientSOAP.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/SharedGalleryClientSOAP.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/UpdateContent.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/UpdateContent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/UpdateContentREST.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/UpdateContentREST.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/ws/AskForContent.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/ws/AskForContent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/ws/ObjectFactory.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/ws/ObjectFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/client/ws/Server.java" afterPath="$PROJECT_DIR$/src/sd/tp1/client/ws/Server.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/Server.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/Server.java" />
     </list>
     <ignored path="SD2016-TP1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -71,8 +29,8 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="55">
-              <caret line="425" column="56" selection-start-line="425" selection-start-column="56" selection-end-line="425" selection-end-column="56" />
+            <state relative-caret-position="268">
+              <caret line="99" column="20" selection-start-line="99" selection-start-column="20" selection-end-line="99" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -971,14 +929,7 @@
       <workItem from="1463962665064" duration="9341000" />
       <workItem from="1463974555334" duration="62000" />
       <workItem from="1464018580917" duration="7172000" />
-      <workItem from="1464025815313" duration="9045000" />
-    </task>
-    <task id="LOCAL-00149" summary="changes">
-      <created>1463896820255</created>
-      <option name="number" value="00149" />
-      <option name="presentableId" value="LOCAL-00149" />
-      <option name="project" value="LOCAL" />
-      <updated>1463896820256</updated>
+      <workItem from="1464025815313" duration="9799000" />
     </task>
     <task id="LOCAL-00150" summary="changes">
       <created>1463897057866</created>
@@ -1316,11 +1267,18 @@
       <option name="project" value="LOCAL" />
       <updated>1464032360056</updated>
     </task>
-    <option name="localTasksCounter" value="198" />
+    <task id="LOCAL-00198" summary="please work">
+      <created>1464035125575</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1464035125575</updated>
+    </task>
+    <option name="localTasksCounter" value="199" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="253990000" />
+    <option name="totallyTimeSpent" value="254744000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1768,8 +1726,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="55">
-          <caret line="425" column="56" selection-start-line="425" selection-start-column="56" selection-end-line="425" selection-end-column="56" />
+        <state relative-caret-position="268">
+          <caret line="99" column="20" selection-start-line="99" selection-start-column="20" selection-end-line="99" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
