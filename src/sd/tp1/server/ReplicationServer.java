@@ -228,10 +228,8 @@ public class ReplicationServer {
 
         while (iterator.hasNext()){
             String newReplica= iterator.next().toString();
-            System.out.print("shared by dele: " + newReplica " a minha e " + myReplica);
             if (!newReplica.equals(myReplica)) {
                 if (ReplicationServerUtils.hasSharedByPosition(mySharedBy, newReplica) < 0) {
-                    System.out.print("   e adicionei\n");
                     mySharedBy.add(newReplica);
                 }
             }
@@ -240,11 +238,8 @@ public class ReplicationServer {
         jsonObject.put(SHAREDBY,mySharedBy);
 
 
-        System.out.println("hey "+jsonObject.toJSONString());
-
-
             //notify another server to let him known that he can count with me :)
-            sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
+            //sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
 
         ReplicationServerUtils.writeToFile(file);
 
