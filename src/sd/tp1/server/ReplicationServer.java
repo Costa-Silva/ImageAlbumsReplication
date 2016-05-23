@@ -100,7 +100,6 @@ public class ReplicationServer {
 
                         System.out.println("escolhi o sv: "+ serverIp+" "+serverIps.get(serverIp));
 
-
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                         JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
@@ -355,7 +354,6 @@ public class ReplicationServer {
                             sharedGalleryClient.getServerSize();
                         }catch (ProcessingException e){
                             System.out.println("Lost connection with: "+ipToCheck);
-                            serverIps.remove(ipToCheck);
                             keepAliveRecheck(ipToCheck,sharedGalleryClient);
                         }
                     }
@@ -375,8 +373,6 @@ public class ReplicationServer {
                 try{
                     if(sharedGalleryClient.getServerSize()>=0){
                         System.out.print(ipToCheck+" is back!");
-                        String type = sharedGalleryClient.getType().equals(REST) ? REST : SOAP;
-                        serverIps.put(ipToCheck,type);
                         return;
                     }
                 }catch (ProcessingException e){
@@ -387,6 +383,7 @@ public class ReplicationServer {
                     }
                 }
             }
+            serverIps.remove(ipToCheck);
             ReplicationServerUtils.removeHost(file,ipToCheck);
             ReplicationServerUtils.writeToFile(file);
         }).start();
