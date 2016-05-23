@@ -38,6 +38,7 @@ public class ReplicationServer {
     private boolean initialized;
     private JSONObject file;
     private String myFullIp;
+    private String myReplica;
 
     public ReplicationServer(String myFullIp){
         serverIps = new ConcurrentHashMap<>();
@@ -78,6 +79,7 @@ public class ReplicationServer {
                         }
                         ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
                     }
+                    myReplica= ReplicationServerUtils.getReplicaid(file);
                     ReplicationServerUtils.writeToFile(file);
                 }
                 initialized=true;
@@ -225,14 +227,13 @@ public class ReplicationServer {
         }
 
         while (iterator.hasNext()){
-            String newIP= (String)iterator.next();
-            if (!newIP.equals(myFullIp)) {
-                if (ReplicationServerUtils.hasSharedByPosition(mySharedBy, newIP) < 0) {
-                    mySharedBy.add(newIP);
+            String newReplica= (String)iterator.next();
+            if (!newReplica.equals(myReplica)) {
+                if (ReplicationServerUtils.hasSharedByPosition(mySharedBy, newReplica) < 0) {
+                    mySharedBy.add(newReplica);
                 }
             }
         }
-
         JSONObject jsonObject = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
         jsonObject.put(SHAREDBY,mySharedBy);
         ReplicationServerUtils.writeToFile(file);
