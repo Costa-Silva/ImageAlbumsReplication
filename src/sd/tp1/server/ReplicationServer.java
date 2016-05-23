@@ -96,7 +96,7 @@ public class ReplicationServer {
             while(true){
                 try {
 
-                    checkUnreplicaredContent();
+                    //checkUnreplicaredContent();
 
                     if (serverIps.size()>0){
                         System.out.println("STARTING REPLICATION TASK");
@@ -154,7 +154,7 @@ public class ReplicationServer {
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
                                 JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,replica,file);
-                                doReplication(mySharedby,timestampStringID,serverIp,operation);
+                                //doReplication(mySharedby,timestampStringID,serverIp,operation);
 
                             }
                         }
