@@ -113,6 +113,9 @@ public class ReplicationServer {
                                 x = false;
                             }
                         }
+
+                        String otherServerReplica = ReplicationServerUtils.getReplicaid(theirMetadata);
+
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
 
                         file = ServersUtils.getJsonFromFile(new byte[0]);
@@ -150,7 +153,7 @@ public class ReplicationServer {
                                 }else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())){
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
-                                JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,replica,file,sharedGalleryClient);
+                                JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,otherServerReplica,file,sharedGalleryClient);
                                 //doReplication(mySharedby,timestampStringID,serverIp,operation);
 
                             }
