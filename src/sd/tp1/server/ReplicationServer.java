@@ -309,12 +309,10 @@ public class ReplicationServer {
 
         ServersUtils.getAlbumList().forEach(albumName->{
             HashMap<String,byte[]> imageContent = new HashMap<>();
-            JSONObject albumTimestampJson = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
-            ReplicationServerUtils.timestampADDJSON(file,albumTimestampJson);
+            ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
             ServersUtils.getPicturesList(albumName).forEach(pictureName->{
                 imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
-                JSONObject newTimestampJson = ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
-                ReplicationServerUtils.timestampADDJSON(file,newTimestampJson);
+                ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
             });
             content.put(albumName,imageContent);
         });
@@ -325,8 +323,6 @@ public class ReplicationServer {
         }
 
         ReplicationServerUtils.writeToFile(file);
-
-        System.out.println("fiz o load: "+file.toJSONString());
         System.out.println("Loaded Content size: " +content.size());
     }
 
