@@ -6,8 +6,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * Created by Antonio on 23/05/16.
  */
-public class AskforContentREST {
-
+public class UpdateContentREST {
     private static String PATH = "/albums/";
     private static String content="askforcontent";
     private static String KEY = "key/";
@@ -23,7 +22,4 @@ public class AskforContentREST {
                 .get(Boolean.class);
         return result;
     }
-
-
-
 }

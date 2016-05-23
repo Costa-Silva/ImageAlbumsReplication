@@ -74,7 +74,7 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
 
     @Override
     public boolean askForContent(String objctedId, String fullIp) {
-        return AskforContentREST.askForContent(target,objctedId,fullIp,password);
+        return UpdateContentREST.askForContent(target,objctedId,fullIp,password);
     }
 
 
