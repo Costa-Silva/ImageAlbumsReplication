@@ -125,7 +125,13 @@ public class ReplicationServer {
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
                             JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
+
+                            System.out.println("mytimestamp: "+myTimestamp.toJSONString());
+
                             String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
+
+                            System.out.println("mytimestampstrnigid: "+mytimestampStringID);
+
 
                             if (timestampStringID.equals(mytimestampStringID)){
 
