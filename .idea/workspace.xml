@@ -30,8 +30,8 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="226" column="10" selection-start-line="226" selection-start-column="10" selection-end-line="226" selection-end-column="10" />
+            <state relative-caret-position="52">
+              <caret line="230" column="48" selection-start-line="230" selection-start-column="48" selection-end-line="230" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -43,27 +43,7 @@
         <entry file="file://$PROJECT_DIR$/metadata.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="75" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="592" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlbumsResource.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="47" column="51" selection-start-line="47" selection-start-column="51" selection-end-line="47" selection-end-column="51" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServersUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="371" column="0" selection-start-line="371" selection-start-column="0" selection-end-line="371" selection-end-column="0" />
+              <caret line="0" column="41" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="592" />
               <folding />
             </state>
           </provider>
@@ -939,14 +919,7 @@
       <workItem from="1463962665064" duration="9341000" />
       <workItem from="1463974555334" duration="62000" />
       <workItem from="1464018580917" duration="7172000" />
-      <workItem from="1464025815313" duration="14144000" />
-    </task>
-    <task id="LOCAL-00159" summary="changes">
-      <created>1463940660935</created>
-      <option name="number" value="00159" />
-      <option name="presentableId" value="LOCAL-00159" />
-      <option name="project" value="LOCAL" />
-      <updated>1463940660936</updated>
+      <workItem from="1464025815313" duration="15040000" />
     </task>
     <task id="LOCAL-00160" summary="changes">
       <created>1463940884706</created>
@@ -1284,11 +1257,18 @@
       <option name="project" value="LOCAL" />
       <updated>1464045217286</updated>
     </task>
-    <option name="localTasksCounter" value="208" />
+    <task id="LOCAL-00208" summary="please work">
+      <created>1464045481348</created>
+      <option name="number" value="00208" />
+      <option name="presentableId" value="LOCAL-00208" />
+      <option name="project" value="LOCAL" />
+      <updated>1464045481348</updated>
+    </task>
+    <option name="localTasksCounter" value="209" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="259089000" />
+    <option name="totallyTimeSpent" value="259985000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1710,18 +1690,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java">
+    <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="47" column="51" selection-start-line="47" selection-start-column="51" selection-end-line="47" selection-end-column="51" />
+        <state relative-caret-position="232">
+          <caret line="375" column="40" selection-start-line="375" selection-start-column="40" selection-end-line="375" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ServersUtils.java">
+    <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="371" column="0" selection-start-line="371" selection-start-column="0" selection-end-line="371" selection-end-column="0" />
+        <state relative-caret-position="235">
+          <caret line="47" column="50" selection-start-line="47" selection-start-column="50" selection-end-line="47" selection-end-column="50" />
           <folding />
         </state>
       </provider>
@@ -1729,15 +1709,15 @@
     <entry file="file://$PROJECT_DIR$/metadata.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="75" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="592" />
+          <caret line="0" column="41" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="592" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="226" column="10" selection-start-line="226" selection-start-column="10" selection-end-line="226" selection-end-column="10" />
+        <state relative-caret-position="52">
+          <caret line="230" column="48" selection-start-line="230" selection-start-column="48" selection-end-line="230" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

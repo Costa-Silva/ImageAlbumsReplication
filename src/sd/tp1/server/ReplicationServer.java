@@ -222,9 +222,9 @@ public class ReplicationServer {
         Iterator iterator = sharedBy.iterator();
         JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
 
-       // if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,replica)<0) {
-         //   mySharedBy.add(replica);
-        //}
+        if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,replica)<0) {
+            mySharedBy.add(replica);
+        }
 
         while (iterator.hasNext()){
             String newReplica= iterator.next().toString();
@@ -239,7 +239,7 @@ public class ReplicationServer {
 
 
             //notify another server to let him known that he can count with me :)
-            sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
+            //sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
 
         ReplicationServerUtils.writeToFile(file);
 
