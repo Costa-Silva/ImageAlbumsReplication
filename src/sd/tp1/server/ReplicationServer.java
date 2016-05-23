@@ -167,13 +167,11 @@ public class ReplicationServer {
     }
 
     private void doReplication(JSONArray sharedby,String objectId,String hisSv) {
-        int size = sharedby.size();
+        int size = sharedby.size() +1;
         if (PARCIALREPLICATION>size){
 
             String bestmatch = serverReplicaToReplicate(sharedby);
             String myreplica = ReplicationServerUtils.getReplicaid(file);
-
-            System.out.println(bestmatch+ "  "+ myreplica);
 
             if (bestmatch.equals(myreplica)){
                 System.out.println("I'm the chosen one");
@@ -213,7 +211,6 @@ public class ReplicationServer {
                 bestMatch= testReplica;
             }
         }
-        System.out.println("retornou : "+bestMatch);
         return bestMatch;
     }
 
@@ -390,7 +387,7 @@ public class ReplicationServer {
             for (int i = 0; i < maxRetrys ; i++) {
                 try{
                     if(sharedGalleryClient.getServerSize()>=0){
-                        System.out.print(ipToCheck+" is back!");
+                        System.out.println(ipToCheck+" is back!");
                         return;
                     }
                 }catch (ProcessingException e){
