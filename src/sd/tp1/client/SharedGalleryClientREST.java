@@ -1,12 +1,7 @@
 package sd.tp1.client;
 
-import org.json.simple.JSONObject;
-import sd.tp1.gui.GalleryContentProvider;
-
 import javax.ws.rs.client.WebTarget;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by AntónioSilva on 05/04/2016.
@@ -79,7 +74,7 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
 
     @Override
     public boolean askForContent(String objctedId, String fullIp) {
-        return AskForContentREST.askForContent(target,objctedId,fullIp,password);
+        return AskforContentREST.askForContent(target,objctedId,fullIp,password);
     }
 
 

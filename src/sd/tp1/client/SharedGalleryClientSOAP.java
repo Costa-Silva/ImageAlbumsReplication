@@ -1,9 +1,6 @@
 package sd.tp1.client;
 
-import org.json.simple.JSONObject;
 import sd.tp1.client.ws.*;
-import sd.tp1.client.ws.AskForContent;
-import sd.tp1.client.ws.GetMetaData;
 
 
 import java.util.List;
@@ -76,6 +73,6 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
 
     @Override
     public boolean askForContent(String objctedId, String fullIp) {
-        return sd.tp1.client.AskForContent.askForContent(server,objctedId,fullIp);
+        return AskforContent.askForContent(server,objctedId,fullIp);
     }
 }

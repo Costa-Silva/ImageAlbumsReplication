@@ -190,7 +190,7 @@ public interface Server {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "askForContent", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.AskForContent")
+    @RequestWrapper(localName = "askForContent", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.AskforContent")
     @ResponseWrapper(localName = "askForContentResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.AskForContentResponse")
     @Action(input = "http://server.tp1.sd/Server/askForContentRequest", output = "http://server.tp1.sd/Server/askForContentResponse")
     public boolean askForContent(
