@@ -159,10 +159,10 @@ public class ReplicationServer {
         int size = sharedby.size();
         if (PARCIALREPLICATION>size){
             if (serverReplicaToReplicate(sharedby).equals(ReplicationServerUtils.getReplicaid(file))){
+                System.out.println("I'm the chosen one");
                 int toReplicate = PARCIALREPLICATION-size;
                 List<String> keys = new ArrayList<>(serverIps.keySet());
                 keys.remove(hisSv);
-
                 int i =0;
                 while (i<toReplicate){
                     if (keys.size()>0) {
@@ -171,6 +171,7 @@ public class ReplicationServer {
                             String serverIp = keys.remove(index);
                             SharedGalleryClient sharedGalleryClient = getClient(serverIp, serverIps.get(serverIp));
                             sharedGalleryClient.askForContent(objectId,myFullIp);
+                            System.out.println("Replicated to "+serverIp);
                         }catch (ProcessingException e){
                             i--;
                         }
@@ -345,7 +346,6 @@ public class ReplicationServer {
         new Thread(()->{
             while (true){
                 try {
-                    System.out.println("acordei");
                     for (String ipToCheck :serverIps.keySet()) {
                         //you there?
                         //checking if return any info
@@ -354,12 +354,11 @@ public class ReplicationServer {
                         try{
                             sharedGalleryClient.getServerSize();
                         }catch (ProcessingException e){
-                            System.out.println("perdi a conexao com: "+ipToCheck);
+                            System.out.println("Lost connection with: "+ipToCheck);
                             serverIps.remove(ipToCheck);
                             keepAliveRecheck(ipToCheck,sharedGalleryClient);
                         }
                     }
-                    System.out.println("vou dormir");
                     Thread.sleep(timeout);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
