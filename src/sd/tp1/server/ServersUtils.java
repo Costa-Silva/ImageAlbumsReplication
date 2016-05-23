@@ -369,8 +369,8 @@ public class ServersUtils {
         JSONObject timestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,objectId);
 
         JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
-        int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,replica);
 
+        int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,replica);
         if (index<0){
             sharedBy.add(replica);
             timestamp.put(SHAREDBY,sharedBy);

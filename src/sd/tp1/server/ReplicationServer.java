@@ -150,7 +150,7 @@ public class ReplicationServer {
                                 }else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())){
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
-                                JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,replica,file);
+                                JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,replica,file,sharedGalleryClient);
                                 //doReplication(mySharedby,timestampStringID,serverIp,operation);
 
                             }
@@ -217,7 +217,8 @@ public class ReplicationServer {
     }
 
 
-    public JSONArray sharedByAux(JSONArray sharedBy,String timestampStringID, String replica,JSONObject file ){
+    public JSONArray sharedByAux(JSONArray sharedBy,String timestampStringID, String replica,JSONObject file, SharedGalleryClient sharedGalleryClient){
+
         Iterator iterator = sharedBy.iterator();
         JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
 
@@ -235,6 +236,13 @@ public class ReplicationServer {
         }
         JSONObject jsonObject = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
         jsonObject.put(SHAREDBY,mySharedBy);
+
+
+        if (ReplicationServerUtils.hasSharedByPosition(sharedBy,myReplica)<0) {
+            //notify another server to let him known that he can count with me :)
+            sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
+        }
+
         ReplicationServerUtils.writeToFile(file);
 
         return mySharedBy;
@@ -256,37 +264,30 @@ public class ReplicationServer {
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
                 content.get(nameid[0]).put(nameid[1],aux);
                 ServersUtils.uploadPicture(nameid[0],nameid[1],aux);
-                writeMetaData(timestampStringID,clockObj,operation,sharedGalleryClient);
+                writeMetaData(timestampStringID,clockObj,operation);
             }else if (operation.equals(REMOVEOP)){
                 content.get(nameid[0]).remove(nameid[1]);
                 if (ServersUtils.deletePicture(nameid[0],nameid[1])){
-                    writeMetaData(timestampStringID,clockObj,operation,sharedGalleryClient);
+                    writeMetaData(timestampStringID,clockObj,operation);
                 }
             }
         }else{
             if (operation.equals(CREATEOP)){
                 content.put(nameid[0],new HashMap<>());
                 if (ServersUtils.hasAlbum(nameid[0]) || ServersUtils.createAlbum(nameid[0])!=null)
-                    writeMetaData(timestampStringID,clockObj,operation,sharedGalleryClient);
+                    writeMetaData(timestampStringID,clockObj,operation);
 
             }else if (operation.equals(REMOVEOP)){
                 content.remove(nameid[0]);
                 if (ServersUtils.deleteAlbum(nameid[0])) {
-                    writeMetaData(timestampStringID,clockObj,operation,sharedGalleryClient);
+                    writeMetaData(timestampStringID,clockObj,operation);
                 }
             }
         }
     }
 
     public void writeMetaData(String timestampStringID,Clock clockObj,
-                              String operation,SharedGalleryClient sharedGalleryClient){
-
-        //notify another server to let him known that he can count with me :)
-        sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
-
-        System.out.println("my file "+file.toJSONString());
-        System.out.println("timestamp "+ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).toJSONString());
-
+                              String operation){
 
         if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
             ReplicationServerUtils.timestampSet(file,timestampStringID,clockObj,operation);
