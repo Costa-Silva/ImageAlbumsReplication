@@ -223,6 +223,10 @@ public class ReplicationServer {
         JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
 
         if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,replica)<0) {
+
+            System.out.println("a minha replica: "+myReplica+ "a replica dele:"+replica);
+            System.out.println(myReplica.equals(replica));
+
             mySharedBy.add(replica);
         }
 
