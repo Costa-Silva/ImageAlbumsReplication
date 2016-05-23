@@ -154,7 +154,7 @@ public class ReplicationServer {
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
                                 JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,otherServerReplica,file,sharedGalleryClient);
-                                //doReplication(mySharedby,timestampStringID,serverIp,operation);
+                                doReplication(mySharedby,timestampStringID,serverIp,operation);
 
                             }
                         }
@@ -246,7 +246,7 @@ public class ReplicationServer {
 
 
             //notify another server to let him known that he can count with me :)
-            //sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
+            sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
 
         ReplicationServerUtils.writeToFile(file);
 
