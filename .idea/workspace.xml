@@ -2,27 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/SharedGalleryContentProvider.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/DiscoveryClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/InsecureClass$InsecureTrustManager.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/InsecureClass$InsecureTrustManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClient.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClientREST.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClientREST.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClientSOAP.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/SharedGalleryClientSOAP.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CheckAndAddSharedBy.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CheckAndAddSharedBy.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CheckAndAddSharedByResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/CheckAndAddSharedByResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetMetaData.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetMetaData.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetMetaDataResponse.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/GetMetaDataResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ObjectFactory.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/ObjectFactory.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/client/ws/Server.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/client/ws/Server.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AddAlbumIcon.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AddAlbumIcon.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AlbumView.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$AlbumView.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$PictureView.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$PictureView.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$TrashIcon.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow$TrashIcon.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/gui/impl/GalleryWindow.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsResource.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/Server.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/Server.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sd/tp1/client/askForContent.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sd/tp1/client/ws/AskForContent.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sd/tp1/client/ws/AskForContentResponse.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SD2016-TP1.iws" />
@@ -46,24 +28,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1230">
-              <caret line="171" column="0" selection-start-line="171" selection-start-column="0" selection-end-line="171" selection-end-column="0" />
+            <state relative-caret-position="165">
+              <caret line="71" column="43" selection-start-line="71" selection-start-column="43" selection-end-line="71" selection-end-column="43" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AskForContent.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/AskForContent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="81" selection-start-line="9" selection-start-column="81" selection-end-line="9" selection-end-column="81" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -143,9 +115,9 @@
         <option value="$PROJECT_DIR$/src/sd/tp1/client/askForContentREST.java" />
         <option value="$PROJECT_DIR$/src/sd/tp1/client/SharedGalleryClientREST.java" />
         <option value="$PROJECT_DIR$/src/sd/tp1/server/Server.java" />
-        <option value="$PROJECT_DIR$/src/sd/tp1/client/AskForContent.java" />
         <option value="$PROJECT_DIR$/src/sd/tp1/client/SharedGalleryClientSOAP.java" />
         <option value="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" />
+        <option value="$PROJECT_DIR$/src/sd/tp1/client/AskForContent.java" />
       </list>
     </option>
   </component>
@@ -912,21 +884,7 @@
       <workItem from="1463939077548" duration="4139000" />
       <workItem from="1463962665064" duration="9341000" />
       <workItem from="1463974555334" duration="62000" />
-      <workItem from="1464018580917" duration="5932000" />
-    </task>
-    <task id="LOCAL-00128" summary="changes">
-      <created>1463886534284</created>
-      <option name="number" value="00128" />
-      <option name="presentableId" value="LOCAL-00128" />
-      <option name="project" value="LOCAL" />
-      <updated>1463886534284</updated>
-    </task>
-    <task id="LOCAL-00129" summary="changes">
-      <created>1463886723051</created>
-      <option name="number" value="00129" />
-      <option name="presentableId" value="LOCAL-00129" />
-      <option name="project" value="LOCAL" />
-      <updated>1463886723051</updated>
+      <workItem from="1464018580917" duration="6251000" />
     </task>
     <task id="LOCAL-00130" summary="changes">
       <created>1463886745016</created>
@@ -1257,11 +1215,25 @@
       <option name="project" value="LOCAL" />
       <updated>1464024365243</updated>
     </task>
-    <option name="localTasksCounter" value="177" />
+    <task id="LOCAL-00177" summary="changes">
+      <created>1464024548552</created>
+      <option name="number" value="00177" />
+      <option name="presentableId" value="LOCAL-00177" />
+      <option name="project" value="LOCAL" />
+      <updated>1464024548553</updated>
+    </task>
+    <task id="LOCAL-00178" summary="changes">
+      <created>1464024597650</created>
+      <option name="number" value="00178" />
+      <option name="presentableId" value="LOCAL-00178" />
+      <option name="project" value="LOCAL" />
+      <updated>1464024597650</updated>
+    </task>
+    <option name="localTasksCounter" value="179" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="243705000" />
+    <option name="totallyTimeSpent" value="244024000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1274,7 +1246,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="709" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901135" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1289,7 +1261,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279483" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26332796" sideWeight="0.4792703" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26332796" sideWeight="0.4792703" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1680,16 +1652,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1230">
-          <caret line="171" column="0" selection-start-line="171" selection-start-column="0" selection-end-line="171" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/AskForContentREST.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -1703,8 +1665,18 @@
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/client/AskForContent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="9" column="81" selection-start-line="9" selection-start-column="81" selection-end-line="9" selection-end-column="81" />
+          <caret line="9" column="83" selection-start-line="9" selection-start-column="83" selection-end-line="9" selection-end-column="83" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="71" column="43" selection-start-line="71" selection-start-column="43" selection-end-line="71" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
