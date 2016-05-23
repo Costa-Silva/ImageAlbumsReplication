@@ -325,6 +325,8 @@ public class ReplicationServer {
         }
 
         ReplicationServerUtils.writeToFile(file);
+
+        System.out.println("fiz o load: "+file.toJSONString());
         System.out.println("Loaded Content size: " +content.size());
     }
 
