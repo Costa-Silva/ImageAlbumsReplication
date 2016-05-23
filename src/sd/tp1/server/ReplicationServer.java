@@ -283,6 +283,11 @@ public class ReplicationServer {
 
         //notify another server to let him known that he can count with me :)
         sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
+
+        System.out.println("my file "+file.toJSONString());
+        System.out.println("timestamp "+ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).toJSONString());
+
+
         if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
             ReplicationServerUtils.timestampSet(file,timestampStringID,clockObj,operation);
         }else{
