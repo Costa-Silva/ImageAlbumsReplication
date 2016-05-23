@@ -149,9 +149,7 @@ public class ReplicationServer {
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
                                 JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,fullServerIp,file);
-                                System.out.println("vou dar-lhe forte");
                                 doReplication(mySharedby,timestampStringID,serverIp);
-                                System.out.println("ate andou de lado");
 
                             }
                         }
@@ -168,7 +166,9 @@ public class ReplicationServer {
 
     private void doReplication(JSONArray sharedby,String objectId,String hisSv) {
         int size = sharedby.size();
+        System.out.println("doreplication: "+ size);
         if (PARCIALREPLICATION>size){
+            System.out.println("entrou boy: ");
             if (serverReplicaToReplicate(sharedby).equals(ReplicationServerUtils.getReplicaid(file))){
                 System.out.println("I'm the chosen one");
                 int toReplicate = PARCIALREPLICATION-size;
@@ -207,6 +207,7 @@ public class ReplicationServer {
                 bestMatch= testReplica;
             }
         }
+        System.out.println("retornou : "+bestMatch);
         return bestMatch;
     }
 

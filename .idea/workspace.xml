@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ServersUtils.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" />
     </list>
@@ -31,21 +30,11 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="153" column="69" selection-start-line="153" selection-start-column="69" selection-end-line="153" selection-end-column="69" />
+            <state relative-caret-position="307">
+              <caret line="209" column="50" selection-start-line="209" selection-start-column="50" selection-end-line="209" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="metadata.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/metadata.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="62" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="1140" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -942,14 +931,7 @@
       <workItem from="1463962665064" duration="9341000" />
       <workItem from="1463974555334" duration="62000" />
       <workItem from="1464018580917" duration="7172000" />
-      <workItem from="1464025815313" duration="4980000" />
-    </task>
-    <task id="LOCAL-00143" summary="changes">
-      <created>1463892383951</created>
-      <option name="number" value="00143" />
-      <option name="presentableId" value="LOCAL-00143" />
-      <option name="project" value="LOCAL" />
-      <updated>1463892383951</updated>
+      <workItem from="1464025815313" duration="5258000" />
     </task>
     <task id="LOCAL-00144" summary="changes">
       <created>1463893275214</created>
@@ -1287,11 +1269,18 @@
       <option name="project" value="LOCAL" />
       <updated>1464030792333</updated>
     </task>
-    <option name="localTasksCounter" value="192" />
+    <task id="LOCAL-00192" summary="please work">
+      <created>1464031045719</created>
+      <option name="number" value="00192" />
+      <option name="presentableId" value="LOCAL-00192" />
+      <option name="project" value="LOCAL" />
+      <updated>1464031045719</updated>
+    </task>
+    <option name="localTasksCounter" value="193" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="249925000" />
+    <option name="totallyTimeSpent" value="250203000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1739,8 +1728,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="153" column="69" selection-start-line="153" selection-start-column="69" selection-end-line="153" selection-end-column="69" />
+        <state relative-caret-position="307">
+          <caret line="209" column="50" selection-start-line="209" selection-start-column="50" selection-end-line="209" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
