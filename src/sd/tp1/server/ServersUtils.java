@@ -52,7 +52,18 @@ public class ServersUtils {
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
 
-            socket.joinGroup(address);
+
+            boolean sucess=false;
+            while (!sucess){
+
+                try{
+                    socket.joinGroup(address);
+                    sucess=true;
+                }catch (SocketException e){
+                    sucess=false;
+                }
+            }
+
 
             System.out.println("Listening on " + MULTICASTIP + ":" + PORT);
 
