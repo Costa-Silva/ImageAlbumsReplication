@@ -362,6 +362,7 @@ public class ReplicationServer {
                         try{
                             sharedGalleryClient.getServerSize();
                         }catch (ProcessingException e){
+                            System.out.println("perdi a conexao com: "+ipToCheck);
                             serverIps.remove(ipToCheck);
                             keepAliveRecheck(ipToCheck,sharedGalleryClient);
                         }
