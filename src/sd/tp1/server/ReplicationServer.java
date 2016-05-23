@@ -101,7 +101,16 @@ public class ReplicationServer {
                         System.out.println("escolhi o sv: "+ serverIp+" "+serverIps.get(serverIp));
 
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
-                        JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
+                        JSONObject theirMetadata = new JSONObject();
+                        boolean x =false;
+                        while (!x) {
+                            try {
+                                theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
+                                x = true;
+                            } catch (ProcessingException e) {
+                                x = false;
+                            }
+                        }
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
 
                         file = ServersUtils.getJsonFromFile(new byte[0]);

@@ -143,6 +143,7 @@ public class ServersUtils {
                 datagramPacket.setAddress(address);
                 datagramPacket.setPort(PORT);
                 while (true) {
+
                     socket.send(datagramPacket);
                     System.out.println("Sent Multicast");
                     Thread.sleep(3000);
