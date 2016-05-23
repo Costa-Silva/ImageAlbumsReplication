@@ -149,7 +149,10 @@ public class ReplicationServer {
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
                                 JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,fullServerIp,file);
+                                System.out.println("vou dar-lhe forte");
                                 doReplication(mySharedby,timestampStringID,serverIp);
+                                System.out.println("ate andou de lado");
+
                             }
                         }
                     }else {
