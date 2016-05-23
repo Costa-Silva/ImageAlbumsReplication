@@ -98,6 +98,9 @@ public class ReplicationServer {
                         List<String> keys = new ArrayList<>(serverIps.keySet());
                         String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
 
+                        System.out.println("escolhi o sv: "+ serverIp+" "+serverIps.get(serverIp));
+
+
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                         JSONObject theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
