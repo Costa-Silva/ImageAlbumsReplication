@@ -362,17 +362,17 @@ public class ServersUtils {
         return null;
     }
 
-    public static boolean checkAndAddSharedBy(String ip,String objectId){
+    public static boolean checkAndAddSharedBy(String replica,String objectId){
 
         JSONObject myfile = getJsonFromFile(new byte[0]);
 
         JSONObject timestamp = ReplicationServerUtils.timestampgetJSONbyID(myfile,objectId);
 
         JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
-        int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,ip);
+        int index = ReplicationServerUtils.hasSharedByPosition(sharedBy,replica);
 
         if (index<0){
-            sharedBy.add(ip);
+            sharedBy.add(replica);
             timestamp.put(SHAREDBY,sharedBy);
             ReplicationServerUtils.writeToFile(myfile);
             return true;

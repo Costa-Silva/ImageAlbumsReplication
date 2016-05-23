@@ -102,9 +102,6 @@ public class ReplicationServer {
                         System.out.println("STARTING REPLICATION TASK");
                         List<String> keys = new ArrayList<>(serverIps.keySet());
                         String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
-
-                        System.out.println("escolhi o sv: "+ serverIp+" "+serverIps.get(serverIp));
-
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
                         JSONObject theirMetadata = new JSONObject();
                         boolean x =false;
@@ -285,7 +282,7 @@ public class ReplicationServer {
                               String operation,SharedGalleryClient sharedGalleryClient){
 
         //notify another server to let him known that he can count with me :)
-        sharedGalleryClient.checkAndAddSharedBy(myFullIp,timestampStringID);
+        sharedGalleryClient.checkAndAddSharedBy(myReplica,timestampStringID);
         if (ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID).size()>0){
             ReplicationServerUtils.timestampSet(file,timestampStringID,clockObj,operation);
         }else{
