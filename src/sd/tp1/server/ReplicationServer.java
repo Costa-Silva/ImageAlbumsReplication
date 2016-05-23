@@ -128,15 +128,7 @@ public class ReplicationServer {
                             JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
                             JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
-
-                            System.out.println("mytimestamp: "+myTimestamp.toJSONString());
-
-                            String mytimestampStringID = myTimestamp.get(OBJECTID).toString();
-
-                            System.out.println("mytimestampstrnigid: "+mytimestampStringID);
-
-
-                            if (timestampStringID.equals(mytimestampStringID)){
+                            if (myTimestamp.size()>0){
 
                                 if (( Integer.parseInt(timestamp.get(CLOCK).toString()))==Integer.parseInt(myTimestamp.get(CLOCK).toString())){
                                     int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
