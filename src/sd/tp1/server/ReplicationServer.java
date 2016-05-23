@@ -95,6 +95,13 @@ public class ReplicationServer {
         new Thread(()->{
             while(true){
                 try {
+
+                    checkUnreplicaredContent();
+
+
+
+
+
                     if (serverIps.size()>0){
                         System.out.println("STARTING REPLICATION TASK");
                         List<String> keys = new ArrayList<>(serverIps.keySet());
@@ -151,7 +158,7 @@ public class ReplicationServer {
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
                                 JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,replica,file);
-                                doReplication(mySharedby,timestampStringID,serverIp);
+                                doReplication(mySharedby,timestampStringID,serverIp,operation);
 
                             }
                         }
@@ -166,7 +173,9 @@ public class ReplicationServer {
         }).start();
     }
 
-    private void doReplication(JSONArray sharedby,String objectId,String hisSv) {
+
+
+    private void doReplication(JSONArray sharedby,String objectId,String hisSv,String operation) {
         int size = sharedby.size() +1;
         if (PARCIALREPLICATION>size){
 
@@ -185,7 +194,7 @@ public class ReplicationServer {
                             int index = new Random().nextInt(keys.size());
                             String serverIp = keys.remove(index);
                             SharedGalleryClient sharedGalleryClient = getClient(serverIp, serverIps.get(serverIp));
-                            sharedGalleryClient.askForContent(objectId,myFullIp);
+                            sharedGalleryClient.askForContent(objectId,myFullIp,operation);
                             System.out.println("Replicated to "+serverIp);
                         }catch (ProcessingException e){
                             i--;
@@ -404,10 +413,33 @@ public class ReplicationServer {
         }).start();
     }
 
-    public static void addNewContent(String objectId,String fullserverIp){
-
-        if (!toReplicate.containsKey(objectId))
-            toReplicate.put(objectId,fullserverIp);
+    public static void addNewContent(String objectid,String fullip,String operation){
+        String fullinfo = objectid+"/"+fullip;
+        if (!toReplicate.containsKey(fullinfo))
+            toReplicate.put(fullinfo,operation);
     }
 
+    private void checkUnreplicaredContent() {
+
+        while (toReplicate.size()>0){
+
+            for (String fullinfo:toReplicate.keySet()) {
+                String[] objIdAndIp= fullinfo.split("/");
+                String objectId= objIdAndIp[0];
+                String fullip= objIdAndIp[1];
+                String ip = fullip.split("-")[0];
+                String type = fullip.split("-")[1];
+                SharedGalleryClient sharedGalleryClient = getClient(ip,type);
+                String operation= toReplicate.get(fullinfo);
+                updateMyInfo(objectId,operation,sharedGalleryClient);
+            }
+
+        }
+
+    }
+
+    private void updateMyInfo(String objectId, String operation, SharedGalleryClient sharedGalleryClient) {
+
+
+    }
 }

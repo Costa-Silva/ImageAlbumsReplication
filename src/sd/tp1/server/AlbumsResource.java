@@ -213,12 +213,12 @@ public class AlbumsResource implements ServerRESTInterface{
     }
 
     @GET
-    @Path("askforcontent/{objectId}/{fullip}/key/{password}")
+    @Path("askforcontent/{objectId}/{fullip}/{operation}/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response askForContent(@PathParam("objectId") String objectId,@PathParam("fullip") String fullip,@PathParam("password") String password){
+    public Response askForContent(@PathParam("objectId") String objectId,@PathParam("fullip") String fullip, @PathParam("operation") String operation, @PathParam("password") String password){
 
         if (checkPassword(password)) {
-            ReplicationServer.addNewContent(objectId,fullip);
+            ReplicationServer.addNewContent(objectId,fullip,operation);
             return Response.ok(true).build();
             }
 

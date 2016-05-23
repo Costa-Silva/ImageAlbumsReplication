@@ -95,8 +95,8 @@ public class Server implements ServerSOAPInterface {
     }
 
     @WebMethod
-    public boolean askForContent(String objectId, String fullip) {
-        ReplicationServer.addNewContent(objectId,fullip);
+    public boolean askForContent(String objectId, String fullip, String operation) {
+        ReplicationServer.addNewContent(objectId,fullip,operation);
         return true;
     }
 

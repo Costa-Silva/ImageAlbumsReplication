@@ -27,18 +27,6 @@ public interface Server {
 
     /**
      * 
-     * @return
-     *     returns byte[]
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getMetaData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaData")
-    @ResponseWrapper(localName = "getMetaDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaDataResponse")
-    @Action(input = "http://server.tp1.sd/Server/getMetaDataRequest", output = "http://server.tp1.sd/Server/getMetaDataResponse")
-    public byte[] getMetaData();
-
-    /**
-     * 
      * @param arg1
      * @param arg0
      * @return
@@ -54,6 +42,18 @@ public interface Server {
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
+
+    /**
+     * 
+     * @return
+     *     returns byte[]
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getMetaData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaData")
+    @ResponseWrapper(localName = "getMetaDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetMetaDataResponse")
+    @Action(input = "http://server.tp1.sd/Server/getMetaDataRequest", output = "http://server.tp1.sd/Server/getMetaDataResponse")
+    public byte[] getMetaData();
 
     /**
      * 
@@ -183,6 +183,7 @@ public interface Server {
 
     /**
      * 
+     * @param arg2
      * @param arg1
      * @param arg0
      * @return
@@ -190,13 +191,15 @@ public interface Server {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "askForContent", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.AskforContent")
+    @RequestWrapper(localName = "askForContent", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.AskForContent")
     @ResponseWrapper(localName = "askForContentResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.AskForContentResponse")
     @Action(input = "http://server.tp1.sd/Server/askForContentRequest", output = "http://server.tp1.sd/Server/askForContentResponse")
     public boolean askForContent(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
-        String arg1);
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
 
 }

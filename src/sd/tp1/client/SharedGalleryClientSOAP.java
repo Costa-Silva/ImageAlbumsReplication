@@ -72,7 +72,7 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
     }
 
     @Override
-    public boolean askForContent(String objctedId, String fullIp) {
-        return UpdateContent.askForContent(server,objctedId,fullIp);
+    public boolean askForContent(String objctedId, String fullIp, String operation) {
+        return UpdateContent.askForContent(server,objctedId,fullIp,operation);
     }
 }

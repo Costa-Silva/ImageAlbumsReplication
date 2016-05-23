@@ -20,5 +20,5 @@ public interface SharedGalleryClient {
     String getType();
     byte[] getMetaData();
     boolean checkAndAddSharedBy(String ip,String objectId);
-    boolean askForContent(String objctedId, String fullIp);
+    boolean askForContent(String objctedId, String fullIp,String operation);
 }

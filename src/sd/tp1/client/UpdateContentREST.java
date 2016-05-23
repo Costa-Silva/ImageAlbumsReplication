@@ -13,9 +13,8 @@ public class UpdateContentREST {
     private static String SLASH= "/";
 
 
-    public static boolean askForContent(WebTarget target, String objectid, String ip, String password ){
-        String path = PATH+content+SLASH+objectid+SLASH+ip+SLASH+KEY+password;
-        //1+1
+    public static boolean askForContent(WebTarget target, String objectid, String ip,String operation, String password ){
+        String path = PATH+content+SLASH+objectid+SLASH+ip+SLASH+operation+SLASH+KEY+password;
         boolean result = target.path(path)
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
