@@ -94,6 +94,11 @@ public class Server implements ServerSOAPInterface {
         return mainDirectory.length();
     }
 
+    @WebMethod
+    public boolean askForContent(String objectId, String fullip) {
+        ReplicationServer.addNewContent(objectId,fullip);
+        return true;
+    }
 
     public static void main(String args[]){
 

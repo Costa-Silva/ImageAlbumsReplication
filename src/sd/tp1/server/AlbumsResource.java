@@ -211,4 +211,18 @@ public class AlbumsResource implements ServerRESTInterface{
         rep.getHeaders().add("Access-Control-Allow-Origin", "*");
         return rep;
     }
+
+    @GET
+    @Path("askforcontent/{objectId}/{fullip}/key/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response askForContent(@PathParam("objectId") String objectId,@PathParam("fullip") String fullip,@PathParam("password") String password){
+
+        if (checkPassword(password)) {
+            ReplicationServer.addNewContent(objectId,fullip);
+            return Response.ok(true).build();
+            }
+
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
 }

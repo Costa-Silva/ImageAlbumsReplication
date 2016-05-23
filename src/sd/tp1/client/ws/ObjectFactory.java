@@ -33,8 +33,10 @@ public class ObjectFactory {
     private final static QName _DeleteAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "deleteAlbumResponse");
     private final static QName _CreateAlbumResponse_QNAME = new QName("http://server.tp1.sd/", "createAlbumResponse");
     private final static QName _GetMetaDataResponse_QNAME = new QName("http://server.tp1.sd/", "getMetaDataResponse");
+    private final static QName _AskForContent_QNAME = new QName("http://server.tp1.sd/", "askForContent");
     private final static QName _DeletePicture_QNAME = new QName("http://server.tp1.sd/", "deletePicture");
     private final static QName _GetPicturesList_QNAME = new QName("http://server.tp1.sd/", "getPicturesList");
+    private final static QName _AskForContentResponse_QNAME = new QName("http://server.tp1.sd/", "askForContentResponse");
     private final static QName _CheckAndAddSharedByResponse_QNAME = new QName("http://server.tp1.sd/", "checkAndAddSharedByResponse");
     private final static QName _UploadPictureResponse_QNAME = new QName("http://server.tp1.sd/", "uploadPictureResponse");
     private final static QName _DeleteAlbum_QNAME = new QName("http://server.tp1.sd/", "deleteAlbum");
@@ -119,6 +121,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AskForContent }
+     * 
+     */
+    public AskForContent createAskForContent() {
+        return new AskForContent();
+    }
+
+    /**
      * Create an instance of {@link GetPicturesList }
      * 
      */
@@ -164,6 +174,14 @@ public class ObjectFactory {
      */
     public GetserverSpaceResponse createGetserverSpaceResponse() {
         return new GetserverSpaceResponse();
+    }
+
+    /**
+     * Create an instance of {@link AskForContentResponse }
+     * 
+     */
+    public AskForContentResponse createAskForContentResponse() {
+        return new AskForContentResponse();
     }
 
     /**
@@ -296,6 +314,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AskForContent }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "askForContent")
+    public JAXBElement<AskForContent> createAskForContent(AskForContent value) {
+        return new JAXBElement<AskForContent>(_AskForContent_QNAME, AskForContent.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DeletePicture }{@code >}}
      * 
      */
@@ -311,6 +338,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "getPicturesList")
     public JAXBElement<GetPicturesList> createGetPicturesList(GetPicturesList value) {
         return new JAXBElement<GetPicturesList>(_GetPicturesList_QNAME, GetPicturesList.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AskForContentResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.tp1.sd/", name = "askForContentResponse")
+    public JAXBElement<AskForContentResponse> createAskForContentResponse(AskForContentResponse value) {
+        return new JAXBElement<AskForContentResponse>(_AskForContentResponse_QNAME, AskForContentResponse.class, null, value);
     }
 
     /**

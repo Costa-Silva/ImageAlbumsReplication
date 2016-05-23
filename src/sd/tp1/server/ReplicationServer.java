@@ -34,6 +34,7 @@ public class ReplicationServer {
     public static final String REST ="REST";
     public static final String SOAP ="SOAP";
     public static final int PARCIALREPLICATION = 2 ;
+    private static Map<String,String> toReplicate;
     private boolean initialized;
     private JSONObject file;
     private String myFullIp;
@@ -41,6 +42,7 @@ public class ReplicationServer {
     public ReplicationServer(String myFullIp){
         serverIps = new ConcurrentHashMap<>();
         content = new HashMap<>();
+        toReplicate= new HashMap<>();
         this.myFullIp=myFullIp;
         initialized =false;
         initReplication();
@@ -137,10 +139,9 @@ public class ReplicationServer {
                                 }else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())){
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
+                                JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,fullServerIp,file);
+                                doReplication(mySharedby,timestampStringID,serverIp);
                             }
-                            JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,fullServerIp,file);
-
-                            doReplication(mySharedby,serverIp);
                         }
                     }else {
                         System.out.println("No servers found to replicate");
@@ -153,24 +154,30 @@ public class ReplicationServer {
         }).start();
     }
 
-    private void doReplication(JSONArray sharedby,String hisSv) {
+    private void doReplication(JSONArray sharedby,String objectId,String hisSv) {
         int size = sharedby.size();
         if (PARCIALREPLICATION>size){
             if (serverReplicaToReplicate(sharedby).equals(ReplicationServerUtils.getReplicaid(file))){
                 int toReplicate = PARCIALREPLICATION-size;
                 List<String> keys = new ArrayList<>(serverIps.keySet());
                 keys.remove(hisSv);
-                for (int i = 0; i < toReplicate; i++) {
-                    if (keys.size()>0) {
-                        int index = new Random().nextInt(keys.size());
-                        String serverIp = keys.remove(index);
-                        SharedGalleryClient sharedGalleryClient = getClient(serverIp, serverIps.get(serverIp));
-                        //// TODO: 23/05/16 fazer metodos no resource para informar o outro server que tem de sacar determina info e atualizar os metadados
 
+                int i =0;
+                while (i<toReplicate){
+                    if (keys.size()>0) {
+                        try{
+                            int index = new Random().nextInt(keys.size());
+                            String serverIp = keys.remove(index);
+                            SharedGalleryClient sharedGalleryClient = getClient(serverIp, serverIps.get(serverIp));
+                            sharedGalleryClient.askForContent(objectId,myFullIp);
+                        }catch (ProcessingException e){
+                            i--;
+                        }
                     }else{
                         System.out.println("Not enought servers to replicate this content");
                         break;
                     }
+                    i++;
                 }
             }
         }
@@ -382,4 +389,11 @@ public class ReplicationServer {
             ReplicationServerUtils.writeToFile(file);
         }).start();
     }
+
+    public static void addNewContent(String objectId,String fullserverIp){
+
+        if (!toReplicate.containsKey(objectId))
+            toReplicate.put(objectId,fullserverIp);
+    }
+
 }

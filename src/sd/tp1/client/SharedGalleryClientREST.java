@@ -77,5 +77,10 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
         return CheckAndAddSharedByREST.checkAndAddSharedBy(target,ip,objectId,password);
     }
 
+    @Override
+    public boolean askForContent(String objctedId, String fullIp) {
+        return AskForContentREST.askForContent(target,objctedId,fullIp,password);
+    }
+
 
 }

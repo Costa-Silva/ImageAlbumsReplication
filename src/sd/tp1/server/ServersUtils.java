@@ -41,7 +41,6 @@ public class ServersUtils {
     public static final String REMOVEOP = "REMOVED";
     public static final String CREATEOP = "CREATED";
     public static final String SHAREDBY= "sharedBy";
-
     public static void startListening(String serverType, int port) {
 
         try {
@@ -390,5 +389,4 @@ public class ServersUtils {
         }
         return null;
     }
-
 }

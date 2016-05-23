@@ -28,36 +28,6 @@ public interface Server {
     /**
      * 
      * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getAlbumList", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumList")
-    @ResponseWrapper(localName = "getAlbumListResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumListResponse")
-    @Action(input = "http://server.tp1.sd/Server/getAlbumListRequest", output = "http://server.tp1.sd/Server/getAlbumListResponse")
-    public List<String> getAlbumList();
-
-    /**
-     * 
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "deletePicture", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeletePicture")
-    @ResponseWrapper(localName = "deletePictureResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeletePictureResponse")
-    @Action(input = "http://server.tp1.sd/Server/deletePictureRequest", output = "http://server.tp1.sd/Server/deletePictureResponse")
-    public boolean deletePicture(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1);
-
-    /**
-     * 
-     * @return
      *     returns byte[]
      */
     @WebMethod
@@ -69,18 +39,33 @@ public interface Server {
 
     /**
      * 
+     * @param arg1
      * @param arg0
      * @return
-     *     returns java.lang.String
+     *     returns boolean
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "createAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbum")
-    @ResponseWrapper(localName = "createAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbumResponse")
-    @Action(input = "http://server.tp1.sd/Server/createAlbumRequest", output = "http://server.tp1.sd/Server/createAlbumResponse")
-    public String createAlbum(
+    @RequestWrapper(localName = "checkAndAddSharedBy", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CheckAndAddSharedBy")
+    @ResponseWrapper(localName = "checkAndAddSharedByResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CheckAndAddSharedByResponse")
+    @Action(input = "http://server.tp1.sd/Server/checkAndAddSharedByRequest", output = "http://server.tp1.sd/Server/checkAndAddSharedByResponse")
+    public boolean checkAndAddSharedBy(
         @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getAlbumList", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumList")
+    @ResponseWrapper(localName = "getAlbumListResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetAlbumListResponse")
+    @Action(input = "http://server.tp1.sd/Server/getAlbumListRequest", output = "http://server.tp1.sd/Server/getAlbumListResponse")
+    public List<String> getAlbumList();
 
     /**
      * 
@@ -96,24 +81,6 @@ public interface Server {
     public List<String> getPicturesList(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
-
-    /**
-     * 
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns byte[]
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getPictureData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureData")
-    @ResponseWrapper(localName = "getPictureDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureDataResponse")
-    @Action(input = "http://server.tp1.sd/Server/getPictureDataRequest", output = "http://server.tp1.sd/Server/getPictureDataResponse")
-    public byte[] getPictureData(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1);
 
     /**
      * 
@@ -135,6 +102,57 @@ public interface Server {
         String arg1,
         @WebParam(name = "arg2", targetNamespace = "")
         byte[] arg2);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "deletePicture", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeletePicture")
+    @ResponseWrapper(localName = "deletePictureResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.DeletePictureResponse")
+    @Action(input = "http://server.tp1.sd/Server/deletePictureRequest", output = "http://server.tp1.sd/Server/deletePictureResponse")
+    public boolean deletePicture(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns byte[]
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPictureData", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureData")
+    @ResponseWrapper(localName = "getPictureDataResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.GetPictureDataResponse")
+    @Action(input = "http://server.tp1.sd/Server/getPictureDataRequest", output = "http://server.tp1.sd/Server/getPictureDataResponse")
+    public byte[] getPictureData(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "createAlbum", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbum")
+    @ResponseWrapper(localName = "createAlbumResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CreateAlbumResponse")
+    @Action(input = "http://server.tp1.sd/Server/createAlbumRequest", output = "http://server.tp1.sd/Server/createAlbumResponse")
+    public String createAlbum(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
 
     /**
      * 
@@ -172,10 +190,10 @@ public interface Server {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "checkAndAddSharedBy", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CheckAndAddSharedBy")
-    @ResponseWrapper(localName = "checkAndAddSharedByResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.CheckAndAddSharedByResponse")
-    @Action(input = "http://server.tp1.sd/Server/checkAndAddSharedByRequest", output = "http://server.tp1.sd/Server/checkAndAddSharedByResponse")
-    public boolean checkAndAddSharedBy(
+    @RequestWrapper(localName = "askForContent", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.AskForContent")
+    @ResponseWrapper(localName = "askForContentResponse", targetNamespace = "http://server.tp1.sd/", className = "sd.tp1.client.ws.AskForContentResponse")
+    @Action(input = "http://server.tp1.sd/Server/askForContentRequest", output = "http://server.tp1.sd/Server/askForContentResponse")
+    public boolean askForContent(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
