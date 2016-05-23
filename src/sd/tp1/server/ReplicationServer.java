@@ -166,10 +166,14 @@ public class ReplicationServer {
 
     private void doReplication(JSONArray sharedby,String objectId,String hisSv) {
         int size = sharedby.size();
-        System.out.println("doreplication: "+ size);
         if (PARCIALREPLICATION>size){
-            System.out.println("entrou boy: ");
-            if (serverReplicaToReplicate(sharedby).equals(ReplicationServerUtils.getReplicaid(file))){
+
+            String bestmatch = serverReplicaToReplicate(sharedby);
+            String myreplica = ReplicationServerUtils.getReplicaid(file);
+
+            System.out.println(bestmatch+ "  "+ myreplica);
+
+            if (bestmatch.equals(myreplica)){
                 System.out.println("I'm the chosen one");
                 int toReplicate = PARCIALREPLICATION-size;
                 List<String> keys = new ArrayList<>(serverIps.keySet());
