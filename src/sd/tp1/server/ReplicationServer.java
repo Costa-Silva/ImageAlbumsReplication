@@ -139,7 +139,7 @@ public class ReplicationServer {
                             if (myTimestamp.size()>0){
 
                                 if (( Integer.parseInt(timestamp.get(CLOCK).toString()))==Integer.parseInt(myTimestamp.get(CLOCK).toString())){
-                                    int result = timestamp.get(REPLICA).toString().compareTo(myTimestamp.get(REPLICA).toString());
+                                    int result = replica.compareTo(myTimestamp.get(REPLICA).toString());
                                     //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
                                     if (result<0){
                                         update(timestampStringID,operation,sharedGalleryClient,clockObj);
@@ -148,7 +148,7 @@ public class ReplicationServer {
                                 }else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())){
                                     update(timestampStringID,operation,sharedGalleryClient,clockObj);
                                 }
-                                JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,fullServerIp,file);
+                                JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,replica,file);
                                 doReplication(mySharedby,timestampStringID,serverIp);
 
                             }
@@ -216,12 +216,12 @@ public class ReplicationServer {
     }
 
 
-    public JSONArray sharedByAux(JSONArray sharedBy,String timestampStringID, String fullServerIp,JSONObject file ){
+    public JSONArray sharedByAux(JSONArray sharedBy,String timestampStringID, String replica,JSONObject file ){
         Iterator iterator = sharedBy.iterator();
         JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
 
-        if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,fullServerIp)<0) {
-            mySharedBy.add(fullServerIp);
+        if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,replica)<0) {
+            mySharedBy.add(replica);
         }
 
         while (iterator.hasNext()){
