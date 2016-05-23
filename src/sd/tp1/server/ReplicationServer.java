@@ -166,6 +166,7 @@ public class ReplicationServer {
                         String serverIp = keys.remove(index);
                         SharedGalleryClient sharedGalleryClient = getClient(serverIp, serverIps.get(serverIp));
                         //// TODO: 23/05/16 fazer metodos no resource para informar o outro server que tem de sacar determina info e atualizar os metadados
+
                     }else{
                         System.out.println("Not enought servers to replicate this content");
                         break;
