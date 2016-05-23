@@ -349,16 +349,16 @@ public class ReplicationServer {
 
 
     private void keepAlive(){
-        int timeout = 1500;
+        int timeout = 4000;
         new Thread(()->{
             while (true){
                 try {
+                    System.out.println("acordei");
                     for (String ipToCheck :serverIps.keySet()) {
                         //you there?
                         //checking if return any info
                         String type = serverIps.get(ipToCheck);
                         SharedGalleryClient sharedGalleryClient = getClient(ipToCheck,type);
-
                         try{
                             sharedGalleryClient.getServerSize();
                         }catch (ProcessingException e){
@@ -367,6 +367,7 @@ public class ReplicationServer {
                             keepAliveRecheck(ipToCheck,sharedGalleryClient);
                         }
                     }
+                    System.out.println("vou dormir");
                     Thread.sleep(timeout);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

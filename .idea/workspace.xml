@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/ReplicationServer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java" />
     </list>
@@ -30,8 +29,8 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="364" column="80" selection-start-line="364" selection-start-column="80" selection-end-line="364" selection-end-column="80" />
+            <state relative-caret-position="127">
+              <caret line="355" column="47" selection-start-line="355" selection-start-column="47" selection-end-line="355" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -877,14 +876,7 @@
       <workItem from="1463962665064" duration="9341000" />
       <workItem from="1463974555334" duration="62000" />
       <workItem from="1464018580917" duration="7172000" />
-      <workItem from="1464025815313" duration="1618000" />
-    </task>
-    <task id="LOCAL-00136" summary="changes">
-      <created>1463888229726</created>
-      <option name="number" value="00136" />
-      <option name="presentableId" value="LOCAL-00136" />
-      <option name="project" value="LOCAL" />
-      <updated>1463888229726</updated>
+      <workItem from="1464025815313" duration="1859000" />
     </task>
     <task id="LOCAL-00137" summary="changes">
       <created>1463888280423</created>
@@ -1222,11 +1214,18 @@
       <option name="project" value="LOCAL" />
       <updated>1464027420890</updated>
     </task>
-    <option name="localTasksCounter" value="185" />
+    <task id="LOCAL-00185" summary="please work">
+      <created>1464027684390</created>
+      <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
+      <option name="project" value="LOCAL" />
+      <updated>1464027684391</updated>
+    </task>
+    <option name="localTasksCounter" value="186" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="246563000" />
+    <option name="totallyTimeSpent" value="246804000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1671,8 +1670,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="364" column="80" selection-start-line="364" selection-start-column="80" selection-end-line="364" selection-end-column="80" />
+        <state relative-caret-position="127">
+          <caret line="355" column="47" selection-start-line="355" selection-start-column="47" selection-end-line="355" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
