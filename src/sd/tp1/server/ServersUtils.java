@@ -114,7 +114,7 @@ public class ServersUtils {
     }
 
     private static void kafkaPublisher(String topic , String event) {
-        Properties env = System.getProperties();
+      /*  Properties env = System.getProperties();
         Properties props = new Properties();
 
 
@@ -130,7 +130,7 @@ public class ServersUtils {
 
         ProducerRecord<String,String> data = new ProducerRecord<>(topic,event);
         producer.send(data);
-
+*/
     }
 
     public static void sendingMyInfo(int port, String type, ReplicationServer replicationServer) {

@@ -79,7 +79,7 @@ public class AlbumsProxyResource {
 
     @GET
     @Path("/metadata/key/{password}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getMetaData(@PathParam("password") String password){
         if (checkPassword(password)) {
             return  Response.ok(ServersUtils.getMetaData()).build();
