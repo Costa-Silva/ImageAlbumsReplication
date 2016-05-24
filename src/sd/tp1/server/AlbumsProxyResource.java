@@ -200,6 +200,7 @@ public class AlbumsProxyResource {
             String albumID;
             if ((albumID=albumName2Id(albumName)) != null) {
                 ImgurPicture iP;
+                System.out.println("quero a picture :" + pictureName + " e tenho?" + getPictureWithName(pictureName).getId());
                 if ((iP = getPictureWithName(pictureName)) != null) {
                     try {
                         String imageUrl = "https://api.imgur.com/3/album/" + albumID + "/image/" + iP.getId();
