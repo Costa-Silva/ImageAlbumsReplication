@@ -30,8 +30,8 @@
       <file leaf-file-name="ReplicationServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="452" column="71" selection-start-line="452" selection-start-column="71" selection-end-line="452" selection-end-column="71" />
+            <state relative-caret-position="307">
+              <caret line="455" column="70" selection-start-line="455" selection-start-column="70" selection-end-line="455" selection-end-column="70" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4207#4215#0" expanded="true" />
@@ -902,14 +902,7 @@
       <workItem from="1463962665064" duration="9341000" />
       <workItem from="1463974555334" duration="62000" />
       <workItem from="1464018580917" duration="7172000" />
-      <workItem from="1464025815313" duration="29737000" />
-    </task>
-    <task id="LOCAL-00178" summary="changes">
-      <created>1464024597650</created>
-      <option name="number" value="00178" />
-      <option name="presentableId" value="LOCAL-00178" />
-      <option name="project" value="LOCAL" />
-      <updated>1464024597650</updated>
+      <workItem from="1464025815313" duration="29945000" />
     </task>
     <task id="LOCAL-00179" summary="changes">
       <created>1464024870745</created>
@@ -1247,11 +1240,18 @@
       <option name="project" value="LOCAL" />
       <updated>1464067640645</updated>
     </task>
-    <option name="localTasksCounter" value="227" />
+    <task id="LOCAL-00227" summary="please work">
+      <created>1464067963041</created>
+      <option name="number" value="00227" />
+      <option name="presentableId" value="LOCAL-00227" />
+      <option name="project" value="LOCAL" />
+      <updated>1464067963041</updated>
+    </task>
+    <option name="localTasksCounter" value="228" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="274682000" />
+    <option name="totallyTimeSpent" value="274890000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1701,8 +1701,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/ReplicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="452" column="71" selection-start-line="452" selection-start-column="71" selection-end-line="452" selection-end-column="71" />
+        <state relative-caret-position="307">
+          <caret line="455" column="70" selection-start-line="455" selection-start-column="70" selection-end-line="455" selection-end-column="70" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4207#4215#0" expanded="true" />

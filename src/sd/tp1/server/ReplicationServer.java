@@ -441,8 +441,7 @@ public class ReplicationServer {
         }).start();
     }
 
-    private void removeFromAllSharedBy(String ipToRemove){
-        String replicatoremove = ipTranslator.get(ipToRemove);
+    private void removeFromAllSharedBy(String replicatoremove){
         JSONArray timestamps = ReplicationServerUtils.getTimeStamps(file);
 
         Iterator timestampsIterator = timestamps.iterator();
@@ -454,6 +453,7 @@ public class ReplicationServer {
             for (int i = 0; i < size ; i++) {
                 String replica= thisSharedBy.get(i).toString();
                 System.out.println("replica deu: "+replica);
+                System.out.println("replica 2remove: "+replicatoremove);
                 if (replica.equals(replicatoremove)){
                     thisSharedBy.remove(i);
                     System.out.println("removed "+replica);
