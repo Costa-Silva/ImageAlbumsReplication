@@ -431,9 +431,12 @@ public class ReplicationServer {
                 }
             }
             serverIps.remove(ipToCheck);
-            boolean x = ReplicationServerUtils.removeHost(file,ipToCheck);
+
+            String replicatoRemove = ipTranslator.get(ipToCheck);
+
+            boolean x = ReplicationServerUtils.removeHost(file,replicatoRemove);
             System.out.println("removi dos hosts"+x+file.toJSONString());
-            removeFromAllSharedBy(ipToCheck);
+            removeFromAllSharedBy(replicatoRemove);
             System.out.println("removi do sharedby");
             ReplicationServerUtils.writeToFile(file);
         }).start();
