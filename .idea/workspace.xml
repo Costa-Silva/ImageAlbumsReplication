@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6062f2ea-6ca1-42e2-a678-32a2c891ade6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsProxyResource.class" afterPath="$PROJECT_DIR$/bin/sd/tp1/server/AlbumsProxyResource.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java" afterPath="$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java" />
     </list>
     <ignored path="SD2016-TP1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="230">
-              <caret line="210" column="65" selection-start-line="210" selection-start-column="65" selection-end-line="210" selection-end-column="65" />
+              <caret line="210" column="100" selection-start-line="210" selection-start-column="100" selection-end-line="210" selection-end-column="100" />
               <folding />
             </state>
           </provider>
@@ -939,13 +941,6 @@
       <workItem from="1464074219914" duration="455000" />
       <workItem from="1464103881719" duration="3060000" />
     </task>
-    <task id="LOCAL-00196" summary="please work">
-      <created>1464032156518</created>
-      <option name="number" value="00196" />
-      <option name="presentableId" value="LOCAL-00196" />
-      <option name="project" value="LOCAL" />
-      <updated>1464032156518</updated>
-    </task>
     <task id="LOCAL-00197" summary="please work">
       <created>1464032360056</created>
       <option name="number" value="00197" />
@@ -1282,7 +1277,14 @@
       <option name="project" value="LOCAL" />
       <updated>1464127107000</updated>
     </task>
-    <option name="localTasksCounter" value="245" />
+    <task id="LOCAL-00245" summary="parcial replication done">
+      <created>1464127144362</created>
+      <option name="number" value="00245" />
+      <option name="presentableId" value="LOCAL-00245" />
+      <option name="project" value="LOCAL" />
+      <updated>1464127144362</updated>
+    </task>
+    <option name="localTasksCounter" value="246" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -1732,7 +1734,7 @@
     <entry file="file://$PROJECT_DIR$/src/sd/tp1/server/AlbumsProxyResource.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
-          <caret line="210" column="65" selection-start-line="210" selection-start-column="65" selection-end-line="210" selection-end-column="65" />
+          <caret line="210" column="100" selection-start-line="210" selection-start-column="100" selection-end-line="210" selection-end-column="100" />
           <folding />
         </state>
       </provider>
