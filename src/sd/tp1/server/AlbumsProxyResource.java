@@ -93,7 +93,6 @@ public class AlbumsProxyResource {
     @Path("/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbumList(@PathParam("password") String password) {
-
         if (checkPassword(password)) {
             String imgurUrl = "https://api.imgur.com/3/account/me/albums";
             try {
@@ -101,12 +100,16 @@ public class AlbumsProxyResource {
                 OAuthRequest albumsReq = new OAuthRequest(Verb.GET, imgurUrl, service);
                 service.signRequest(accessToken, albumsReq);
                 final com.github.scribejava.core.model.Response albumsRes = albumsReq.send();
+
                 if (albumsRes.getCode() == 200) {
 
                     JSONParser parser = new JSONParser();
-
+                    System.out.println("200");
                     JSONObject res = (JSONObject) parser.parse(albumsRes.getBody());
+                    System.out.println("res");
+
                     JSONArray images = (JSONArray) res.get("data");
+                    System.out.println("images");
 
                     Iterator albumsIt = images.iterator();
                     Map<String,String> mapHelper = new HashMap<>();
@@ -124,6 +127,7 @@ public class AlbumsProxyResource {
                             albumsIdName.put(albumId,title);
                         }
                     }
+                    System.out.println("vou retornar");
                     return Response.ok(albumsTitleList).build();
                 }
 

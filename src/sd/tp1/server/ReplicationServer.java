@@ -305,9 +305,14 @@ public class ReplicationServer {
 
         if (nameid.length>1){
             if (operation.equals(CREATEOP)){
+                System.out.println("vou chamar o get picture data da: "+ nameid[1]);
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
+                System.out.println("aux: "+ aux.length);
+
                 content.get(nameid[0]).put(nameid[1],aux);
+                System.out.println("voudar upload");
                 mysharedGalleryClient.uploadPicture(nameid[0],nameid[1],aux);
+                System.out.println("dei");
                 writeMetaData(timestampStringID,clockObj,operation);
             }else if (operation.equals(REMOVEOP)){
                 content.get(nameid[0]).remove(nameid[1]);
