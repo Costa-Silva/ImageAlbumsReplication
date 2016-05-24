@@ -35,15 +35,21 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		discoveryClient = new DiscoveryClient();
 		viewingAlbums = new LinkedList<>();
 		viewingPictures = new HashMap<>();
+
+        System.out.println("Kafka's broker hostname");
+        Scanner s = new Scanner(System.in);
+        String hostname = s.nextLine();
+        s.close();
+
 		discoveryClient.checkNewConnections();
 		cacheInit();
-		initKafkaConsumer();
+		initKafkaConsumer(hostname);
 	}
 
-	private void initKafkaConsumer() {
+	private void initKafkaConsumer(String hostname) {
 
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "192.168.43.25:9092");
+		props.put("bootstrap.servers", hostname+":9092");
 		props.put("group.id", "consumer-tutorial" + System.nanoTime());
 		props.put("key.deserializer", StringDeserializer.class.getName());
 		props.put("value.deserializer", StringDeserializer.class.getName());

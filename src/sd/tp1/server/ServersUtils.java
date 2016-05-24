@@ -20,10 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by Antonio on 28/03/16.
@@ -41,6 +38,9 @@ public class ServersUtils {
     public static final String REMOVEOP = "REMOVED";
     public static final String CREATEOP = "CREATED";
     public static final String SHAREDBY= "sharedBy";
+
+    private static String hostname;
+
     public static void startListening(String serverType, int port) {
 
         try {
@@ -48,6 +48,11 @@ public class ServersUtils {
             ReplicationServer replicationServer = new ReplicationServer(myinfo);
 
             sendingMyInfo(port, serverType,replicationServer);
+
+            System.out.println("Kafka's broker hostname");
+            Scanner s = new Scanner(System.in);
+            String hostname = s.nextLine();
+            s.close();
 
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
@@ -111,8 +116,8 @@ public class ServersUtils {
         Properties props = new Properties();
 
 
-        props.put("zk.connect", env.getOrDefault("zk.connect", "192.168.43.25:2181/"));
-        props.put("bootstrap.servers", env.getOrDefault("bootstrap.servers", "192.168.43.25:9092"));
+        props.put("zk.connect", env.getOrDefault("zk.connect", hostname+":2181/"));
+        props.put("bootstrap.servers", env.getOrDefault("bootstrap.servers", hostname+":9092"));
         props.put("log.retention.ms", 1000);
 
         props.put("serializer.class", "kafka.serializer.StringEncoder");
