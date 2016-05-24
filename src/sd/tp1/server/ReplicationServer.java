@@ -433,8 +433,8 @@ public class ReplicationServer {
                 }catch (ProcessingException e){
                 }
             }
-            ReplicationServerUtils.removeHost(file,ipToCheck);
-            System.out.println("removi dos hosts");
+            boolean x = ReplicationServerUtils.removeHost(file,ipToCheck);
+            System.out.println("removi dos hosts"+x+file.toJSONString());
             removeFromAllSharedBy(ipToCheck);
             System.out.println("removi do sharedby");
             ReplicationServerUtils.writeToFile(file);

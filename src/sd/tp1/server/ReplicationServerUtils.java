@@ -189,8 +189,17 @@ public class ReplicationServerUtils {
     public static JSONArray getKnownHosts(JSONObject file){
         return ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS));
     }
-    public static void removeHost(JSONObject file, String ip){
-        ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS)).remove(ip);
+    public static boolean removeHost(JSONObject file, String ip){
+       JSONArray knownHosts= ((JSONArray)((JSONObject)file.get(DATA)).get(KNOWNHOSTS));
+
+        for (int i = 0; i <knownHosts.size() ; i++) {
+                    if (knownHosts.get(i).toString().equals(ip)){
+                        knownHosts.remove(i);
+                        return true;
+                    }
+        }
+
+        return false;
     }
 
     public static String getReplicaid(JSONObject file){
