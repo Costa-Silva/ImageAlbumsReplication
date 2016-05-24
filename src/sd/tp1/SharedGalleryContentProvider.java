@@ -37,7 +37,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		viewingPictures = new HashMap<>();
 		discoveryClient.checkNewConnections();
 		cacheInit();
-		//initKafkaConsumer();
+		initKafkaConsumer();
 	}
 
 	private void initKafkaConsumer() {
