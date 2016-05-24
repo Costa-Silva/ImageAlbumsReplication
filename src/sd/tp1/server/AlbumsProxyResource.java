@@ -208,6 +208,7 @@ public class AlbumsProxyResource {
 
         if (checkPassword(password)) {
             String albumID;
+            System.out.println("TEnho o album " +albumName + " ? "+ albumName2Id(albumName)!=null);
             if ((albumID=albumName2Id(albumName)) != null) {
                 ImgurPicture iP;
                 System.out.println("quero a picture :" + pictureName + " e tenho?" + getPictureWithName(pictureName).getId());
