@@ -184,6 +184,7 @@ public class ReplicationServer {
 
     private void checkAndReplicateReplicas(List<String> myObjectIds){
         JSONArray timestamps = ReplicationServerUtils.getTimeStamps(file);
+        System.out.println("Check and replicate activated size:" +myObjectIds.size());
         while (myObjectIds.size()>0){
             String objectId= myObjectIds.remove(0);
             Iterator iterator =timestamps.iterator();
