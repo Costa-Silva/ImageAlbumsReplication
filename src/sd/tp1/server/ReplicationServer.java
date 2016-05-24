@@ -304,30 +304,40 @@ public class ReplicationServer {
         SharedGalleryClient mysharedGalleryClient = getClient(ip[0],ip[1]);
 
         if (nameid.length>1){
-            if (operation.equals(CREATEOP)){
-                System.out.println("vou chamar o get picture data da: "+ nameid[1]);
-                byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
+            if (operation.equals(CREATEOP)) {
+                System.out.println("vou chamar o get picture data da: " + nameid[1]);
+                byte[] aux = sharedGalleryClient.getPictureData(nameid[0], nameid[1]);
 
+                if (!content.containsKey(nameid[0])){
+                    mysharedGalleryClient.createAlbum(nameid[0]);
+                    content.put(nameid[0],new HashMap<>());
+                }
                 content.get(nameid[0]).put(nameid[1],aux);
+
                 System.out.println("voudar upload");
                 mysharedGalleryClient.uploadPicture(nameid[0],nameid[1],aux);
                 System.out.println("dei");
                 writeMetaData(timestampStringID,clockObj,operation);
             }else if (operation.equals(REMOVEOP)){
-                content.get(nameid[0]).remove(nameid[1]);
-                if (mysharedGalleryClient.deletePicture(nameid[0],nameid[1])){
-                    writeMetaData(timestampStringID,clockObj,operation);
+                if(content.containsKey(nameid[0])) {
+                    if (mysharedGalleryClient.deletePicture(nameid[0], nameid[1])) {
+                        writeMetaData(timestampStringID, clockObj, operation);
+                        content.get(nameid[0]).remove(nameid[1]);
+                    }
                 }
             }
         }else{
             if (operation.equals(CREATEOP)){
-                content.put(nameid[0],new HashMap<>());
-                if (mysharedGalleryClient.createAlbum(nameid[0])!=null)
+
+                if (mysharedGalleryClient.createAlbum(nameid[0])!=null){
                     writeMetaData(timestampStringID,clockObj,operation);
+                    content.put(nameid[0],new HashMap<>());
+                }
 
             }else if (operation.equals(REMOVEOP)){
-                content.remove(nameid[0]);
+
                 if (mysharedGalleryClient.deleteAlbum(nameid[0])) {
+                    content.remove(nameid[0]);
                     writeMetaData(timestampStringID,clockObj,operation);
                 }
             }
