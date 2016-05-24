@@ -39,14 +39,14 @@ public class ServersUtils {
     public static final String CREATEOP = "CREATED";
     public static final String SHAREDBY= "sharedBy";
 
-    private static String hostname;
+    private static String hostname = "";
 
     public static void startListening(String serverType, int port) {
 
         try {
             System.out.println("Kafka's broker hostname");
             Scanner s = new Scanner(System.in);
-            //hostname = s.nextLine();
+            hostname = s.nextLine();
             s.close();
 
             String myinfo = InetAddress.getLocalHost().getHostAddress() + ":" + port + "-" + serverType;
@@ -114,7 +114,7 @@ public class ServersUtils {
     }
 
     private static void kafkaPublisher(String topic , String event) {
-      /*  Properties env = System.getProperties();
+       Properties env = System.getProperties();
         Properties props = new Properties();
 
 
@@ -130,7 +130,7 @@ public class ServersUtils {
 
         ProducerRecord<String,String> data = new ProducerRecord<>(topic,event);
         producer.send(data);
-*/
+
     }
 
     public static void sendingMyInfo(int port, String type, ReplicationServer replicationServer) {

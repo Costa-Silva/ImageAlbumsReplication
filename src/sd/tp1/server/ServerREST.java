@@ -114,6 +114,7 @@ public class ServerREST {
 
         String code = in.nextLine();
 
+
         // Trade the Request Token and Verifier for the Access Token
         System.out.println("A obter o Access Token!");
         accessToken = service.getAccessToken(code);
