@@ -142,7 +142,7 @@ public class AlbumsProxyResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response hasAlbum(@PathParam("albumName") String albumName,@PathParam("password") String password){
         if(checkPassword(password)){
-            return Response.ok(albumsIdName.containsKey(albumName)).build();
+            return Response.ok(albumName2Id(albumName)!=null).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
