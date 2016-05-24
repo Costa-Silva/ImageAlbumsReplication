@@ -35,6 +35,7 @@ public class ReplicationServer {
     public static final String SOAP ="SOAP";
     public static final int PARCIALREPLICATION = 2 ;
     private static Map<String,String> toReplicate;
+    private static Map<String,String> ipTranslator;
     private boolean initialized;
     private JSONObject file;
     private String myFullIp;
@@ -44,6 +45,7 @@ public class ReplicationServer {
         serverIps = new ConcurrentHashMap<>();
         content = new HashMap<>();
         toReplicate= new ConcurrentHashMap<>();
+        ipTranslator = new HashMap<>();
         this.myFullIp=myFullIp;
         initialized =false;
         initReplication();
@@ -112,7 +114,6 @@ public class ReplicationServer {
                             myObjectIds.add(objectid);
                         }
 
-
                         boolean x =false;
                         while (!x) {
                             try {
@@ -126,6 +127,8 @@ public class ReplicationServer {
                         String otherServerReplica = ReplicationServerUtils.getReplicaid(theirMetadata);
 
                         String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
+
+                        ipTranslator.put(fullServerIp,ReplicationServerUtils.getReplicaid(theirMetadata));
 
                         file = ServersUtils.getJsonFromFile(new byte[0]);
 
@@ -192,7 +195,7 @@ public class ReplicationServer {
                 JSONObject thisTimestamp = (JSONObject) iterator.next();
                 String thisobj = ReplicationServerUtils.getTimestampID(thisTimestamp);
                 if (thisobj.equals(objectId)){
-                  JSONArray thisSharedBy =  (JSONArray) thisTimestamp.get(SHAREDBY);
+                    JSONArray thisSharedBy =  (JSONArray) thisTimestamp.get(SHAREDBY);
                     String operation = thisTimestamp.get(OPERATION).toString();
                     doReplication(thisSharedBy,objectId,"",operation);
                     break;
@@ -203,12 +206,9 @@ public class ReplicationServer {
 
     private void doReplication(JSONArray sharedby,String objectId,String hisSv,String operation) {
         int size = sharedby.size() +1;
-        System.out.println("do replication "+ objectId +size);
         if (PARCIALREPLICATION>size){
 
             String bestmatch = serverReplicaToReplicate(sharedby);
-            System.out.println("do replication ");
-            System.out.println(bestmatch.equals(myReplica));
             if (bestmatch.equals(myReplica)){
                 System.out.println("I'm the chosen one");
                 int toReplicate = PARCIALREPLICATION-size;
@@ -423,15 +423,37 @@ public class ReplicationServer {
             }
             serverIps.remove(ipToCheck);
             ReplicationServerUtils.removeHost(file,ipToCheck);
+            removeFromAllSharedBy(ipToCheck);
             ReplicationServerUtils.writeToFile(file);
         }).start();
     }
+
+    private void removeFromAllSharedBy(String ipToRemove){
+        String replicatoremove = ipTranslator.get(ipToRemove);
+        JSONArray timestamps = ReplicationServerUtils.getTimeStamps(file);
+
+        Iterator timestampsIterator = timestamps.iterator();
+        while (timestampsIterator.hasNext()){
+            JSONObject thisTimestamp = (JSONObject) timestampsIterator.next();
+            JSONArray thisSharedBy = (JSONArray) thisTimestamp.get(SHAREDBY);
+            int size = thisSharedBy.size();
+            for (int i = 0; i < size ; i++) {
+                String replica= thisSharedBy.get(i).toString();
+                if (replica.equals(replicatoremove)){
+                    thisSharedBy.remove(i);
+                    System.out.println("removed "+replica);
+                    break;
+                }
+            }
+        }
+    }
+
 
     public static void addNewContent(String objectid,String fullip,String operation){
         String fullinfo = objectid+"/"+fullip;
         if (!toReplicate.containsKey(fullinfo))
             toReplicate.put(fullinfo,operation);
-        System.out.println("adicionei content remotamente"+ fullinfo);
+        System.out.println("Added remote content"+ fullinfo);
     }
 
     private void checkUnreplicaredContent() {
