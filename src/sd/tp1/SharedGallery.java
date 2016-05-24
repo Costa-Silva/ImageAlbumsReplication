@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import sd.tp1.gui.impl.GalleryWindow;
 
+import java.util.Scanner;
+
 /*
  * Launches the local shared gallery application.
  */
@@ -12,8 +14,12 @@ public class SharedGallery extends Application {
 	GalleryWindow window;
 	
 	public SharedGallery() {
+		System.out.println("Kafka's broker hostname");
+		Scanner s = new Scanner(System.in);
+		String hostname = s.nextLine();
+
 		window = new GalleryWindow(
-				new SharedGalleryContentProvider()
+				new SharedGalleryContentProvider(hostname)
 		);
 	}	
 	

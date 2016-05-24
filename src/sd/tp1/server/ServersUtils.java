@@ -41,14 +41,11 @@ public class ServersUtils {
 
     private static String hostname = "";
 
-    public static void startListening(String serverType, int port) {
+    public static void startListening(String serverType, int port,String host) {
 
         try {
-            System.out.println("Kafka's broker hostname");
-            Scanner s = new Scanner(System.in);
-            hostname = s.nextLine();
-            s.close();
 
+            hostname=host;
             String myinfo = InetAddress.getLocalHost().getHostAddress() + ":" + port + "-" + serverType;
             ReplicationServer replicationServer = new ReplicationServer(myinfo);
 

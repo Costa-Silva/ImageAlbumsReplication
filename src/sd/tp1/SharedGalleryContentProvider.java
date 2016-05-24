@@ -30,12 +30,15 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	private Map<String,List<String>> viewingPictures;
 	private List<String> topics;
 
-	KafkaConsumer<String, String> consumer;
-	SharedGalleryContentProvider() {
+	private String kfkahostname = "";
+	private KafkaConsumer<String, String> consumer;
+
+	SharedGalleryContentProvider(String hostname) {
 		discoveryClient = new DiscoveryClient();
 		viewingAlbums = new LinkedList<>();
 		viewingPictures = new HashMap<>();
 
+		kfkahostname = hostname;
 
 		discoveryClient.checkNewConnections();
 		cacheInit();
@@ -43,20 +46,16 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 	}
 
 	private void initKafkaConsumer() {
-
-        /*System.out.println("Kafka's broker hostname");
-        Scanner s = new Scanner(System.in);
-        String hostname = s.nextLine();
-        s.close();
+		new Thread(()->{
 
         Properties props = new Properties();
-		props.put("bootstrap.servers", hostname+":9092");
+		props.put("bootstrap.servers", kfkahostname+":9092");
 		props.put("group.id", "consumer-tutorial" + System.nanoTime());
 		props.put("key.deserializer", StringDeserializer.class.getName());
 		props.put("value.deserializer", StringDeserializer.class.getName());
 		consumer= new KafkaConsumer<>(props);
 		topics = new ArrayList<>();
-		new Thread(()->{
+
 			try {
 
 
@@ -86,7 +85,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				consumer.close();
 			}
 		}).start();
-	*/
+
 	}
 
 	private void fillTopics() {

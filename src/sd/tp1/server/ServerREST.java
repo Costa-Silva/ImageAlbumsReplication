@@ -45,6 +45,7 @@ public class ServerREST {
         String jkspass = "";
         String keypass = "";
         String srvpass = "";
+        String kafkahost = "";
         Scanner in = new Scanner(System.in);
 
         boolean success=false;
@@ -58,6 +59,10 @@ public class ServerREST {
         jkspass=in.nextLine();
         System.out.println("KEY pass?");
         keypass=in.nextLine();
+        System.out.println("Kafka host");
+        kafkahost = in.nextLine();
+
+
 
         SSLContext sslContext = SSLContext.getInstance("TLSv1");
         KeyStore keyStore = KeyStore.getInstance("JKS");
@@ -84,7 +89,6 @@ public class ServerREST {
             AlbumsProxyResource albumsProxyResource = new AlbumsProxyResource(service,accessToken,srvpass);
             config.register(albumsProxyResource);
         }
-        in.close();
         while (!success){
             try{
                 URI baseUri = UriBuilder.fromUri("https://0.0.0.0/").port(port).build();
@@ -96,7 +100,7 @@ public class ServerREST {
             }
         }
         System.err.println("SSL REST Server ready... ");
-        ServersUtils.startListening(TYPE,port);
+        ServersUtils.startListening(TYPE,port,kafkahost);
     }
 
 
