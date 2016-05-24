@@ -79,10 +79,10 @@ public class ReplicationServer {
                         }
                         ReplicationServerUtils.addHost(file,buildIP(serverIp,serverIps.get(serverIp)));
                     }
-                    myReplica= ReplicationServerUtils.getReplicaid(file);
                     ReplicationServerUtils.writeToFile(file);
                 }
                 initialized=true;
+                myReplica= ReplicationServerUtils.getReplicaid(file);
                 startReplicationTask();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -96,7 +96,7 @@ public class ReplicationServer {
             while(true){
                 try {
 
-                    //checkUnreplicaredContent();
+                    checkUnreplicaredContent();
 
                     if (serverIps.size()>0){
                         System.out.println("STARTING REPLICATION TASK");
@@ -155,7 +155,6 @@ public class ReplicationServer {
                                 }
                                 JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,otherServerReplica,file,sharedGalleryClient);
                                 doReplication(mySharedby,timestampStringID,serverIp,operation);
-
                             }
                         }
                     }else {
@@ -176,9 +175,9 @@ public class ReplicationServer {
         if (PARCIALREPLICATION>size){
 
             String bestmatch = serverReplicaToReplicate(sharedby);
-            String myreplica = ReplicationServerUtils.getReplicaid(file);
-
-            if (bestmatch.equals(myreplica)){
+            System.out.println("do replication ");
+            System.out.println(bestmatch.equals(myReplica));
+            if (bestmatch.equals(myReplica)){
                 System.out.println("I'm the chosen one");
                 int toReplicate = PARCIALREPLICATION-size;
                 List<String> keys = new ArrayList<>(serverIps.keySet());
@@ -208,7 +207,7 @@ public class ReplicationServer {
 
     private String serverReplicaToReplicate(JSONArray sharedby){
         Iterator iterator = sharedby.iterator();
-        String bestMatch=ReplicationServerUtils.getReplicaid(file) ;
+        String bestMatch=myReplica;
         while (iterator.hasNext()){
             String testReplica = iterator.next().toString();
             int result = testReplica.compareTo(bestMatch);
@@ -226,10 +225,6 @@ public class ReplicationServer {
         JSONArray mySharedBy = ReplicationServerUtils.timestampGetSharedBy(file,timestampStringID);
 
         if (ReplicationServerUtils.hasSharedByPosition(mySharedBy,replica)<0) {
-
-            System.out.println("a minha replica: "+myReplica+ "a replica dele:"+replica);
-            System.out.println(myReplica.equals(replica));
-
             mySharedBy.add(replica);
         }
 
@@ -422,7 +417,6 @@ public class ReplicationServer {
     }
 
     private void checkUnreplicaredContent() {
-
         while (toReplicate.size()>0){
 
             for (String fullinfo:toReplicate.keySet()) {
