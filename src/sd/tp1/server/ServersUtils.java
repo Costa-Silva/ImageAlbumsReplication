@@ -136,7 +136,16 @@ public class ServersUtils {
                 }
                 InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
                 MulticastSocket socket = new MulticastSocket(); //IOexception
-                socket.joinGroup(address);
+
+                boolean sucess=false;
+                while (!sucess){
+                    try{
+                        socket.joinGroup(address);
+                        sucess=true;
+                    }catch (SocketException e){
+                        sucess=false;
+                    }
+                }
                 String myinfo = SERVERSIDENTIFIER + "_" + type + "-" + InetAddress.getLocalHost().getHostAddress() + ":" + port;
                 byte[] buffer = myinfo.getBytes();
                 DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
