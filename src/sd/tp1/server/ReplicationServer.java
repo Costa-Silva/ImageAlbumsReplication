@@ -100,83 +100,94 @@ public class ReplicationServer {
 
                     checkUnreplicaredContent();
 
-                    if (serverIps.size()>0){
+                    if (serverIps.size()>0) {
                         System.out.println("STARTING REPLICATION TASK");
+
                         List<String> keys = new ArrayList<>(serverIps.keySet());
                         String serverIp = keys.get((new Random()).nextInt(serverIps.size()));
-                        SharedGalleryClient sharedGalleryClient = getClient(serverIp,serverIps.get(serverIp));
+                        SharedGalleryClient sharedGalleryClient = getClient(serverIp, serverIps.get(serverIp));
                         JSONObject theirMetadata = new JSONObject();
 
                         Iterator mytimestamp = ReplicationServerUtils.getTimeStamps(file).iterator();
-                        List<String> myObjectIds= new ArrayList<String>();
-                        while (mytimestamp.hasNext()){
-                            String objectid = ReplicationServerUtils.getTimestampID((JSONObject) mytimestamp.next());
-                            myObjectIds.add(objectid);
-                        }
+                        List<String> myObjectIds = new ArrayList<String>();
 
-                        boolean x =false;
-                        while (!x) {
+                        int counter = 0;
+                        boolean gotconnection = false;
+                        while (!gotconnection && counter < 3) {
                             try {
                                 theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
-                                x = true;
+                                gotconnection = true;
                             } catch (ProcessingException e) {
-                                x = false;
+                                gotconnection = false;
+                                counter++;
+                                Thread.sleep(500);
                             }
                         }
+                        if (gotconnection){
 
-                        String otherServerReplica = ReplicationServerUtils.getReplicaid(theirMetadata);
+                            while (mytimestamp.hasNext()) {
+                                String objectid = ReplicationServerUtils.getTimestampID((JSONObject) mytimestamp.next());
+                                myObjectIds.add(objectid);
+                            }
 
-                        String fullServerIp= buildIP(serverIp,serverIps.get(serverIp));
+                            String otherServerReplica = ReplicationServerUtils.getReplicaid(theirMetadata);
 
-                        ipTranslator.put(fullServerIp,ReplicationServerUtils.getReplicaid(theirMetadata));
+                            String fullServerIp = buildIP(serverIp, serverIps.get(serverIp));
 
-                        file = ServersUtils.getJsonFromFile(new byte[0]);
+                            ipTranslator.put(fullServerIp, ReplicationServerUtils.getReplicaid(theirMetadata));
 
-                        if (!ReplicationServerUtils.hasHost(file,fullServerIp)) {
-                            ReplicationServerUtils.addHost(file,fullServerIp);
-                            ReplicationServerUtils.writeToFile(file);
-                            System.out.println("Added to my known hosts: "+ serverIp);
-                        }
+                            file = ServersUtils.getJsonFromFile(new byte[0]);
 
-                        JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
-                        Iterator iteratorTheirTimestamps = timestamps.iterator();
+                            if (!ReplicationServerUtils.hasHost(file, fullServerIp)) {
+                                ReplicationServerUtils.addHost(file, fullServerIp);
+                                ReplicationServerUtils.writeToFile(file);
+                                System.out.println("Added to my known hosts: " + serverIp);
+                            }
 
-                        while (iteratorTheirTimestamps.hasNext()){
+                            JSONArray timestamps = ReplicationServerUtils.getTimeStamps(theirMetadata);
+                            Iterator iteratorTheirTimestamps = timestamps.iterator();
 
-                            JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
-                            String timestampStringID = timestamp.get(OBJECTID).toString();
-                            myObjectIds.remove(timestampStringID);
-                            String operation = timestamp.get(OPERATION).toString();
-                            int clock = toIntExact((long)timestamp.get(CLOCK))  ;
+                            while (iteratorTheirTimestamps.hasNext()) {
 
-                            String replica = timestamp.get(REPLICA).toString();
-                            Clock clockObj = new Clock(clock,replica);
-                            JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
+                                JSONObject timestamp = (JSONObject) iteratorTheirTimestamps.next();
+                                String timestampStringID = timestamp.get(OBJECTID).toString();
+                                myObjectIds.remove(timestampStringID);
+                                String operation = timestamp.get(OPERATION).toString();
+                                int clock = toIntExact((long) timestamp.get(CLOCK));
 
-                            JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file,timestampStringID);
-                            if (myTimestamp.size()>0){
+                                String replica = timestamp.get(REPLICA).toString();
+                                Clock clockObj = new Clock(clock, replica);
+                                JSONArray sharedBy = (JSONArray) timestamp.get(SHAREDBY);
 
-                                if (( Integer.parseInt(timestamp.get(CLOCK).toString()))==Integer.parseInt(myTimestamp.get(CLOCK).toString())){
-                                    int result = replica.compareTo(myTimestamp.get(REPLICA).toString());
-                                    //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
-                                    if (result<0){
-                                        update(timestampStringID,operation,sharedGalleryClient,clockObj);
+                                JSONObject myTimestamp = ReplicationServerUtils.timestampgetJSONbyID(file, timestampStringID);
+                                if (myTimestamp.size() > 0) {
+
+                                    if ((Integer.parseInt(timestamp.get(CLOCK).toString())) == Integer.parseInt(myTimestamp.get(CLOCK).toString())) {
+                                        int result = replica.compareTo(myTimestamp.get(REPLICA).toString());
+                                        //  #timestamp's replicas -> b , mytimestamp's replicas ->a \\ result<0
+                                        if (result < 0) {
+                                            update(timestampStringID, operation, sharedGalleryClient, clockObj);
+                                        }
+
+                                    } else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())) {
+                                        update(timestampStringID, operation, sharedGalleryClient, clockObj);
                                     }
-
-                                }else if (Integer.parseInt(timestamp.get(CLOCK).toString()) > Integer.parseInt(myTimestamp.get(CLOCK).toString())){
-                                    update(timestampStringID,operation,sharedGalleryClient,clockObj);
+                                    JSONArray mySharedby = sharedByAux(sharedBy, timestampStringID, otherServerReplica, file, sharedGalleryClient);
+                                    doReplication(mySharedby, timestampStringID, serverIp, operation);
                                 }
-                                JSONArray mySharedby = sharedByAux(sharedBy,timestampStringID,otherServerReplica,file,sharedGalleryClient);
-                                doReplication(mySharedby,timestampStringID,serverIp,operation);
                             }
-                        }
-                        if (myObjectIds.size()>0){
-                            checkAndReplicateReplicas(myObjectIds);
+                            if (myObjectIds.size() > 0) {
+                                checkAndReplicateReplicas(myObjectIds);
+                            }
+                            Thread.sleep(15000);
+                        }else{
+                            System.out.println("Couldn't connect to server");
                         }
                     }else {
                         System.out.println("No servers found to replicate");
+                        Thread.sleep(15000);
                     }
-                    Thread.sleep(15000);
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
