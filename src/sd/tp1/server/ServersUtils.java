@@ -46,7 +46,7 @@ public class ServersUtils {
         try {
             System.out.println("Kafka's broker hostname");
             Scanner s = new Scanner(System.in);
-            hostname = s.nextLine();
+            //hostname = s.nextLine();
             s.close();
 
             String myinfo = InetAddress.getLocalHost().getHostAddress() + ":" + port + "-" + serverType;
