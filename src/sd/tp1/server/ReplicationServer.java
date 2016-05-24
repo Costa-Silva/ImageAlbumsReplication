@@ -432,9 +432,10 @@ public class ReplicationServer {
             }
             serverIps.remove(ipToCheck);
 
-            String replicatoRemove = ipTranslator.get(ipToCheck);
+            String fullip = buildIP(ipToCheck,type);
+            String replicatoRemove = ipTranslator.get(fullip);
 
-            ReplicationServerUtils.removeHost(file,buildIP(ipToCheck,type));
+            ReplicationServerUtils.removeHost(file,fullip);
             removeFromAllSharedBy(replicatoRemove);
             System.out.println("removi do sharedby");
             ReplicationServerUtils.writeToFile(file);
