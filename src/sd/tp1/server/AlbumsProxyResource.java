@@ -289,6 +289,7 @@ public class AlbumsProxyResource {
     @Path("/{albumName}/{pictureName}/key/{password}")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     public Response uploadPicture(@PathParam("albumName") String albumName,@PathParam("pictureName")String pictureName,byte[] pictureData,@PathParam("password")String password){
+        System.out.println("UPLOADIN.... " + albumName + " com " + pictureName);
         if (checkPassword(password)){
             try{
                 boolean hasAlbum = false;
@@ -300,6 +301,7 @@ public class AlbumsProxyResource {
                     }
                 }
                 if(hasAlbum) {
+                    System.out.println("Tenho o album");
                     String upImageUrl = "https://api.imgur.com/3/image";
                     OAuthRequest upImageReq = new OAuthRequest(Verb.POST, upImageUrl, service);
                     upImageReq.addParameter("image", org.apache.commons.codec.binary.Base64.encodeBase64String(pictureData));
@@ -310,6 +312,9 @@ public class AlbumsProxyResource {
                     final com.github.scribejava.core.model.Response upImageRes = upImageReq.send();
 
                     if(upImageRes.getCode()==200){
+
+                        System.out.println("Codigo 200");
+
                         JSONParser parser = new JSONParser();
                         JSONObject res = (JSONObject) parser.parse(upImageRes.getBody());
 
