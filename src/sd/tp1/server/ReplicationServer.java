@@ -110,7 +110,6 @@ public class ReplicationServer {
 
                         Iterator mytimestamp = ReplicationServerUtils.getTimeStamps(file).iterator();
                         List<String> myObjectIds = new ArrayList<String>();
-                        System.err.println("vou entrar");
 
                         boolean gotconnection = false;
                         try {
@@ -120,8 +119,6 @@ public class ReplicationServer {
                             gotconnection = false;
                         }
 
-
-                        System.err.println("SAIIII");
                         if (gotconnection){
 
                             while (mytimestamp.hasNext()) {
@@ -181,6 +178,7 @@ public class ReplicationServer {
                             Thread.sleep(15000);
                         }else{
                             System.out.println("Couldn't connect to server");
+                            continue;
                         }
                     }else {
                         System.out.println("No servers found to replicate");
@@ -220,7 +218,7 @@ public class ReplicationServer {
 
             String bestmatch = serverReplicaToReplicate(sharedby);
             if (bestmatch.equals(myReplica)){
-                System.out.println("I'm the chosen one");
+                System.out.println("I'm the chosen one for "+ objectId);
                 int toReplicate = PARCIALREPLICATION-size;
                 List<String> keys = new ArrayList<>(serverIps.keySet());
                 keys.remove(hisSv);
@@ -437,7 +435,6 @@ public class ReplicationServer {
 
             ReplicationServerUtils.removeHost(file,fullip);
             removeFromAllSharedBy(replicatoRemove);
-            System.out.println("removi do sharedby");
             ReplicationServerUtils.writeToFile(file);
         }).start();
     }
@@ -450,11 +447,8 @@ public class ReplicationServer {
             JSONObject thisTimestamp = (JSONObject) timestampsIterator.next();
             JSONArray thisSharedBy = (JSONArray) thisTimestamp.get(SHAREDBY);
             int size = thisSharedBy.size();
-            System.out.println("CONTENT: "+thisTimestamp.toJSONString());
             for (int i = 0; i < size ; i++) {
                 String replica= thisSharedBy.get(i).toString();
-                System.out.println("replica deu: "+replica);
-                System.out.println("replica 2remove: "+replicatoremove);
                 if (replica.equals(replicatoremove)){
                     thisSharedBy.remove(i);
                     System.out.println("removed "+replica);
