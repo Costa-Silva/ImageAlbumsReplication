@@ -172,6 +172,7 @@ public class ReplicationServer {
 
     private void doReplication(JSONArray sharedby,String objectId,String hisSv,String operation) {
         int size = sharedby.size() +1;
+        System.out.println("do replication "+ objectId +size);
         if (PARCIALREPLICATION>size){
 
             String bestmatch = serverReplicaToReplicate(sharedby);
@@ -414,10 +415,11 @@ public class ReplicationServer {
         String fullinfo = objectid+"/"+fullip;
         if (!toReplicate.containsKey(fullinfo))
             toReplicate.put(fullinfo,operation);
+        System.out.println("adicionei content remotamente"+ fullinfo);
     }
 
     private void checkUnreplicaredContent() {
-        while (toReplicate.size()>0){
+        System.out.println("entrei no check");
 
             for (String fullinfo:toReplicate.keySet()) {
                 String[] objIdAndIp= fullinfo.split("/");
@@ -428,9 +430,9 @@ public class ReplicationServer {
                 SharedGalleryClient sharedGalleryClient = getClient(ip,type);
                 String operation= toReplicate.get(fullinfo);
                 update(objectId,operation,sharedGalleryClient,new Clock(0,myReplica));
+                toReplicate.remove(fullinfo);
+                System.out.println("removi o "+ fullinfo);
             }
-
-        }
-
+        System.out.println("sai do check");
     }
 }
