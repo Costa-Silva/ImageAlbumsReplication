@@ -195,6 +195,7 @@ public class AlbumsProxyResource {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
 
+        System.out.println("bateu no get picture data");
 
 
         if (checkPassword(password)) {
@@ -203,7 +204,7 @@ public class AlbumsProxyResource {
                 ImgurPicture iP;
                 if ((iP = getPictureWithName(pictureName)) != null) {
                     try {
-
+                        System.out.println("bateu no get picture data1");
                         String imageUrl = "https://api.imgur.com/3/album/" + albumID + "/image/" + iP.getId();
 
                         OAuthRequest albumReq = new OAuthRequest(Verb.GET, imageUrl, service);
@@ -228,6 +229,7 @@ public class AlbumsProxyResource {
                             }
                             out.close();
                             inputStream.close();
+                            System.out.println("fiz download");
                             return Response.ok(out.toByteArray()).build();
                         }
 
