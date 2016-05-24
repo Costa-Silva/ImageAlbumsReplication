@@ -341,7 +341,7 @@ public class ReplicationServer {
         }else{
             if (operation.equals(CREATEOP)){
 
-                if (mysharedGalleryClient.createAlbum(album)!=null){
+                if (!mysharedGalleryClient.hasAlbum(album) ||mysharedGalleryClient.createAlbum(album)!=null){
                     writeMetaData(timestampStringID,clockObj,operation);
                     content.put(album,new HashMap<>());
                 }

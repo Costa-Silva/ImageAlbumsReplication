@@ -80,4 +80,9 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
     public String getExtension(String albumname, String pictureName) {
         return null;
     }
+
+    @Override
+    public boolean hasAlbum(String albumName) {
+        return HasAlbum.hasAlbum(server,albumName);
+    }
 }

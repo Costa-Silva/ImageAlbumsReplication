@@ -23,4 +23,5 @@ public interface SharedGalleryClient {
     boolean checkAndAddSharedBy(String ip,String objectId);
     boolean askForContent(String objctedId, String fullIp,String operation);
     String getExtension(String albumname,String pictureName);
+    boolean hasAlbum(String albumName);
 }

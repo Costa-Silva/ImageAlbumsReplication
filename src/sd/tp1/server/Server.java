@@ -41,6 +41,10 @@ public class Server implements ServerSOAPInterface {
         return ServersUtils.checkAndAddSharedBy(ip,objectid);
     }
 
+    @WebMethod
+    public boolean hasAlbum(String albumName){
+        return ServersUtils.hasAlbum(albumName);
+    }
 
     @WebMethod
     public byte[] getMetaData(){

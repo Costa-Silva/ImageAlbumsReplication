@@ -82,5 +82,10 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
        return GetExtensionREST.getExtension(target,albumname,pictureName,password);
     }
 
+    @Override
+    public boolean hasAlbum(String albumName) {
+        return HasAlbumREST.hasAlbum(target,albumName,password);
+    }
+
 
 }

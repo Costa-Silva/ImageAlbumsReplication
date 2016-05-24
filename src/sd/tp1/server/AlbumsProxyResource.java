@@ -138,6 +138,16 @@ public class AlbumsProxyResource {
 
 
     @GET
+    @Path("/hasAlbum/{albumName}/key/password")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response hasAlbum(@PathParam("albumName") String albumName,@PathParam("password") String password){
+        if(checkPassword(password)){
+            return Response.ok(albumsIdName.containsKey(albumName)).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+    @GET
     @Path("/{albumName}/key/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getListPicturesAt(@PathParam("albumName") String albumName, @PathParam("password") String password) {
