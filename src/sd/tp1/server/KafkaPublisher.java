@@ -17,8 +17,8 @@ public class KafkaPublisher {
         Properties env = System.getProperties();
         Properties props = new Properties();
         
-        props.put("zk.connect", env.getOrDefault("zk.connect", "localhost:2181/"));
-        props.put("bootstrap.servers", env.getOrDefault("bootstrap.servers", "localhost:9092"));
+        props.put("zk.connect", env.getOrDefault("zk.connect", "192.168.43.25:2181/"));
+        props.put("bootstrap.servers", env.getOrDefault("bootstrap.servers", "192.168.43.25:9092"));
         props.put("log.retention.ms", 1000);
 
         props.put("serializer.class", "kafka.serializer.StringEncoder");
