@@ -108,23 +108,26 @@ public class AlbumsProxyResource {
                     JSONArray images = (JSONArray) res.get("data");
 
                     Iterator albumsIt = images.iterator();
-                    Map<String,String> mapHelper = new HashMap<>();
+                    Map<String, String> mapHelper = new HashMap<>();
                     mapHelper.putAll(albumsIdName);
 
                     albumsIdName.clear();
-                    while(albumsIt.hasNext()){
+                    while (albumsIt.hasNext()) {
                         JSONObject objects = (JSONObject) albumsIt.next();
                         String title = objects.get("title").toString();
-                        String albumId= objects.get("id").toString();
-                        if(!mapHelper.containsKey(albumId+".deleted")) {
+                        String albumId = objects.get("id").toString();
+                        if (!mapHelper.containsKey(albumId + ".deleted")) {
                             albumsTitleList.add(title);
-                            albumsIdName.put(albumId,title);
+                            albumsIdName.put(albumId, title);
                         }
                     }
+
                     return Response.ok(albumsTitleList).build();
                 }
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }catch (InternalServerErrorException e){
+                System.err.println("error on get");
 
-                return  Response.status(Response.Status.NOT_FOUND).build();
             } catch (ParseException e) {
                 e.printStackTrace();
             }

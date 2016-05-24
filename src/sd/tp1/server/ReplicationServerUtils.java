@@ -242,13 +242,23 @@ public class ReplicationServerUtils {
 
         String defaultAlbum = "Album:"+albumName;
         String defaultPicture = "Picture:";
-        return pictureName.isEmpty() ? defaultAlbum : defaultAlbum+"|"+defaultPicture+pictureName;
+        return pictureName.isEmpty() ? defaultAlbum : defaultAlbum+"#"+defaultPicture+pictureName;
     }
 
     public static String[] getId(String id){
 
         if (id.contains("Picture:")){
-            return id.split("Album:")[0].split("|Picture:") ;
+
+            String pissas = "Album:albumDoBenfica#Picture:imagemBRA.jpg";
+
+            String albumsplit= pissas.split("#")[0];
+            String albumName = albumsplit.split("Album:")[1];
+            String imgspli= pissas.split("#")[1];
+            String pictureName = imgspli.split("Picture:")[1];
+            String[] result = new String[2];
+            result[0] = albumName;
+            result[1] = pictureName;
+            return result;
         }else{
             String[] result = new String[1];
             result[0] = id.split("Album:")[1];
