@@ -38,8 +38,8 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
     }
 
     @Override
-    public void deleteAlbum(String albumName) {
-        DeleteAlbumREST.deleteAlbum(target,albumName,password);
+    public boolean deleteAlbum(String albumName) {
+        return DeleteAlbumREST.deleteAlbum(target,albumName,password);
     }
 
     @Override

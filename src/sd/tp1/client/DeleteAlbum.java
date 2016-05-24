@@ -10,14 +10,14 @@ import java.net.URL;
  */
 public class DeleteAlbum {
 
-    public static void deleteAlbum(Server server,String album){
+    public static boolean deleteAlbum(Server server,String album){
         try{
 
-            server.deleteAlbum(album);
+          return server.deleteAlbum(album);
 
         } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());
         }
-
+        return false;
     }
 }

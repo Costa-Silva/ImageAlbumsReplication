@@ -297,30 +297,33 @@ public class ReplicationServer {
 
     public void update(String timestampStringID,String operation,
                        SharedGalleryClient sharedGalleryClient,Clock clockObj){
+
         String[] nameid = ReplicationServerUtils.getId(timestampStringID);
 
+        String[] ip = myFullIp.split("-");
+        SharedGalleryClient mysharedGalleryClient = getClient(ip[0],ip[1]);
 
         if (nameid.length>1){
             if (operation.equals(CREATEOP)){
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
                 content.get(nameid[0]).put(nameid[1],aux);
-                ServersUtils.uploadPicture(nameid[0],nameid[1],aux);
+                mysharedGalleryClient.uploadPicture(nameid[0],nameid[1],aux);
                 writeMetaData(timestampStringID,clockObj,operation);
             }else if (operation.equals(REMOVEOP)){
                 content.get(nameid[0]).remove(nameid[1]);
-                if (ServersUtils.deletePicture(nameid[0],nameid[1])){
+                if (mysharedGalleryClient.deletePicture(nameid[0],nameid[1])){
                     writeMetaData(timestampStringID,clockObj,operation);
                 }
             }
         }else{
             if (operation.equals(CREATEOP)){
                 content.put(nameid[0],new HashMap<>());
-                if (ServersUtils.hasAlbum(nameid[0]) || ServersUtils.createAlbum(nameid[0])!=null)
+                if (mysharedGalleryClient.createAlbum(nameid[0])!=null)
                     writeMetaData(timestampStringID,clockObj,operation);
 
             }else if (operation.equals(REMOVEOP)){
                 content.remove(nameid[0]);
-                if (ServersUtils.deleteAlbum(nameid[0])) {
+                if (mysharedGalleryClient.deleteAlbum(nameid[0])) {
                     writeMetaData(timestampStringID,clockObj,operation);
                 }
             }

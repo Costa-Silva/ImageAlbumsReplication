@@ -37,8 +37,8 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
     }
 
     @Override
-    public void deleteAlbum(String albumName) {
-        DeleteAlbum.deleteAlbum(server,albumName);
+    public boolean deleteAlbum(String albumName) {
+        return DeleteAlbum.deleteAlbum(server,albumName);
     }
 
     @Override
