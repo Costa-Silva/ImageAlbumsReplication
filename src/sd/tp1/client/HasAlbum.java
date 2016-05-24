@@ -9,7 +9,7 @@ public class HasAlbum {
 
     public static boolean hasAlbum(Server server, String albumName) {
 
-    return server.hasAlbum(albumName);
+    return false;
 
     }
 }
