@@ -104,21 +104,15 @@ public class AlbumsProxyResource {
                 if (albumsRes.getCode() == 200) {
 
                     JSONParser parser = new JSONParser();
-                    System.out.println("200");
                     JSONObject res = (JSONObject) parser.parse(albumsRes.getBody());
-                    System.out.println("res");
-
                     JSONArray images = (JSONArray) res.get("data");
-                    System.out.println("images");
 
                     Iterator albumsIt = images.iterator();
                     Map<String,String> mapHelper = new HashMap<>();
                     mapHelper.putAll(albumsIdName);
 
                     albumsIdName.clear();
-
                     while(albumsIt.hasNext()){
-
                         JSONObject objects = (JSONObject) albumsIt.next();
                         String title = objects.get("title").toString();
                         String albumId= objects.get("id").toString();
@@ -127,7 +121,6 @@ public class AlbumsProxyResource {
                             albumsIdName.put(albumId,title);
                         }
                     }
-                    System.out.println("vou retornar");
                     return Response.ok(albumsTitleList).build();
                 }
 
