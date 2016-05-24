@@ -249,11 +249,10 @@ public class ReplicationServerUtils {
 
         if (id.contains("Picture:")){
 
-            String pissas = "Album:albumDoBenfica#Picture:imagemBRA.jpg";
 
-            String albumsplit= pissas.split("#")[0];
+            String albumsplit= id.split("#")[0];
             String albumName = albumsplit.split("Album:")[1];
-            String imgspli= pissas.split("#")[1];
+            String imgspli= id.split("#")[1];
             String pictureName = imgspli.split("Picture:")[1];
             String[] result = new String[2];
             result[0] = albumName;

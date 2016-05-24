@@ -303,18 +303,10 @@ public class ReplicationServer {
         String[] ip = myFullIp.split("-");
         SharedGalleryClient mysharedGalleryClient = getClient(ip[0],ip[1]);
 
-        System.out.println("vou tratar da timestamp string:" +timestampStringID+ " op: "+operation);
-        if (nameid.length>1){
-            System.out.println(nameid[1]);
-        }
-        System.out.println("sai");
-
-
         if (nameid.length>1){
             if (operation.equals(CREATEOP)){
                 System.out.println("vou chamar o get picture data da: "+ nameid[1]);
                 byte[] aux = sharedGalleryClient.getPictureData(nameid[0],nameid[1]);
-                System.out.println("aux: "+ aux.length);
 
                 content.get(nameid[0]).put(nameid[1],aux);
                 System.out.println("voudar upload");
