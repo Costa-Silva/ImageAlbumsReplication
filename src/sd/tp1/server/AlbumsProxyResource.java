@@ -25,7 +25,8 @@ import java.util.*;
  */
 @Path("/albums")
 public class AlbumsProxyResource {
-
+    public static final String REMOVEOP= "REMOVED";
+    public static final String CREATEOP= "CREATED";
     private OAuth20Service service;
     private OAuth2AccessToken accessToken;
     private String srvpass;
@@ -59,6 +60,22 @@ public class AlbumsProxyResource {
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
+
+
+
+    @GET
+    @Path("/checkAndaddSharedby/{ip}/{objectid}/key/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkAndAddSharedBy(@PathParam("ip") String ip,@PathParam("objectid") String objectId,
+                                        @PathParam("password") String password) {
+
+        if (checkPassword(password)) {
+            boolean result = ServersUtils.checkAndAddSharedBy(ip, objectId);
+            return Response.ok(result).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
 
     @GET
     @Path("/metadata/key/{password}")
@@ -131,9 +148,7 @@ public class AlbumsProxyResource {
 
         if (checkPassword(password)) {
             String albumID;
-            System.out.println("o album name e " + albumName);
             if ((albumID = albumName2Id(albumName))!=null){
-                System.out.println("entrei com id "+albumID);
                 String albumUrl = "https://api.imgur.com/3/album/"+albumID+"/images";
                 try{
                     OAuthRequest albumReq = new OAuthRequest(Verb.GET,albumUrl,service);
@@ -184,13 +199,9 @@ public class AlbumsProxyResource {
 
         if (checkPassword(password)) {
             String albumID;
-            System.out.println("O album name " + albumName);
             if ((albumID=albumName2Id(albumName)) != null) {
-                System.out.println("ENTREI1");
                 ImgurPicture iP;
-                System.out.println("O picture name " + pictureName);
                 if ((iP = getPictureWithName(pictureName)) != null) {
-                    System.out.println("ENTREI2");
                     try {
 
                         String imageUrl = "https://api.imgur.com/3/album/" + albumID + "/image/" + iP.getId();
@@ -255,6 +266,9 @@ public class AlbumsProxyResource {
 
                         publisher.publishEvent("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
 
+                        String empty = "";
+                        ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),CREATEOP);
+
                         return Response.ok().build();
                     }
                     return Response.status(Response.Status.NOT_FOUND).build();
@@ -304,6 +318,7 @@ public class AlbumsProxyResource {
                         pictureSize.put(imageID,(long)pictureData.length);
 
                         publisher.publishEvent(albumName,new String(albumName+"-"+pictureName+"-"+"Create"+System.nanoTime()));
+                        ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,pictureName),CREATEOP);
                         return Response.ok().build();
                     }
                 }
@@ -332,6 +347,9 @@ public class AlbumsProxyResource {
                 albumsIdName.put(albumName+".deleted",val);
 
                 publisher.publishEvent("Albums",new String(albumName+"-"+"Delete"+"-"+System.nanoTime()));
+                String empty = "";
+                ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),REMOVEOP);
+
                 return  Response.status(dAlbRes.getCode()).build();
             }else return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -365,7 +383,7 @@ public class AlbumsProxyResource {
                     final com.github.scribejava.core.model.Response dPicRes = dPicReq.send();
 
                     publisher.publishEvent(albumName,new String(albumName+"-"+pictureName+"-"+"Delete"+System.nanoTime()));
-
+                    ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,pictureName),REMOVEOP);
                     return Response.status(dPicRes.getCode()).build();
                 }
                 return Response.status(Response.Status.NOT_FOUND).build();
@@ -373,6 +391,21 @@ public class AlbumsProxyResource {
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
+
+
+    @GET
+    @Path("askforcontent/{objectId}/{fullip}/{operation}/key/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response askForContent(@PathParam("objectId") String objectId,@PathParam("fullip") String fullip, @PathParam("operation") String operation, @PathParam("password") String password){
+
+        if (checkPassword(password)) {
+            ReplicationServer.addNewContent(objectId,fullip,operation);
+            return Response.ok(true).build();
+        }
+
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
 
     private String albumName2Id(String name){
         for (String key : albumsIdName.keySet()){
@@ -385,7 +418,6 @@ public class AlbumsProxyResource {
 
 
     private ImgurPicture getPictureWithName(String name){
-        System.out.println("O pictures tem size " + pictures.size());
         for (ImgurPicture iP: pictures) {
             if(iP.getPicName().equals(name)){
                 return iP;
