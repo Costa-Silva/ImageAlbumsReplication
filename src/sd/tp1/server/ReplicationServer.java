@@ -402,12 +402,9 @@ public class ReplicationServer {
                             sharedGalleryClient.getServerSize();
                         }catch (ProcessingException e){
                             System.out.println("Lost connection with: "+ipToCheck);
-                            serverIps.remove(ipToCheck);
-                            ReplicationServerUtils.removeHost(file,ipToCheck);
-                            System.out.println("removi dos hosts");
-                            removeFromAllSharedBy(ipToCheck);
-                            System.out.println("removi do sharedby");
-                            ReplicationServerUtils.writeToFile(file);
+
+
+
                             //keepAliveRecheck(ipToCheck,type,sharedGalleryClient);
                         }
                     }
@@ -422,7 +419,7 @@ public class ReplicationServer {
     private void keepAliveRecheck(String ipToCheck,String type,SharedGalleryClient sharedGalleryClient){
 
         new Thread(()->{
-            int maxRetrys = 2;
+            int maxRetrys = 1;
             for (int i = 0; i < maxRetrys ; i++) {
                 try{
                     if(sharedGalleryClient.getServerSize()>=0){
@@ -433,6 +430,7 @@ public class ReplicationServer {
                 }catch (ProcessingException e){
                 }
             }
+            serverIps.remove(ipToCheck);
             boolean x = ReplicationServerUtils.removeHost(file,ipToCheck);
             System.out.println("removi dos hosts"+x+file.toJSONString());
             removeFromAllSharedBy(ipToCheck);
