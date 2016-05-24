@@ -405,7 +405,7 @@ public class ReplicationServer {
 
 
 
-                            //keepAliveRecheck(ipToCheck,type,sharedGalleryClient);
+                            keepAliveRecheck(ipToCheck,type,sharedGalleryClient);
                         }
                     }
                     Thread.sleep(timeout);
