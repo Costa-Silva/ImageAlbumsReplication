@@ -44,15 +44,17 @@ public class ServersUtils {
     public static void startListening(String serverType, int port) {
 
         try {
+            System.out.println("Kafka's broker hostname");
+            Scanner s = new Scanner(System.in);
+            hostname = s.nextLine();
+            s.close();
+
             String myinfo = InetAddress.getLocalHost().getHostAddress() + ":" + port + "-" + serverType;
             ReplicationServer replicationServer = new ReplicationServer(myinfo);
 
             sendingMyInfo(port, serverType,replicationServer);
 
-            System.out.println("Kafka's broker hostname");
-            Scanner s = new Scanner(System.in);
-            String hostname = s.nextLine();
-            s.close();
+
 
             InetAddress address = InetAddress.getByName(MULTICASTIP); //unknownHostException
             MulticastSocket socket = new MulticastSocket(PORT); //IOexception
