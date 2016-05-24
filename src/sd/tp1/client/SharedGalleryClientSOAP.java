@@ -75,4 +75,9 @@ public class SharedGalleryClientSOAP implements SharedGalleryClient {
     public boolean askForContent(String objctedId, String fullIp, String operation) {
         return UpdateContent.askForContent(server,objctedId,fullIp,operation);
     }
+
+    @Override
+    public String getExtension(String albumname, String pictureName) {
+        return null;
+    }
 }

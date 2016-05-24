@@ -297,7 +297,6 @@ public class AlbumsProxyResource {
                     }
                 }
                 if(hasAlbum) {
-                    System.out.println("Tenho o album");
                     String upImageUrl = "https://api.imgur.com/3/image";
                     OAuthRequest upImageReq = new OAuthRequest(Verb.POST, upImageUrl, service);
                     upImageReq.addParameter("image", org.apache.commons.codec.binary.Base64.encodeBase64String(pictureData));
@@ -308,8 +307,6 @@ public class AlbumsProxyResource {
                     final com.github.scribejava.core.model.Response upImageRes = upImageReq.send();
 
                     if(upImageRes.getCode()==200){
-
-                        System.out.println("Codigo 200");
 
                         JSONParser parser = new JSONParser();
                         JSONObject res = (JSONObject) parser.parse(upImageRes.getBody());
@@ -408,6 +405,46 @@ public class AlbumsProxyResource {
 
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
+
+
+
+    @GET
+    @Path("extension/{albumName}/{picturename}/key/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getExtension(@PathParam("albumName") String albumName,@PathParam("picturename") String picturename, @PathParam("password") String password){
+
+        if (checkPassword(password)) {
+
+            String albumID;
+            if ((albumID=albumName2Id(albumName)) != null) {
+                ImgurPicture iP;
+                if ((iP =  getPictureWithName(picturename)) != null) {
+                    try {
+                        String imageUrl = "https://api.imgur.com/3/album/" + albumID + "/image/" + iP.getId();
+
+                        OAuthRequest albumReq = new OAuthRequest(Verb.GET, imageUrl, service);
+                        service.signRequest(accessToken, albumReq);
+                        final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
+
+                        if (albumPRes.getCode() == 200) {
+                            JSONParser parser = new JSONParser();
+                            JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
+
+                            String downloadlink = (String) ((JSONObject) res.get("data")).get("link");
+                            return Response.ok(downloadlink.split(iP.getId())[1]).build();
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+
+
 
 
     private String albumName2Id(String name){

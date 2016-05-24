@@ -2,6 +2,7 @@ package sd.tp1.client;
 
 import org.json.simple.JSONObject;
 
+import javax.ws.rs.Path;
 import java.util.List;
 
 /**
@@ -21,4 +22,5 @@ public interface SharedGalleryClient {
     byte[] getMetaData();
     boolean checkAndAddSharedBy(String ip,String objectId);
     boolean askForContent(String objctedId, String fullIp,String operation);
+    String getExtension(String albumname,String pictureName);
 }

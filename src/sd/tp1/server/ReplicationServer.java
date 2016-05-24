@@ -1,5 +1,6 @@
 package sd.tp1.server;
 
+import com.sun.deploy.net.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sd.tp1.SharedGallery;
@@ -216,7 +217,6 @@ public class ReplicationServer {
     private void doReplication(JSONArray sharedby,String objectId,String hisSv,String operation) {
         int size = sharedby.size() +1;
         if (PARCIALREPLICATION>size){
-
             String bestmatch = serverReplicaToReplicate(sharedby);
             if (bestmatch.equals(myReplica)){
                 System.out.println("I'm the chosen one for "+ objectId);
@@ -300,44 +300,53 @@ public class ReplicationServer {
 
         String[] nameid = ReplicationServerUtils.getId(timestampStringID);
 
+        String album="";
+        String pict="";
+        if (nameid.length>1){
+        album=nameid[0];
+        pict= nameid[1];
+            String extension="";
+            extension = sharedGalleryClient.getExtension(album, pict);
+            pict+=extension;
+
+        }else{
+            album=nameid[0];
+        }
+
         String[] ip = myFullIp.split("-");
         SharedGalleryClient mysharedGalleryClient = getClient(ip[0],ip[1]);
 
         if (nameid.length>1){
             if (operation.equals(CREATEOP)) {
-                System.out.println("vou chamar o get picture data da: " + nameid[1]);
-                byte[] aux = sharedGalleryClient.getPictureData(nameid[0], nameid[1]);
+                byte[] aux = sharedGalleryClient.getPictureData(album, pict);
 
-                if (!content.containsKey(nameid[0])){
-                    mysharedGalleryClient.createAlbum(nameid[0]);
-                    content.put(nameid[0],new HashMap<>());
+                if (!content.containsKey(album)){
+                    mysharedGalleryClient.createAlbum(album);
+                    content.put(album,new HashMap<>());
                 }
-                content.get(nameid[0]).put(nameid[1],aux);
-
-                System.out.println("voudar upload");
-                mysharedGalleryClient.uploadPicture(nameid[0],nameid[1],aux);
-                System.out.println("dei");
+                content.get(album).put(pict,aux);
+                mysharedGalleryClient.uploadPicture(album,pict,aux);
                 writeMetaData(timestampStringID,clockObj,operation);
             }else if (operation.equals(REMOVEOP)){
-                if(content.containsKey(nameid[0])) {
-                    if (mysharedGalleryClient.deletePicture(nameid[0], nameid[1])) {
+                if(content.containsKey(album)) {
+                    if (mysharedGalleryClient.deletePicture(album, pict)) {
                         writeMetaData(timestampStringID, clockObj, operation);
-                        content.get(nameid[0]).remove(nameid[1]);
+                        content.get(album).remove(pict);
                     }
                 }
             }
         }else{
             if (operation.equals(CREATEOP)){
 
-                if (mysharedGalleryClient.createAlbum(nameid[0])!=null){
+                if (mysharedGalleryClient.createAlbum(album)!=null){
                     writeMetaData(timestampStringID,clockObj,operation);
-                    content.put(nameid[0],new HashMap<>());
+                    content.put(album,new HashMap<>());
                 }
 
             }else if (operation.equals(REMOVEOP)){
 
-                if (mysharedGalleryClient.deleteAlbum(nameid[0])) {
-                    content.remove(nameid[0]);
+                if (mysharedGalleryClient.deleteAlbum(album)) {
+                    content.remove(album);
                     writeMetaData(timestampStringID,clockObj,operation);
                 }
             }

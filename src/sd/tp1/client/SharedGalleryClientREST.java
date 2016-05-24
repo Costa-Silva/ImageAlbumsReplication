@@ -77,5 +77,10 @@ public class SharedGalleryClientREST implements SharedGalleryClient {
         return UpdateContentREST.askForContent(target,objctedId,fullIp,operation,password);
     }
 
+    @Override
+    public String getExtension(String albumname, String pictureName) {
+       return GetExtensionREST.getExtension(target,albumname,pictureName,password);
+    }
+
 
 }
