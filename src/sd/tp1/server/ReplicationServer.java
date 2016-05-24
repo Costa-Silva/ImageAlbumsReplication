@@ -2,6 +2,7 @@ package sd.tp1.server;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import sd.tp1.SharedGallery;
 import sd.tp1.client.DiscoveryClient;
 
 import java.util.*;
@@ -348,12 +349,16 @@ public class ReplicationServer {
 
     public void loadContentFromDisk(JSONObject file,boolean hadContent){
 
-        ServersUtils.getAlbumList().forEach(albumName->{
+        String[] ip = myFullIp.split("-");
+        SharedGalleryClient sharedGalleryClient = getClient(ip[0],ip[1]);
+
+
+        sharedGalleryClient.getListOfAlbums().forEach(albumName->{
             HashMap<String,byte[]> imageContent = new HashMap<>();
             if (!hadContent)
             ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
-            ServersUtils.getPicturesList(albumName).forEach(pictureName->{
-                imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
+            sharedGalleryClient.getListOfPictures(albumName).forEach(pictureName->{
+                imageContent.put(pictureName,sharedGalleryClient.getPictureData(albumName,pictureName));
                 if (!hadContent)
                 ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
             });

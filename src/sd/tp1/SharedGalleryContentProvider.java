@@ -36,19 +36,20 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 		viewingAlbums = new LinkedList<>();
 		viewingPictures = new HashMap<>();
 
-        System.out.println("Kafka's broker hostname");
+
+		discoveryClient.checkNewConnections();
+		cacheInit();
+		initKafkaConsumer();
+	}
+
+	private void initKafkaConsumer() {
+
+        /*System.out.println("Kafka's broker hostname");
         Scanner s = new Scanner(System.in);
         String hostname = s.nextLine();
         s.close();
 
-		discoveryClient.checkNewConnections();
-		cacheInit();
-		initKafkaConsumer(hostname);
-	}
-
-	private void initKafkaConsumer(String hostname) {
-
-		Properties props = new Properties();
+        Properties props = new Properties();
 		props.put("bootstrap.servers", hostname+":9092");
 		props.put("group.id", "consumer-tutorial" + System.nanoTime());
 		props.put("key.deserializer", StringDeserializer.class.getName());
@@ -85,6 +86,7 @@ public class SharedGalleryContentProvider implements GalleryContentProvider{
 				consumer.close();
 			}
 		}).start();
+	*/
 	}
 
 	private void fillTopics() {
