@@ -110,19 +110,18 @@ public class ReplicationServer {
 
                         Iterator mytimestamp = ReplicationServerUtils.getTimeStamps(file).iterator();
                         List<String> myObjectIds = new ArrayList<String>();
+                        System.err.println("vou entrar");
 
-                        int counter = 0;
                         boolean gotconnection = false;
-                        while (!gotconnection && counter < 3) {
-                            try {
-                                theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
-                                gotconnection = true;
-                            } catch (ProcessingException e) {
-                                gotconnection = false;
-                                counter++;
-                                Thread.sleep(500);
-                            }
+                        try {
+                            theirMetadata = ServersUtils.getJsonFromFile(sharedGalleryClient.getMetaData());
+                            gotconnection = true;
+                        } catch (ProcessingException e) {
+                            gotconnection = false;
                         }
+
+
+                        System.err.println("SAIIII");
                         if (gotconnection){
 
                             while (mytimestamp.hasNext()) {
@@ -403,7 +402,13 @@ public class ReplicationServer {
                             sharedGalleryClient.getServerSize();
                         }catch (ProcessingException e){
                             System.out.println("Lost connection with: "+ipToCheck);
-                            keepAliveRecheck(ipToCheck,sharedGalleryClient);
+                            serverIps.remove(ipToCheck);
+                            ReplicationServerUtils.removeHost(file,ipToCheck);
+                            System.out.println("removi dos hosts");
+                            removeFromAllSharedBy(ipToCheck);
+                            System.out.println("removi do sharedby");
+                            ReplicationServerUtils.writeToFile(file);
+                            //keepAliveRecheck(ipToCheck,type,sharedGalleryClient);
                         }
                     }
                     Thread.sleep(timeout);
@@ -414,7 +419,7 @@ public class ReplicationServer {
         }).start();
     }
 
-    private void keepAliveRecheck(String ipToCheck,SharedGalleryClient sharedGalleryClient){
+    private void keepAliveRecheck(String ipToCheck,String type,SharedGalleryClient sharedGalleryClient){
 
         new Thread(()->{
             int maxRetrys = 2;
@@ -422,19 +427,16 @@ public class ReplicationServer {
                 try{
                     if(sharedGalleryClient.getServerSize()>=0){
                         System.out.println(ipToCheck+" is back!");
+                        serverIps.put(ipToCheck,type);
                         return;
                     }
                 }catch (ProcessingException e){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
                 }
             }
-            serverIps.remove(ipToCheck);
             ReplicationServerUtils.removeHost(file,ipToCheck);
+            System.out.println("removi dos hosts");
             removeFromAllSharedBy(ipToCheck);
+            System.out.println("removi do sharedby");
             ReplicationServerUtils.writeToFile(file);
         }).start();
     }
