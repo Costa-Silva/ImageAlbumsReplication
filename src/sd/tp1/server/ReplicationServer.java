@@ -15,6 +15,7 @@ import sd.tp1.client.SharedGalleryClientSOAP;
 import sd.tp1.client.ws.Server;
 import sd.tp1.utils.Clock;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.WebTarget;
 
@@ -305,10 +306,12 @@ public class ReplicationServer {
         if (nameid.length>1){
         album=nameid[0];
         pict= nameid[1];
-            String extension="";
-            extension = sharedGalleryClient.getExtension(album, pict);
-            pict+=extension;
-
+            try {
+                String extension = "";
+                extension = sharedGalleryClient.getExtension(album, pict);
+                pict += extension;
+            }catch (NotFoundException e){
+            }
         }else{
             album=nameid[0];
         }
