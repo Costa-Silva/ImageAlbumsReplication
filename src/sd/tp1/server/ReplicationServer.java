@@ -43,7 +43,7 @@ public class ReplicationServer {
     public ReplicationServer(String myFullIp){
         serverIps = new ConcurrentHashMap<>();
         content = new HashMap<>();
-        toReplicate= new HashMap<>();
+        toReplicate= new ConcurrentHashMap<>();
         this.myFullIp=myFullIp;
         initialized =false;
         initReplication();
@@ -435,8 +435,6 @@ public class ReplicationServer {
     }
 
     private void checkUnreplicaredContent() {
-        System.out.println("entrei no check");
-
         for (String fullinfo:toReplicate.keySet()) {
             String[] objIdAndIp= fullinfo.split("/");
             String objectId= objIdAndIp[0];
@@ -447,8 +445,6 @@ public class ReplicationServer {
             String operation= toReplicate.get(fullinfo);
             update(objectId,operation,sharedGalleryClient,new Clock(0,myReplica));
             toReplicate.remove(fullinfo);
-            System.out.println("removi o "+ fullinfo);
         }
-        System.out.println("sai do check");
     }
 }
