@@ -124,9 +124,6 @@ public class AlbumsProxyResource {
                             albumsIdName.put(albumId,title);
                         }
                     }
-                }
-                if (albumsTitleList.size()>0) {
-
                     return Response.ok(albumsTitleList).build();
                 }
 
@@ -155,8 +152,6 @@ public class AlbumsProxyResource {
                     service.signRequest(accessToken,albumReq);
                     final com.github.scribejava.core.model.Response albumPRes = albumReq.send();
 
-                    System.out.println("CODIGO " +albumPRes.getCode());
-
                     if (albumPRes.getCode() == 200){
                         JSONParser parser = new JSONParser();
                         JSONObject res = (JSONObject) parser.parse(albumPRes.getBody());
@@ -168,14 +163,18 @@ public class AlbumsProxyResource {
                             JSONObject objects = (JSONObject) albumsIt.next();
                             String title = (String)objects.get("title");
                             String pictureId= (String)objects.get("id");
+
+
+                            if (title==null){
+                                title=pictureId;
+                            }
                             picturesList.add(title);
 
                             ImgurPicture iP = new ImgurPicture(pictureId,title,albumID);
 
                             pictures.add(iP);
                         }
-
-                            return Response.ok(picturesList).build();
+                        return Response.ok(picturesList).build();
 
                     }
                 }catch (ParseException e){
@@ -195,7 +194,6 @@ public class AlbumsProxyResource {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPictureData(@PathParam("albumName") String albumName, @PathParam("picture") String pictureName,@PathParam("password") String password){
 
-        System.out.println("bateu no get picture data");
 
 
         if (checkPassword(password)) {
@@ -204,7 +202,6 @@ public class AlbumsProxyResource {
                 ImgurPicture iP;
                 if ((iP = getPictureWithName(pictureName)) != null) {
                     try {
-                        System.out.println("bateu no get picture data1");
                         String imageUrl = "https://api.imgur.com/3/album/" + albumID + "/image/" + iP.getId();
 
                         OAuthRequest albumReq = new OAuthRequest(Verb.GET, imageUrl, service);
@@ -229,7 +226,6 @@ public class AlbumsProxyResource {
                             }
                             out.close();
                             inputStream.close();
-                            System.out.println("fiz download");
                             return Response.ok(out.toByteArray()).build();
                         }
 
@@ -250,34 +246,34 @@ public class AlbumsProxyResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAlbum(String albumName,@PathParam("password") String password){
         if(checkPassword(password)){
-                try{
-                    String creationUrl = "https://api.imgur.com/3/album";
-                    OAuthRequest albumReq = new OAuthRequest(Verb.POST,creationUrl,service);
-                    albumReq.addParameter("title",albumName);
-                    service.signRequest(accessToken,albumReq);
+            try{
+                String creationUrl = "https://api.imgur.com/3/album";
+                OAuthRequest albumReq = new OAuthRequest(Verb.POST,creationUrl,service);
+                albumReq.addParameter("title",albumName);
+                service.signRequest(accessToken,albumReq);
 
-                    final com.github.scribejava.core.model.Response albumRes = albumReq.send();
+                final com.github.scribejava.core.model.Response albumRes = albumReq.send();
 
-                    if(albumRes.getCode()==200){
-                        JSONParser parser = new JSONParser();
-                        JSONObject res = (JSONObject) parser.parse(albumRes.getBody());
+                if(albumRes.getCode()==200){
+                    JSONParser parser = new JSONParser();
+                    JSONObject res = (JSONObject) parser.parse(albumRes.getBody());
 
-                        String albumID = (String)((JSONObject)res.get("data")).get("id");
+                    String albumID = (String)((JSONObject)res.get("data")).get("id");
 
-                        albumsIdName.put(albumID,albumName);
+                    albumsIdName.put(albumID,albumName);
 
-                        publisher.publishEvent("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
+                    publisher.publishEvent("Albums",new String(albumName+"-"+"Create"+"-"+System.nanoTime()));
 
-                        String empty = "";
-                        ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),CREATEOP);
+                    String empty = "";
+                    ServersUtils.loadAndChangeMetadata(ReplicationServerUtils.buildNewId(albumName,empty),CREATEOP);
 
-                        return Response.ok().build();
-                    }
-                    return Response.status(Response.Status.NOT_FOUND).build();
-
-                }catch (Exception e){
-                    e.printStackTrace();
+                    return Response.ok().build();
                 }
+                return Response.status(Response.Status.NOT_FOUND).build();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
