@@ -60,7 +60,7 @@ public class ReplicationServer {
                     //load metadata
                     //load from disk to memory
                     file = ServersUtils.getJsonFromFile(new byte[0]);
-                    loadContentFromDisk(file);
+                    loadContentFromDisk(file,true);
                 }else{
                     System.err.println("Waiting for possible connections");
                     Thread.sleep(5000); // any server discovered? no? create from scratch
@@ -69,7 +69,7 @@ public class ReplicationServer {
 
                     file = ReplicationServerUtils.createFile();
                     if (hasContent()){
-                        loadContentFromDisk(file);
+                        loadContentFromDisk(file,false);
                     }
 
                     if (connectionsSize>0){
@@ -346,13 +346,15 @@ public class ReplicationServer {
     }
 
 
-    public void loadContentFromDisk(JSONObject file){
+    public void loadContentFromDisk(JSONObject file,boolean hadContent){
 
         ServersUtils.getAlbumList().forEach(albumName->{
             HashMap<String,byte[]> imageContent = new HashMap<>();
+            if (!hadContent)
             ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,""),ReplicationServerUtils.getReplicaid(file),CREATEOP);
             ServersUtils.getPicturesList(albumName).forEach(pictureName->{
                 imageContent.put(pictureName,ServersUtils.getPictureData(albumName,pictureName));
+                if (!hadContent)
                 ReplicationServerUtils.newTimestamp(file,ReplicationServerUtils.buildNewId(albumName,pictureName),ReplicationServerUtils.getReplicaid(file),CREATEOP);
             });
             content.put(albumName,imageContent);
