@@ -434,8 +434,7 @@ public class ReplicationServer {
 
             String replicatoRemove = ipTranslator.get(ipToCheck);
 
-            boolean x = ReplicationServerUtils.removeHost(file,buildIP(ipToCheck,type));
-            System.out.println("removi dos hosts"+x+file.toJSONString());
+            ReplicationServerUtils.removeHost(file,buildIP(ipToCheck,type));
             removeFromAllSharedBy(replicatoRemove);
             System.out.println("removi do sharedby");
             ReplicationServerUtils.writeToFile(file);
@@ -451,8 +450,10 @@ public class ReplicationServer {
             JSONObject thisTimestamp = (JSONObject) timestampsIterator.next();
             JSONArray thisSharedBy = (JSONArray) thisTimestamp.get(SHAREDBY);
             int size = thisSharedBy.size();
+            System.out.println("CONTENT: "+thisTimestamp.toJSONString());
             for (int i = 0; i < size ; i++) {
                 String replica= thisSharedBy.get(i).toString();
+                System.out.println("replica deu: "+replica);
                 if (replica.equals(replicatoremove)){
                     thisSharedBy.remove(i);
                     System.out.println("removed "+replica);
